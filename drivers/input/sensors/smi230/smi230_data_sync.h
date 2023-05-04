@@ -7,8 +7,8 @@
  * Copyright (c) 2020-2021 Robert Bosch GmbH. All rights reserved.
  * Copyright (c) 2020 Bosch Sensortec GmbH. All rights reserved.
  *
- * This file is free software licensed under the terms of version 2 
- * of the GNU General Public License, available from the file LICENSE-GPL 
+ * This file is free software licensed under the terms of version 2
+ * of the GNU General Public License, available from the file LICENSE-GPL
  * in the main directory of this source tree.
  *
  * BSD LICENSE
@@ -91,7 +91,9 @@ int8_t smi230_init(struct smi230_dev *dev);
  *  @return Result of API execution status
  *  @retval zero -> Success / -ve value -> Error
  */
-int8_t smi230_configure_data_synchronization(struct smi230_data_sync_cfg sync_cfg, struct smi230_dev *dev);
+int8_t
+smi230_configure_data_synchronization(struct smi230_data_sync_cfg sync_cfg,
+				      struct smi230_dev *dev);
 
 /*!
  *  @brief This API reads the synchronized accel & gyro data from the sensor,
@@ -107,8 +109,8 @@ int8_t smi230_configure_data_synchronization(struct smi230_data_sync_cfg sync_cf
  *  @retval zero -> Success / -ve value -> Error
  */
 int8_t smi230_get_synchronized_data(struct smi230_sensor_data *accel,
-                                    struct smi230_sensor_data *gyro,
-                                    const struct smi230_dev *dev);
+				    struct smi230_sensor_data *gyro,
+				    const struct smi230_dev *dev);
 
 /*!
  *  @brief This API configures the synchronization interrupt
@@ -121,7 +123,8 @@ int8_t smi230_get_synchronized_data(struct smi230_sensor_data *accel,
  *  @return Result of API execution status
  *  @retval zero -> Success / -ve value -> Error
  */
-int8_t smi230_set_data_sync_int_config(const struct smi230_int_cfg *int_config, const struct smi230_dev *dev);
+int8_t smi230_set_data_sync_int_config(const struct smi230_int_cfg *int_config,
+				       const struct smi230_dev *dev);
 
 #ifdef __cplusplus
 }

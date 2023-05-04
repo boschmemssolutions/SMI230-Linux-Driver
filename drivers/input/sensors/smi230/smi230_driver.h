@@ -6,8 +6,8 @@
  * GPL LICENSE
  * Copyright (c) 2020-2021 Robert Bosch GmbH. All rights reserved.
  *
- * This file is free software licensed under the terms of version 2 
- * of the GNU General Public License, available from the file LICENSE-GPL 
+ * This file is free software licensed under the terms of version 2
+ * of the GNU General Public License, available from the file LICENSE-GPL
  * in the main directory of this source tree.
  *
  * BSD LICENSE
@@ -51,9 +51,9 @@
 #include <linux/delay.h>
 #include "smi230_defs.h"
 
-#define DRIVER_VERSION "0.7.2"
-#define MODULE_NAME "SMI230"
-#define SENSOR_ACC_NAME "SMI230ACC"
+#define DRIVER_VERSION	 "0.8.0"
+#define MODULE_NAME	 "SMI230"
+#define SENSOR_ACC_NAME	 "SMI230ACC"
 #define SENSOR_GYRO_NAME "SMI230GYRO"
 
 int smi230_acc_remove(struct device *dev);

@@ -46,7 +46,6 @@ sensor_API <-- smi230_driver --> smi230_SPI/I2C_driver
 -------------------------------------------------------
                   Hardware
 ```
-
 ## Operation examples <a name=examples></a>
 1. Userspace
 The driver exposes a device file node under /dev/input/event*, which can be read as a normal Linux file. Tools like evtest can also be used for read data out. E.g.:

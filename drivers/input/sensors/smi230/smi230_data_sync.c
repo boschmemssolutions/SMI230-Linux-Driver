@@ -7,8 +7,8 @@
  * Copyright (c) 2020-2021 Robert Bosch GmbH. All rights reserved.
  * Copyright (c) 2020 Bosch Sensortec GmbH. All rights reserved.
  *
- * This file is free software licensed under the terms of version 2 
- * of the GNU General Public License, available from the file LICENSE-GPL 
+ * This file is free software licensed under the terms of version 2
+ * of the GNU General Public License, available from the file LICENSE-GPL
  * in the main directory of this source tree.
  *
  * BSD LICENSE
@@ -105,89 +105,88 @@ static int8_t null_ptr_check(const struct smi230_dev *dev);
  */
 int8_t smi230_init(struct smi230_dev *dev)
 {
-    int8_t rslt;
+	int8_t rslt;
 
-    /* Initialize smi230 accel sensor */
-    rslt = smi230_acc_init(dev);
+	/* Initialize smi230 accel sensor */
+	rslt = smi230_acc_init(dev);
 
-    if (rslt == SMI230_OK)
-    {
-        /* Initialize smi230 gyro sensor */
-        rslt = smi230_gyro_init(dev);
-    }
+	if (rslt == SMI230_OK) {
+		/* Initialize smi230 gyro sensor */
+		rslt = smi230_gyro_init(dev);
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  *  @brief This API is used to enable/disable and configure the data synchronization
  *  feature.
  */
-int8_t smi230_configure_data_synchronization(struct smi230_data_sync_cfg sync_cfg, struct smi230_dev *dev)
+int8_t
+smi230_configure_data_synchronization(struct smi230_data_sync_cfg sync_cfg,
+				      struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint16_t data[SMI230_ACCEL_DATA_SYNC_LEN];
+	int8_t rslt;
+	uint16_t data[SMI230_ACCEL_DATA_SYNC_LEN];
 
-    /* Check for null pointer in the device structure */
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure */
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if (rslt == SMI230_OK)
-    {
-        /* Change sensor meas config */
-        switch (sync_cfg.mode)
-        {
-            case SMI230_ACCEL_DATA_SYNC_MODE_2000HZ:
-                dev->accel_cfg.odr = SMI230_ACCEL_ODR_1600_HZ;
-                dev->accel_cfg.bw = SMI230_ACCEL_BW_NORMAL;
-                dev->gyro_cfg.odr = SMI230_GYRO_BW_230_ODR_2000_HZ;
-                dev->gyro_cfg.bw = SMI230_GYRO_BW_230_ODR_2000_HZ;
-                break;
-            case SMI230_ACCEL_DATA_SYNC_MODE_1000HZ:
-                dev->accel_cfg.odr = SMI230_ACCEL_ODR_800_HZ;
-                dev->accel_cfg.bw = SMI230_ACCEL_BW_NORMAL;
-                dev->gyro_cfg.odr = SMI230_GYRO_BW_116_ODR_1000_HZ;
-                dev->gyro_cfg.bw = SMI230_GYRO_BW_116_ODR_1000_HZ;
-                break;
-            case SMI230_ACCEL_DATA_SYNC_MODE_400HZ:
-                dev->accel_cfg.odr = SMI230_ACCEL_ODR_400_HZ;
-                dev->accel_cfg.bw = SMI230_ACCEL_BW_NORMAL;
-                dev->gyro_cfg.odr = SMI230_GYRO_BW_47_ODR_400_HZ;
-                dev->gyro_cfg.bw = SMI230_GYRO_BW_47_ODR_400_HZ;
-                break;
-            case SMI230_ACCEL_DATA_SYNC_MODE_100HZ:
-                dev->accel_cfg.odr = SMI230_ACCEL_ODR_400_HZ;
-                dev->accel_cfg.bw = SMI230_ACCEL_BW_OSR4;
-                dev->gyro_cfg.odr = SMI230_GYRO_BW_32_ODR_100_HZ;
-                dev->gyro_cfg.bw = SMI230_GYRO_BW_32_ODR_100_HZ;
-                break;
-            case SMI230_ACCEL_DATA_SYNC_MODE_200HZ:
-                dev->accel_cfg.odr = SMI230_ACCEL_ODR_800_HZ;
-                dev->accel_cfg.bw = SMI230_ACCEL_BW_OSR4;
-                dev->gyro_cfg.odr = SMI230_GYRO_BW_64_ODR_200_HZ;
-                dev->gyro_cfg.bw = SMI230_GYRO_BW_64_ODR_200_HZ;
-                break;
-            default:
-                break;
-        }
-        rslt = smi230_acc_set_meas_conf(dev);
-        if (rslt != SMI230_OK)
-        {
-            return rslt;
-        }
+	/* Proceed if null check is fine */
+	if (rslt == SMI230_OK) {
+		/* Change sensor meas config */
+		switch (sync_cfg.mode) {
+		case SMI230_ACCEL_DATA_SYNC_MODE_2000HZ:
+			dev->accel_cfg.odr = SMI230_ACCEL_ODR_1600_HZ;
+			dev->accel_cfg.bw = SMI230_ACCEL_BW_NORMAL;
+			dev->gyro_cfg.odr = SMI230_GYRO_BW_230_ODR_2000_HZ;
+			dev->gyro_cfg.bw = SMI230_GYRO_BW_230_ODR_2000_HZ;
+			break;
+		case SMI230_ACCEL_DATA_SYNC_MODE_1000HZ:
+			dev->accel_cfg.odr = SMI230_ACCEL_ODR_800_HZ;
+			dev->accel_cfg.bw = SMI230_ACCEL_BW_NORMAL;
+			dev->gyro_cfg.odr = SMI230_GYRO_BW_116_ODR_1000_HZ;
+			dev->gyro_cfg.bw = SMI230_GYRO_BW_116_ODR_1000_HZ;
+			break;
+		case SMI230_ACCEL_DATA_SYNC_MODE_400HZ:
+			dev->accel_cfg.odr = SMI230_ACCEL_ODR_400_HZ;
+			dev->accel_cfg.bw = SMI230_ACCEL_BW_NORMAL;
+			dev->gyro_cfg.odr = SMI230_GYRO_BW_47_ODR_400_HZ;
+			dev->gyro_cfg.bw = SMI230_GYRO_BW_47_ODR_400_HZ;
+			break;
+		case SMI230_ACCEL_DATA_SYNC_MODE_100HZ:
+			dev->accel_cfg.odr = SMI230_ACCEL_ODR_400_HZ;
+			dev->accel_cfg.bw = SMI230_ACCEL_BW_OSR4;
+			dev->gyro_cfg.odr = SMI230_GYRO_BW_32_ODR_100_HZ;
+			dev->gyro_cfg.bw = SMI230_GYRO_BW_32_ODR_100_HZ;
+			break;
+		case SMI230_ACCEL_DATA_SYNC_MODE_200HZ:
+			dev->accel_cfg.odr = SMI230_ACCEL_ODR_800_HZ;
+			dev->accel_cfg.bw = SMI230_ACCEL_BW_OSR4;
+			dev->gyro_cfg.odr = SMI230_GYRO_BW_64_ODR_200_HZ;
+			dev->gyro_cfg.bw = SMI230_GYRO_BW_64_ODR_200_HZ;
+			break;
+		default:
+			break;
+		}
+		rslt = smi230_acc_set_meas_conf(dev);
+		if (rslt != SMI230_OK) {
+			return rslt;
+		}
 
-        rslt = smi230_gyro_set_meas_conf(dev);
-        if (rslt != SMI230_OK)
-        {
-            return rslt;
-        }
+		rslt = smi230_gyro_set_meas_conf(dev);
+		if (rslt != SMI230_OK) {
+			return rslt;
+		}
 
-        /* Enable data synchronization */
-        data[0] = (sync_cfg.mode & SMI230_ACCEL_DATA_SYNC_MODE_MASK);
-        rslt = smi230_acc_write_feature_config(SMI230_ACCEL_DATA_SYNC_ADR, &data[0], SMI230_ACCEL_DATA_SYNC_LEN, dev);
-    }
+		/* Enable data synchronization */
+		data[0] = (sync_cfg.mode & SMI230_ACCEL_DATA_SYNC_MODE_MASK);
+		rslt = smi230_acc_write_feature_config(
+			SMI230_ACCEL_DATA_SYNC_ADR, &data[0],
+			SMI230_ACCEL_DATA_SYNC_LEN, dev);
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -196,59 +195,57 @@ int8_t smi230_configure_data_synchronization(struct smi230_data_sync_cfg sync_cf
  *  passed by the user.
  */
 int8_t smi230_get_synchronized_data(struct smi230_sensor_data *accel,
-                                    struct smi230_sensor_data *gyro,
-                                    const struct smi230_dev *dev)
+				    struct smi230_sensor_data *gyro,
+				    const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t reg_addr, data[6];
-    uint8_t lsb, msb;
-    uint16_t msblsb;
+	int8_t rslt;
+	uint8_t reg_addr, data[6];
+	uint8_t lsb, msb;
+	uint16_t msblsb;
 
-    /* Check for null pointer in the device structure */
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure */
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if ((rslt == SMI230_OK) && (accel != NULL) && (gyro != NULL))
-    {
-        /* Read accel x,y sensor data */
-        reg_addr = SMI230_ACCEL_GP_0_REG;
-        rslt = smi230_acc_get_regs(reg_addr, &data[0], 4, dev);
+	/* Proceed if null check is fine */
+	if ((rslt == SMI230_OK) && (accel != NULL) && (gyro != NULL)) {
+		/* Read accel x,y sensor data */
+		reg_addr = SMI230_ACCEL_GP_0_REG;
+		rslt = smi230_acc_get_regs(reg_addr, &data[0], 4, dev);
 
-        if (rslt == SMI230_OK)
-        {
-            /* Read accel sensor data */
-            reg_addr = SMI230_ACCEL_GP_4_REG;
-            rslt = smi230_acc_get_regs(reg_addr, &data[4], 2, dev);
+		if (rslt == SMI230_OK) {
+			/* Read accel sensor data */
+			reg_addr = SMI230_ACCEL_GP_4_REG;
+			rslt = smi230_acc_get_regs(reg_addr, &data[4], 2, dev);
 
-            if (rslt == SMI230_OK)
-            {
-                lsb = data[0];
-                msb = data[1];
-                msblsb = (msb << 8) | lsb;
-                accel->x = ((int16_t) msblsb); /* Data in X axis */
+			if (rslt == SMI230_OK) {
+				lsb = data[0];
+				msb = data[1];
+				msblsb = (msb << 8) | lsb;
+				accel->x =
+					((int16_t)msblsb); /* Data in X axis */
 
-                lsb = data[2];
-                msb = data[3];
-                msblsb = (msb << 8) | lsb;
-                accel->y = ((int16_t) msblsb); /* Data in Y axis */
+				lsb = data[2];
+				msb = data[3];
+				msblsb = (msb << 8) | lsb;
+				accel->y =
+					((int16_t)msblsb); /* Data in Y axis */
 
-                lsb = data[4];
-                msb = data[5];
-                msblsb = (msb << 8) | lsb;
-                accel->z = ((int16_t) msblsb); /* Data in Z axis */
+				lsb = data[4];
+				msb = data[5];
+				msblsb = (msb << 8) | lsb;
+				accel->z =
+					((int16_t)msblsb); /* Data in Z axis */
 
-                /* Read gyro sensor data */
-                rslt = smi230_gyro_get_data(gyro, dev);
-            }
-        }
+				/* Read gyro sensor data */
+				rslt = smi230_gyro_get_data(gyro, dev);
+			}
+		}
 
-    }
-    else
-    {
-        rslt = SMI230_E_NULL_PTR;
-    }
+	} else {
+		rslt = SMI230_E_NULL_PTR;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -256,33 +253,31 @@ int8_t smi230_get_synchronized_data(struct smi230_sensor_data *accel,
  *  based on the user settings in the smi230_int_cfg
  *  structure instance.
  */
-int8_t smi230_set_data_sync_int_config(const struct smi230_int_cfg *int_config, const struct smi230_dev *dev)
+int8_t smi230_set_data_sync_int_config(const struct smi230_int_cfg *int_config,
+				       const struct smi230_dev *dev)
 {
-    int8_t rslt;
+	int8_t rslt;
 
-    /* Configure accel sync data ready interrupt configuration */
-    rslt = smi230_acc_set_int_config(&int_config->accel_int_config_1, dev);
-    if (rslt != SMI230_OK)
-    {
-        return rslt;
-    }
+	/* Configure accel sync data ready interrupt configuration */
+	rslt = smi230_acc_set_int_config(&int_config->accel_int_config_1, dev);
+	if (rslt != SMI230_OK) {
+		return rslt;
+	}
 
-    rslt = smi230_acc_set_int_config(&int_config->accel_int_config_2, dev);
-    if (rslt != SMI230_OK)
-    {
-        return rslt;
-    }
+	rslt = smi230_acc_set_int_config(&int_config->accel_int_config_2, dev);
+	if (rslt != SMI230_OK) {
+		return rslt;
+	}
 
-    /* Configure gyro data ready interrupt configuration */
-    rslt = smi230_gyro_set_int_config(&int_config->gyro_int_config_1, dev);
-    if (rslt != SMI230_OK)
-    {
-        return rslt;
-    }
+	/* Configure gyro data ready interrupt configuration */
+	rslt = smi230_gyro_set_int_config(&int_config->gyro_int_config_1, dev);
+	if (rslt != SMI230_OK) {
+		return rslt;
+	}
 
-    rslt = smi230_gyro_set_int_config(&int_config->gyro_int_config_2, dev);
+	rslt = smi230_gyro_set_int_config(&int_config->gyro_int_config_2, dev);
 
-    return rslt;
+	return rslt;
 }
 
 /*****************************************************************************/
@@ -294,20 +289,18 @@ int8_t smi230_set_data_sync_int_config(const struct smi230_int_cfg *int_config, 
  */
 static int8_t null_ptr_check(const struct smi230_dev *dev)
 {
-    int8_t rslt;
+	int8_t rslt;
 
-    if ((dev == NULL) || (dev->read == NULL) || (dev->write == NULL) || (dev->delay_ms == NULL))
-    {
-        /* Device structure pointer is not valid */
-        rslt = SMI230_E_NULL_PTR;
-    }
-    else
-    {
-        /* Device structure is fine */
-        rslt = SMI230_OK;
-    }
+	if ((dev == NULL) || (dev->read == NULL) || (dev->write == NULL) ||
+	    (dev->delay_ms == NULL)) {
+		/* Device structure pointer is not valid */
+		rslt = SMI230_E_NULL_PTR;
+	} else {
+		/* Device structure is fine */
+		rslt = SMI230_OK;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /** @}*/

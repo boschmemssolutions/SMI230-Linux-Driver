@@ -7,8 +7,8 @@
  * Copyright (c) 2020-2021 Robert Bosch GmbH. All rights reserved.
  * Copyright (c) 2020 Bosch Sensortec GmbH. All rights reserved.
  *
- * This file is free software licensed under the terms of version 2 
- * of the GNU General Public License, available from the file LICENSE-GPL 
+ * This file is free software licensed under the terms of version 2
+ * of the GNU General Public License, available from the file LICENSE-GPL
  * in the main directory of this source tree.
  *
  * BSD LICENSE
@@ -108,8 +108,9 @@ int8_t smi230_acc_write_config_file(const struct smi230_dev *dev);
  *  @return Result of API execution status
  *  @retval zero -> Success / -ve value -> Error
  */
-int8_t smi230_acc_write_feature_config(uint8_t reg_addr, const uint16_t *reg_data, uint8_t len,
-                                   const struct smi230_dev *dev);
+int8_t smi230_acc_write_feature_config(uint8_t reg_addr,
+				       const uint16_t *reg_data, uint8_t len,
+				       const struct smi230_dev *dev);
 
 /*!
  *  @brief This API reads the data from the given register address of accel sensor.
@@ -122,7 +123,8 @@ int8_t smi230_acc_write_feature_config(uint8_t reg_addr, const uint16_t *reg_dat
  *  @return Result of API execution status
  *  @retval zero -> Success / -ve value -> Error
  */
-int8_t smi230_acc_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const struct smi230_dev *dev);
+int8_t smi230_acc_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len,
+			   const struct smi230_dev *dev);
 
 /*!
  *  @brief This API writes the given data to the register address
@@ -137,7 +139,8 @@ int8_t smi230_acc_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, co
  *  @return Result of API execution status
  *  @retval zero -> Success / -ve value -> Error
  */
-int8_t smi230_acc_set_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const struct smi230_dev *dev);
+int8_t smi230_acc_set_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len,
+			   const struct smi230_dev *dev);
 
 /*!
  *  @brief This API reads the error status from the accel sensor.
@@ -165,7 +168,8 @@ int8_t smi230_acc_set_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, co
  *  @return Result of API execution status
  *  @retval zero -> Success / -ve value -> Error
  */
-int8_t smi230_acc_get_error_status(struct smi230_err_reg *err_reg, const struct smi230_dev *dev);
+int8_t smi230_acc_get_error_status(struct smi230_err_reg *err_reg,
+				   const struct smi230_dev *dev);
 
 /*!
  *  @brief This API reads the status of the accel sensor.
@@ -274,7 +278,8 @@ int8_t smi230_acc_set_power_mode(const struct smi230_dev *dev);
  *  @return Result of API execution status
  *  @retval zero -> Success /-ve value -> Error
  */
-int8_t smi230_acc_get_data(struct smi230_sensor_data *accel, const struct smi230_dev *dev);
+int8_t smi230_acc_get_data(struct smi230_sensor_data *accel,
+			   const struct smi230_dev *dev);
 
 /*!
  *  @brief This API configures the necessary accel interrupt
@@ -287,7 +292,9 @@ int8_t smi230_acc_get_data(struct smi230_sensor_data *accel, const struct smi230
  *  @return Result of API execution status
  *  @retval zero -> Success / -ve value -> Error
  */
-int8_t smi230_acc_set_int_config(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev);
+int8_t
+smi230_acc_set_int_config(const struct smi230_accel_int_channel_cfg *int_config,
+			  const struct smi230_dev *dev);
 
 /*!
  *  @brief This API reads the temperature of the sensor in degree Celcius.
@@ -302,7 +309,8 @@ int8_t smi230_acc_set_int_config(const struct smi230_accel_int_channel_cfg *int_
  *  @return Result of API execution status
  *  @retval zero -> Success / -ve value -> Error
  */
-int8_t smi230_acc_get_sensor_temperature(const struct smi230_dev *dev, int32_t *sensor_temp);
+int8_t smi230_acc_get_sensor_temperature(const struct smi230_dev *dev,
+					 int32_t *sensor_temp);
 
 /*!
  *  @brief This API reads the sensor time of the accel sensor.
@@ -313,7 +321,8 @@ int8_t smi230_acc_get_sensor_temperature(const struct smi230_dev *dev, int32_t *
  *  @return Result of API execution status
  *  @retval zero -> Success / -ve value -> Error
  */
-int8_t smi230_acc_get_sensor_time(const struct smi230_dev *dev, uint32_t *sensor_time);
+int8_t smi230_acc_get_sensor_time(const struct smi230_dev *dev,
+				  uint32_t *sensor_time);
 
 /*!
  *  @brief This API checks whether the self test functionality of the sensor
@@ -356,7 +365,8 @@ int8_t smi230_gyro_init(struct smi230_dev *dev);
  *  @return Result of API execution status
  *  @retval zero -> Success / -ve value -> Error
  */
-int8_t smi230_gyro_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const struct smi230_dev *dev);
+int8_t smi230_gyro_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len,
+			    const struct smi230_dev *dev);
 
 /*!
  *  @brief This API writes the given data to the register address
@@ -371,7 +381,8 @@ int8_t smi230_gyro_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, c
  *  @return Result of API execution status
  *  @retval zero -> Success / -ve value -> Error
  */
-int8_t smi230_gyro_set_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const struct smi230_dev *dev);
+int8_t smi230_gyro_set_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len,
+			    const struct smi230_dev *dev);
 
 /*!
  *  @brief This API resets the gyro sensor.
@@ -444,7 +455,8 @@ int8_t smi230_gyro_set_power_mode(const struct smi230_dev *dev);
  *  @return Result of API execution status
  *  @retval zero -> Success / -ve value -> Error
  */
-int8_t smi230_gyro_get_data(struct smi230_sensor_data *gyro, const struct smi230_dev *dev);
+int8_t smi230_gyro_get_data(struct smi230_sensor_data *gyro,
+			    const struct smi230_dev *dev);
 
 /*!
  *  @brief This API configures the necessary gyro interrupt
@@ -457,7 +469,9 @@ int8_t smi230_gyro_get_data(struct smi230_sensor_data *gyro, const struct smi230
  *  @return Result of API execution status
  *  @retval zero -> Success / -ve value -> Error
  */
-int8_t smi230_gyro_set_int_config(const struct smi230_gyro_int_channel_cfg *int_config, const struct smi230_dev *dev);
+int8_t
+smi230_gyro_set_int_config(const struct smi230_gyro_int_channel_cfg *int_config,
+			   const struct smi230_dev *dev);
 
 /*!
  *  @brief This API checks whether the self test functionality of the
@@ -487,7 +501,8 @@ int8_t smi230_gyro_perform_selftest(const struct smi230_dev *dev);
  * @retval SMI230_E_NULL_PTR - Error: Null pointer error
  * @retval SMI230_E_COM_FAIL - Error: Communication fail
  */
-int8_t smi230_acc_set_fifo_config(const struct accel_fifo_config *config, const struct smi230_dev *dev);
+int8_t smi230_acc_set_fifo_config(const struct accel_fifo_config *config,
+				  const struct smi230_dev *dev);
 
 /*!
  * @brief This API gets the FIFO configuration from the sensor.
@@ -499,7 +514,8 @@ int8_t smi230_acc_set_fifo_config(const struct accel_fifo_config *config, const 
  * @retval SMI230_E_NULL_PTR - Error: Null pointer error
  * @retval SMI230_E_COM_FAIL - Error: Communication fail
  */
-int8_t smi230_acc_get_fifo_config(struct accel_fifo_config *config, const struct smi230_dev *dev);
+int8_t smi230_acc_get_fifo_config(struct accel_fifo_config *config,
+				  const struct smi230_dev *dev);
 
 /*!
  * @brief This API reads FIFO data.
@@ -515,7 +531,8 @@ int8_t smi230_acc_get_fifo_config(struct accel_fifo_config *config, const struct
  * @retval SMI230_E_NULL_PTR - Error: Null pointer error
  * @retval SMI230_E_COM_FAIL - Error: Communication fail
  */
-int8_t smi230_acc_read_fifo_data(struct smi230_fifo_frame *fifo, const struct smi230_dev *dev);
+int8_t smi230_acc_read_fifo_data(struct smi230_fifo_frame *fifo,
+				 const struct smi230_dev *dev);
 
 /*!
  * @brief This API gets the length of FIFO data available in the sensor in
@@ -534,7 +551,8 @@ int8_t smi230_acc_read_fifo_data(struct smi230_fifo_frame *fifo, const struct sm
  * @retval SMI230_E_NULL_PTR - Error: Null pointer error
  * @retval SMI230_E_COM_FAIL - Error: Communication fail
  */
-int8_t smi230_acc_get_fifo_length(uint16_t *fifo_length, const struct smi230_dev *dev);
+int8_t smi230_acc_get_fifo_length(uint16_t *fifo_length,
+				  const struct smi230_dev *dev);
 
 /*!
  * @brief This API gets the FIFO water mark level which is set in the sensor.
@@ -583,9 +601,9 @@ int8_t smi230_acc_set_fifo_wm(uint16_t wm, const struct smi230_dev *dev);
  * @retval SMI230_W_PARTIAL_READ - Warning : There are more frames to be read
  */
 int8_t smi230_acc_extract_accel(struct smi230_sensor_data *accel_data,
-                            uint16_t *accel_length,
-                            struct smi230_fifo_frame *fifo,
-                            const struct smi230_dev *dev);
+				uint16_t *accel_length,
+				struct smi230_fifo_frame *fifo,
+				const struct smi230_dev *dev);
 
 /*!
  * @brief This API gets the down sampling rate, configured for FIFO
@@ -601,7 +619,8 @@ int8_t smi230_acc_extract_accel(struct smi230_sensor_data *accel_data,
  * @retval SMI230_E_COM_FAIL - Error: Communication fail
  */
 
-int8_t smi230_acc_get_fifo_down_sample(uint8_t *fifo_downs, const struct smi230_dev *dev);
+int8_t smi230_acc_get_fifo_down_sample(uint8_t *fifo_downs,
+				       const struct smi230_dev *dev);
 
 /*!
  * @brief This API sets the down sampling rate for FIFO accelerometer FIFO data.
@@ -616,7 +635,8 @@ int8_t smi230_acc_get_fifo_down_sample(uint8_t *fifo_downs, const struct smi230_
  * @retval SMI230_E_COM_FAIL - Error: Communication fail
  * @retval SMI230_E_OUT_OF_RANGE - Error: Out of range
  */
-int8_t smi230_acc_set_fifo_down_sample(uint8_t fifo_downs, const struct smi230_dev *dev);
+int8_t smi230_acc_set_fifo_down_sample(uint8_t fifo_downs,
+				       const struct smi230_dev *dev);
 
 /* gyro FIFO APIs */
 /*!
@@ -630,7 +650,8 @@ int8_t smi230_acc_set_fifo_down_sample(uint8_t fifo_downs, const struct smi230_d
  * @retval SMI230_OK - Success.
  * @retval SMI230_E_NULL_PTR - Error: Null pointer error
  */
-int8_t smi230_gyro_get_fifo_length(uint8_t *fifo_length, const struct smi230_dev *dev);
+int8_t smi230_gyro_get_fifo_length(uint8_t *fifo_length,
+				   const struct smi230_dev *dev);
 
 /*!
  * @brief This API reads FIFO data.
@@ -643,7 +664,8 @@ int8_t smi230_gyro_get_fifo_length(uint8_t *fifo_length, const struct smi230_dev
  * @retval SMI230_OK - Success.
  * @retval SMI230_E_NULL_PTR - Error: Null pointer error
  */
-int8_t smi230_gyro_read_fifo_data(struct smi230_fifo_frame *fifo, const struct smi230_dev *dev);
+int8_t smi230_gyro_read_fifo_data(struct smi230_fifo_frame *fifo,
+				  const struct smi230_dev *dev);
 
 /*!
  * @brief his API parses and extracts the gyroscope frames from FIFO data
@@ -661,9 +683,9 @@ int8_t smi230_gyro_read_fifo_data(struct smi230_fifo_frame *fifo, const struct s
  * @retval SMI230_E_NULL_PTR - Error: Null pointer error
  */
 int8_t smi230_gyro_extract_fifo(struct smi230_sensor_data *gyro_data,
-                            uint8_t *fifo_length,
-                            struct smi230_fifo_frame *fifo,
-                            const struct smi230_dev *dev);
+				uint8_t *fifo_length,
+				struct smi230_fifo_frame *fifo,
+				const struct smi230_dev *dev);
 
 /*!
  * @brief This API sets the FIFO water-mark level in the sensor.
@@ -702,49 +724,57 @@ int8_t smi230_gyro_set_fifo_wm(uint8_t wm, const struct smi230_dev *dev);
  * @retval SMI230_OK - Success.
  * @retval SMI230_E_NULL_PTR - Error: Null pointer error
  */
-int8_t smi230_gyro_set_fifo_config(struct gyro_fifo_config *config, const struct smi230_dev *dev);
+int8_t smi230_gyro_set_fifo_config(struct gyro_fifo_config *config,
+				   const struct smi230_dev *dev);
 
 /*!
  * @brief This API gets the output values of high_g: Axis and Direction
  */
-int8_t smi230_get_high_g_output(struct smi230_high_g_out *high_g_out, struct smi230_dev *dev);
+int8_t smi230_get_high_g_output(struct smi230_high_g_out *high_g_out,
+				struct smi230_dev *dev);
 
 /*!
  * @brief This API sets high-g configurations like threshold,
  * hysteresis, duration, and output configuration.
  */
-int8_t smi230_set_high_g_config(const struct smi230_high_g_cfg *config, struct smi230_dev *dev);
+int8_t smi230_set_high_g_config(const struct smi230_high_g_cfg *config,
+				struct smi230_dev *dev);
 
 /*!
  * @brief This API sets low-g configurations like threshold,
  * hysteresis, duration, and output configuration.
  */
-int8_t smi230_set_low_g_config(const struct smi230_low_g_cfg *config, struct smi230_dev *dev);
+int8_t smi230_set_low_g_config(const struct smi230_low_g_cfg *config,
+			       struct smi230_dev *dev);
 
 /*!
  * @brief This API gets the output values of orientation: portrait-
  * landscape and face up-down.
  */
-int8_t smi230_get_orient_output(struct smi230_orient_out *orient_out, struct smi230_dev *dev);
+int8_t smi230_get_orient_output(struct smi230_orient_out *orient_out,
+				struct smi230_dev *dev);
 
 /*!
  * @brief This internal API sets no-motion configurations like axes select,
  * duration, threshold and output-configuration.
  */
-int8_t smi230_set_no_motion_config(const struct smi230_no_motion_cfg *config, struct smi230_dev *dev);
+int8_t smi230_set_no_motion_config(const struct smi230_no_motion_cfg *config,
+				   struct smi230_dev *dev);
 
 /*!
  * @brief This API sets orientation configurations like upside/down
  * detection, symmetrical modes, blocking mode, theta and hysteresis
  *
  */
-int8_t smi230_set_orient_config(const struct smi230_orient_cfg *config, struct smi230_dev *dev);
+int8_t smi230_set_orient_config(const struct smi230_orient_cfg *config,
+				struct smi230_dev *dev);
 
 /*!
  *  @brief This API is used to enable/disable and configure the anymotion
  *  feature.
  */
-int8_t smi230_configure_anymotion(struct smi230_anymotion_cfg *anymotion_cfg, struct smi230_dev *dev);
+int8_t smi230_configure_anymotion(struct smi230_anymotion_cfg *anymotion_cfg,
+				  struct smi230_dev *dev);
 #ifdef __cplusplus
 }
 #endif

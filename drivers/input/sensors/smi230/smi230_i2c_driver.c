@@ -6,8 +6,8 @@
  * GPL LICENSE
  * Copyright (c) 2020-2021 Robert Bosch GmbH. All rights reserved.
  *
- * This file is free software licensed under the terms of version 2 
- * of the GNU General Public License, available from the file LICENSE-GPL 
+ * This file is free software licensed under the terms of version 2
+ * of the GNU General Public License, available from the file LICENSE-GPL
  * in the main directory of this source tree.
  *
  * BSD LICENSE
@@ -56,31 +56,31 @@
 #include "smi230_log.h"
 #include "smi230.h"
 
-#define SMI230_MAX_RETRY_I2C_XFER 10
+#define SMI230_MAX_RETRY_I2C_XFER   10
 #define SMI230_I2C_WRITE_DELAY_TIME 10
 
 struct i2c_adapter *smi230_i2c_adapter;
 
 static struct smi230_dev smi230_i2c_dev;
 
-static int8_t smi230_i2c_read(uint8_t dev_addr,
-	uint8_t reg_addr, uint8_t *data, uint16_t len)
+static int8_t smi230_i2c_read(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data,
+			      uint16_t len)
 {
 	int32_t retry;
 
 	struct i2c_msg msg[] = {
 		{
-		.addr = dev_addr,
-		.flags = 0,
-		.len = 1,
-		.buf = &reg_addr,
+			.addr = dev_addr,
+			.flags = 0,
+			.len = 1,
+			.buf = &reg_addr,
 		},
 
 		{
-		.addr = dev_addr,
-		.flags = I2C_M_RD,
-		.len = len,
-		.buf = data,
+			.addr = dev_addr,
+			.flags = I2C_M_RD,
+			.len = len,
+			.buf = data,
 		},
 	};
 	for (retry = 0; retry < SMI230_MAX_RETRY_I2C_XFER; retry++) {
@@ -88,7 +88,7 @@ static int8_t smi230_i2c_read(uint8_t dev_addr,
 			break;
 		else
 			usleep_range(SMI230_I2C_WRITE_DELAY_TIME * 1000,
-				SMI230_I2C_WRITE_DELAY_TIME * 1000);
+				     SMI230_I2C_WRITE_DELAY_TIME * 1000);
 	}
 
 	if (SMI230_MAX_RETRY_I2C_XFER <= retry) {
@@ -99,8 +99,8 @@ static int8_t smi230_i2c_read(uint8_t dev_addr,
 	return 0;
 }
 
-static int8_t smi230_i2c_write(uint8_t dev_addr,
-	uint8_t reg_addr, uint8_t *data, uint16_t len)
+static int8_t smi230_i2c_write(uint8_t dev_addr, uint8_t reg_addr,
+			       uint8_t *data, uint16_t len)
 {
 	int32_t retry;
 	struct i2c_msg msg = {
@@ -122,7 +122,7 @@ static int8_t smi230_i2c_write(uint8_t dev_addr,
 			break;
 		else
 			usleep_range(SMI230_I2C_WRITE_DELAY_TIME * 1000,
-				SMI230_I2C_WRITE_DELAY_TIME * 1000);
+				     SMI230_I2C_WRITE_DELAY_TIME * 1000);
 	}
 	kfree(msg.buf);
 	if (SMI230_MAX_RETRY_I2C_XFER <= retry) {
@@ -136,7 +136,7 @@ static int8_t smi230_i2c_write(uint8_t dev_addr,
 /* ACC driver */
 #ifdef CONFIG_SMI230_ACC_DRIVER
 static int smi230_acc_i2c_probe(struct i2c_client *client,
-	const struct i2c_device_id *id)
+				const struct i2c_device_id *id)
 {
 	int err = 0;
 
@@ -147,11 +147,12 @@ static int smi230_acc_i2c_probe(struct i2c_client *client,
 	}
 
 	if ((smi230_i2c_adapter != NULL) &&
-			(smi230_i2c_adapter == client->adapter)) {
-		PINFO("%s i2c adapter is at %x", SENSOR_ACC_NAME, (unsigned int)client->adapter);
-	}
-	else {
-		PERR("%s i2c driver is not initialized yet before ACC driver!", SENSOR_GYRO_NAME);
+	    (smi230_i2c_adapter == client->adapter)) {
+		PINFO("%s i2c adapter is at %x", SENSOR_ACC_NAME,
+		      (unsigned int)client->adapter);
+	} else {
+		PERR("%s i2c driver is not initialized yet before ACC driver!",
+		     SENSOR_GYRO_NAME);
 		err = -EIO;
 		return err;
 	}
@@ -159,11 +160,11 @@ static int smi230_acc_i2c_probe(struct i2c_client *client,
 	smi230_i2c_dev.accel_id = client->addr;
 
 	err = smi230_acc_init(&smi230_i2c_dev);
-        if (err == SMI230_OK)
+	if (err == SMI230_OK)
 		PINFO("Bosch Sensor Device %s initialized", SENSOR_ACC_NAME);
 	else {
 		PERR("Bosch Sensor Device %s initialization failed, error %d",
-				SENSOR_ACC_NAME, err);
+		     SENSOR_ACC_NAME, err);
 	}
 
 	return smi230_acc_probe(&client->dev, &smi230_i2c_dev);
@@ -174,15 +175,15 @@ static int smi230_acc_i2c_remove(struct i2c_client *client)
 	return smi230_acc_remove(&client->dev);
 }
 
-static const struct i2c_device_id smi230_acc_id[] = {
-	{ SENSOR_ACC_NAME, 0 },
-	{ }
-};
+static const struct i2c_device_id smi230_acc_id[] = { { SENSOR_ACC_NAME, 0 },
+						      {} };
 MODULE_DEVICE_TABLE(i2c, smi230_acc_id);
 
 static const struct of_device_id smi230_acc_of_match[] = {
-	{ .compatible = SENSOR_ACC_NAME, },
-	{ }
+	{
+		.compatible = SENSOR_ACC_NAME,
+	},
+	{}
 };
 MODULE_DEVICE_TABLE(of, smi230_acc_of_match);
 
@@ -202,7 +203,7 @@ struct i2c_driver smi230_acc_driver = {
 /* GYRO driver */
 #ifdef CONFIG_SMI230_GYRO_DRIVER
 static int smi230_gyro_i2c_probe(struct i2c_client *client,
-	const struct i2c_device_id *id)
+				 const struct i2c_device_id *id)
 {
 	int err = 0;
 
@@ -214,10 +215,11 @@ static int smi230_gyro_i2c_probe(struct i2c_client *client,
 
 	if (smi230_i2c_adapter == NULL) {
 		smi230_i2c_adapter = client->adapter;
-		PINFO("%s i2c adapter is at %x", SENSOR_GYRO_NAME, (unsigned int)client->adapter);
-	}
-	else {
-		PERR("%s i2c driver should be initialized first!", SENSOR_GYRO_NAME);
+		PINFO("%s i2c adapter is at %x", SENSOR_GYRO_NAME,
+		      (unsigned int)client->adapter);
+	} else {
+		PERR("%s i2c driver should be initialized first!",
+		     SENSOR_GYRO_NAME);
 		err = -EIO;
 		return err;
 	}
@@ -225,11 +227,11 @@ static int smi230_gyro_i2c_probe(struct i2c_client *client,
 	smi230_i2c_dev.gyro_id = client->addr;
 
 	err = smi230_gyro_init(&smi230_i2c_dev);
-        if (err == SMI230_OK)
+	if (err == SMI230_OK)
 		PINFO("Bosch Sensor Device %s initialized", SENSOR_GYRO_NAME);
 	else {
 		PERR("Bosch Sensor Device %s initialization failed, error %d",
-				SENSOR_GYRO_NAME, err);
+		     SENSOR_GYRO_NAME, err);
 	}
 
 	return smi230_gyro_probe(&client->dev, &smi230_i2c_dev);
@@ -240,15 +242,15 @@ static int smi230_gyro_i2c_remove(struct i2c_client *client)
 	return smi230_gyro_remove(&client->dev);
 }
 
-static const struct i2c_device_id smi230_gyro_id[] = {
-	{ SENSOR_GYRO_NAME, 0 },
-	{ }
-};
+static const struct i2c_device_id smi230_gyro_id[] = { { SENSOR_GYRO_NAME, 0 },
+						       {} };
 MODULE_DEVICE_TABLE(i2c, smi230_gyro_id);
 
 static const struct of_device_id smi230_gyro_of_match[] = {
-	{ .compatible = SENSOR_GYRO_NAME, },
-	{ }
+	{
+		.compatible = SENSOR_GYRO_NAME,
+	},
+	{}
 };
 MODULE_DEVICE_TABLE(of, smi230_gyro_of_match);
 

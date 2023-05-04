@@ -7,8 +7,8 @@
  * Copyright (c) 2020-2021 Robert Bosch GmbH. All rights reserved.
  * Copyright (c) 2020 Bosch Sensortec GmbH. All rights reserved.
  *
- * This file is free software licensed under the terms of version 2 
- * of the GNU General Public License, available from the file LICENSE-GPL 
+ * This file is free software licensed under the terms of version 2
+ * of the GNU General Public License, available from the file LICENSE-GPL
  * in the main directory of this source tree.
  *
  * BSD LICENSE
@@ -71,16 +71,15 @@
 /*!
  * @brief Accel self test diff xyz data structure
  */
-struct selftest_delta_limit
-{
-    /*! Accel X  data */
-    uint16_t x;
+struct selftest_delta_limit {
+	/*! Accel X  data */
+	uint16_t x;
 
-    /*! Accel Y  data */
-    uint16_t y;
+	/*! Accel Y  data */
+	uint16_t y;
 
-    /*! Accel Z  data */
-    uint16_t z;
+	/*! Accel Z  data */
+	uint16_t z;
 };
 
 /****************************************************************************/
@@ -110,7 +109,8 @@ static int8_t null_ptr_check(const struct smi230_dev *dev);
  *  @return Result of API execution status
  *  @retval zero -> Success / -ve value -> Error
  */
-static int8_t get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const struct smi230_dev *dev);
+static int8_t get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len,
+		       const struct smi230_dev *dev);
 
 /*!
  *  @brief This API writes the given data to the register address
@@ -125,7 +125,8 @@ static int8_t get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const 
  *  @return Result of API execution status
  *  @retval zero -> Success / -ve value -> Error
  */
-static int8_t set_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const struct smi230_dev *dev);
+static int8_t set_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len,
+		       const struct smi230_dev *dev);
 
 /*!
  * @brief This API configures the pins which fire the
@@ -137,7 +138,9 @@ static int8_t set_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const 
  * @return Result of API execution status
  * @retval zero -> Success / -ve value -> Error
  */
-static int8_t set_int_pin_config(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev);
+static int8_t
+set_int_pin_config(const struct smi230_accel_int_channel_cfg *int_config,
+		   const struct smi230_dev *dev);
 
 /*!
  * @brief This API sets the data ready interrupt for accel sensor
@@ -148,8 +151,9 @@ static int8_t set_int_pin_config(const struct smi230_accel_int_channel_cfg *int_
  * @return Result of API execution status
  * @retval zero -> Success / -ve value -> Error
  */
-static int8_t set_accel_data_ready_int(const struct smi230_accel_int_channel_cfg *int_config,
-                                       const struct smi230_dev *dev);
+static int8_t
+set_accel_data_ready_int(const struct smi230_accel_int_channel_cfg *int_config,
+			 const struct smi230_dev *dev);
 
 /*!
  * @brief This API sets the synchronized data ready interrupt for accel sensor
@@ -160,8 +164,9 @@ static int8_t set_accel_data_ready_int(const struct smi230_accel_int_channel_cfg
  * @return Result of API execution status
  * @retval zero -> Success / -ve value -> Error
  */
-static int8_t set_accel_sync_data_ready_int(const struct smi230_accel_int_channel_cfg *int_config,
-                                            const struct smi230_dev *dev);
+static int8_t set_accel_sync_data_ready_int(
+	const struct smi230_accel_int_channel_cfg *int_config,
+	const struct smi230_dev *dev);
 
 /*!
  * @brief This API configures the given interrupt channel as input for accel sensor
@@ -172,7 +177,9 @@ static int8_t set_accel_sync_data_ready_int(const struct smi230_accel_int_channe
  * @return Result of API execution status
  * @retval zero -> Success / -ve value -> Error
  */
-static int8_t set_accel_sync_input(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev);
+static int8_t
+set_accel_sync_input(const struct smi230_accel_int_channel_cfg *int_config,
+		     const struct smi230_dev *dev);
 
 /*!
  * @brief This API sets the anymotion interrupt for accel sensor
@@ -183,8 +190,9 @@ static int8_t set_accel_sync_input(const struct smi230_accel_int_channel_cfg *in
  * @return Result of API execution status
  * @retval zero -> Success / -ve value -> Error
  */
-static int8_t set_accel_anymotion_int(const struct smi230_accel_int_channel_cfg *int_config,
-                                      const struct smi230_dev *dev);
+static int8_t
+set_accel_anymotion_int(const struct smi230_accel_int_channel_cfg *int_config,
+			const struct smi230_dev *dev);
 
 /*!
  * @brief This API sets the high-g interrupt for accel sensor
@@ -196,7 +204,9 @@ static int8_t set_accel_anymotion_int(const struct smi230_accel_int_channel_cfg 
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-static int8_t set_accel_high_g_int(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev);
+static int8_t
+set_accel_high_g_int(const struct smi230_accel_int_channel_cfg *int_config,
+		     const struct smi230_dev *dev);
 
 /*!
  * @brief This API sets the low-g interrupt for accel sensor
@@ -208,7 +218,9 @@ static int8_t set_accel_high_g_int(const struct smi230_accel_int_channel_cfg *in
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-static int8_t set_accel_low_g_int(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev);
+static int8_t
+set_accel_low_g_int(const struct smi230_accel_int_channel_cfg *int_config,
+		    const struct smi230_dev *dev);
 
 /*!
  * @brief This API sets the orientation interrupt for accel sensor
@@ -220,7 +232,9 @@ static int8_t set_accel_low_g_int(const struct smi230_accel_int_channel_cfg *int
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-static int8_t set_accel_orient_int(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev);
+static int8_t
+set_accel_orient_int(const struct smi230_accel_int_channel_cfg *int_config,
+		     const struct smi230_dev *dev);
 
 /*!
  * @brief This API sets the no-motion interrupt for accel sensor
@@ -232,7 +246,9 @@ static int8_t set_accel_orient_int(const struct smi230_accel_int_channel_cfg *in
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-static int8_t set_accel_no_motion_int(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev);
+static int8_t
+set_accel_no_motion_int(const struct smi230_accel_int_channel_cfg *int_config,
+			const struct smi230_dev *dev);
 
 /*!
  * @brief This API sets error interrupt for accel sensor
@@ -244,8 +260,9 @@ static int8_t set_accel_no_motion_int(const struct smi230_accel_int_channel_cfg 
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-static int8_t set_accel_err_int(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev);
-
+static int8_t
+set_accel_err_int(const struct smi230_accel_int_channel_cfg *int_config,
+		  const struct smi230_dev *dev);
 
 /*!
  * @brief This API writes the config stream data in memory using burst mode
@@ -257,7 +274,8 @@ static int8_t set_accel_err_int(const struct smi230_accel_int_channel_cfg *int_c
  * @return Result of API execution status
  * @retval zero -> Success / -ve value -> Error
  */
-static int8_t stream_transfer_write(const uint8_t *stream_data, uint16_t index, const struct smi230_dev *dev);
+static int8_t stream_transfer_write(const uint8_t *stream_data, uint16_t index,
+				    const struct smi230_dev *dev);
 
 /*!
  * @brief This API performs the pre-requisites needed to perform the self test
@@ -279,7 +297,8 @@ static int8_t enable_self_test(struct smi230_dev *dev);
  * @return Result of API execution status
  * @retval zero -> Success  / -ve value -> Error
  */
-static int8_t positive_excited_accel(struct smi230_sensor_data *accel_pos, const struct smi230_dev *dev);
+static int8_t positive_excited_accel(struct smi230_sensor_data *accel_pos,
+				     const struct smi230_dev *dev);
 
 /*!
  * @brief This API reads the accel data with the negative excitation
@@ -291,7 +310,8 @@ static int8_t positive_excited_accel(struct smi230_sensor_data *accel_pos, const
  * @return Result of API execution status
  * @retval zero -> Success  / -ve value -> Error
  */
-static int8_t negative_excited_accel(struct smi230_sensor_data *accel_neg, const struct smi230_dev *dev);
+static int8_t negative_excited_accel(struct smi230_sensor_data *accel_neg,
+				     const struct smi230_dev *dev);
 
 /*!
  * @brief This API validates the self test results
@@ -304,8 +324,9 @@ static int8_t negative_excited_accel(struct smi230_sensor_data *accel_neg, const
  * @return Result of API execution status
  * @retval zero -> Success / +ve value -> Self test fail
  */
-static int8_t validate_accel_self_test(const struct smi230_sensor_data *accel_pos,
-                                       const struct smi230_sensor_data *accel_neg);
+static int8_t
+validate_accel_self_test(const struct smi230_sensor_data *accel_pos,
+			 const struct smi230_sensor_data *accel_neg);
 
 /*!
  * @brief This API converts lsb value of axes to mg for self-test
@@ -319,7 +340,7 @@ static int8_t validate_accel_self_test(const struct smi230_sensor_data *accel_po
  * @return None
  */
 static void convert_lsb_g(const struct selftest_delta_limit *accel_data_diff,
-                          struct selftest_delta_limit *accel_data_diff_mg);
+			  struct selftest_delta_limit *accel_data_diff_mg);
 
 /*!
  * @brief This internal API is used to parse accelerometer data from the FIFO
@@ -335,8 +356,8 @@ static void convert_lsb_g(const struct selftest_delta_limit *accel_data_diff,
  * @retval None
  */
 static void unpack_accel_data(struct smi230_sensor_data *acc,
-                              uint16_t data_start_index,
-                              const struct smi230_fifo_frame *fifo);
+			      uint16_t data_start_index,
+			      const struct smi230_fifo_frame *fifo);
 
 /*!
  * @brief This internal API is used to parse the accelerometer data from the
@@ -357,11 +378,9 @@ static void unpack_accel_data(struct smi230_sensor_data *acc,
  * @retval SMI230_OK - Success.
  * @retval SMI230_W_FIFO_EMPTY - Warning : FIFO is empty
  */
-static int8_t unpack_accel_frame(struct smi230_sensor_data *acc,
-                                 uint16_t *idx,
-                                 uint16_t *acc_idx,
-                                 uint16_t frame,
-                                 const struct smi230_fifo_frame *fifo);
+static int8_t unpack_accel_frame(struct smi230_sensor_data *acc, uint16_t *idx,
+				 uint16_t *acc_idx, uint16_t frame,
+				 const struct smi230_fifo_frame *fifo);
 
 /*!
  * @brief This internal API is used to parse and store the skipped frame count
@@ -377,7 +396,8 @@ static int8_t unpack_accel_frame(struct smi230_sensor_data *acc,
  * @retval SMI230_W_FIFO_EMPTY - Warning : FIFO is empty
  * @retval SMI230_W_PARTIAL_READ - Warning : There are more frames to be read
  */
-static int8_t unpack_skipped_frame(uint16_t *data_index, struct smi230_fifo_frame *fifo);
+static int8_t unpack_skipped_frame(uint16_t *data_index,
+				   struct smi230_fifo_frame *fifo);
 
 /*!
  * @brief This internal API is used to move the data index ahead of the
@@ -395,7 +415,9 @@ static int8_t unpack_skipped_frame(uint16_t *data_index, struct smi230_fifo_fram
  * @retval SMI230_W_FIFO_EMPTY - Warning : FIFO is empty
  * @retval SMI230_W_PARTIAL_READ - Warning : There are more frames to be read
  */
-static int8_t move_next_frame(uint16_t *data_index, uint8_t current_frame_length, const struct smi230_fifo_frame *fifo);
+static int8_t move_next_frame(uint16_t *data_index,
+			      uint8_t current_frame_length,
+			      const struct smi230_fifo_frame *fifo);
 
 /*!
  * @brief This internal API is used to parse and store the sensor time from the
@@ -410,7 +432,8 @@ static int8_t move_next_frame(uint16_t *data_index, uint8_t current_frame_length
  * @retval SMI230_W_FIFO_EMPTY - Warning : FIFO is empty
  * @retval SMI230_W_PARTIAL_READ - Warning : There are more frames to be read
  */
-static int8_t unpack_sensortime_frame(uint16_t *data_index, struct smi230_fifo_frame *fifo);
+static int8_t unpack_sensortime_frame(uint16_t *data_index,
+				      struct smi230_fifo_frame *fifo);
 
 /*!
  * @brief This internal API is used to reset the FIFO related configurations
@@ -440,8 +463,8 @@ static void reset_fifo_frame_structure(struct smi230_fifo_frame *fifo);
  * @retval SMI230_W_PARTIAL_READ - Warning : There are more frames to be read
  */
 static int8_t extract_acc_header_mode(struct smi230_sensor_data *acc,
-                                      uint16_t *accel_length,
-                                      struct smi230_fifo_frame *fifo);
+				      uint16_t *accel_length,
+				      struct smi230_fifo_frame *fifo);
 
 /*!
  * @brief This API sets the FIFO watermark interrupt for accel sensor
@@ -452,7 +475,9 @@ static int8_t extract_acc_header_mode(struct smi230_sensor_data *acc,
  * @return Result of API execution status
  * @retval zero -> Success / -ve value -> Error
  */
-static int8_t set_fifo_wm_int(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev);
+static int8_t
+set_fifo_wm_int(const struct smi230_accel_int_channel_cfg *int_config,
+		const struct smi230_dev *dev);
 
 /*!
  * @brief This API sets the FIFO full interrupt for accel sensor
@@ -463,7 +488,9 @@ static int8_t set_fifo_wm_int(const struct smi230_accel_int_channel_cfg *int_con
  * @return Result of API execution status
  * @retval zero -> Success / -ve value -> Error
  */
-static int8_t set_fifo_full_int(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev);
+static int8_t
+set_fifo_full_int(const struct smi230_accel_int_channel_cfg *int_config,
+		  const struct smi230_dev *dev);
 
 /****************************************************************************/
 
@@ -479,7 +506,6 @@ static uint8_t temp_buff[CONFIG_SMI230_MAX_BUFFER_LEN + 1];
 
 /****************************************************************************/
 
-
 /**\name        Function definitions
  ****************************************************************************/
 
@@ -490,49 +516,42 @@ static uint8_t temp_buff[CONFIG_SMI230_MAX_BUFFER_LEN + 1];
  */
 int8_t smi230_acc_init(struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t chip_id = 0;
+	int8_t rslt;
+	uint8_t chip_id = 0;
 
-    /* Check for null pointer in the device structure */
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure */
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if (rslt == SMI230_OK)
-    {
-        if (dev->intf == SMI230_SPI_INTF)
-        {
-            /* Set dummy byte in case of SPI interface */
-            dev->dummy_byte = SMI230_ENABLE;
+	/* Proceed if null check is fine */
+	if (rslt == SMI230_OK) {
+		if (dev->intf == SMI230_SPI_INTF) {
+			/* Set dummy byte in case of SPI interface */
+			dev->dummy_byte = SMI230_ENABLE;
 
-            /* Dummy read of Chip-ID in SPI mode */
-            rslt = get_regs(SMI230_ACCEL_CHIP_ID_REG, &chip_id, 1, dev);
-        }
-        else
-        {
-            /* Make dummy byte 0 in case of I2C interface */
-            dev->dummy_byte = SMI230_DISABLE;
-        }
-        if (rslt == SMI230_OK)
-        {
-            rslt = get_regs(SMI230_ACCEL_CHIP_ID_REG, &chip_id, 1, dev);
+			/* Dummy read of Chip-ID in SPI mode */
+			rslt = get_regs(SMI230_ACCEL_CHIP_ID_REG, &chip_id, 1,
+					dev);
+		} else {
+			/* Make dummy byte 0 in case of I2C interface */
+			dev->dummy_byte = SMI230_DISABLE;
+		}
+		if (rslt == SMI230_OK) {
+			rslt = get_regs(SMI230_ACCEL_CHIP_ID_REG, &chip_id, 1,
+					dev);
 
-            if (rslt == SMI230_OK)
-            {
-                /* Check for chip id validity */
-                if (chip_id == SMI230_ACCEL_CHIP_ID)
-                {
-                    /* Store the chip ID in dev structure */
-                    dev->accel_chip_id = chip_id;
-                }
-                else
-                {
-                    rslt = SMI230_E_DEV_NOT_FOUND;
-                }
-            }
-        }
-    }
+			if (rslt == SMI230_OK) {
+				/* Check for chip id validity */
+				if (chip_id == SMI230_ACCEL_CHIP_ID) {
+					/* Store the chip ID in dev structure */
+					dev->accel_chip_id = chip_id;
+				} else {
+					rslt = SMI230_E_DEV_NOT_FOUND;
+				}
+			}
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -540,236 +559,224 @@ int8_t smi230_acc_init(struct smi230_dev *dev)
  */
 int8_t smi230_acc_write_config_file(const struct smi230_dev *dev)
 {
-    int8_t rslt;
+	int8_t rslt;
 
-    /* Config loading disable*/
-    uint8_t config_load = SMI230_DISABLE;
-    uint8_t current_acc_pwr_ctrl = 0;
-    uint16_t index = 0;
-    uint8_t reg_data = 0;
+	/* Config loading disable*/
+	uint8_t config_load = SMI230_DISABLE;
+	uint8_t current_acc_pwr_ctrl = 0;
+	uint16_t index = 0;
+	uint8_t reg_data = 0;
 
-    /* Check for null pointer in the device structure */
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure */
+	rslt = null_ptr_check(dev);
 
-    /* Check if config file pointer is not null */
-    if ((rslt == SMI230_OK) && (dev->config_file_ptr != NULL))
-    {
+	/* Check if config file pointer is not null */
+	if ((rslt == SMI230_OK) && (dev->config_file_ptr != NULL)) {
+		/* Check whether the read/write length is valid */
+		if (dev->read_write_len > 0) {
+			/* deactivate accel, otherwise post processing can not be enabled safely */
+			rslt = get_regs(SMI230_ACCEL_PWR_CTRL_REG,
+					&current_acc_pwr_ctrl, 1, dev);
+			if (rslt != SMI230_OK) {
+				return rslt;
+			}
 
-        /* Check whether the read/write length is valid */
-        if (dev->read_write_len > 0)
-        {
-            /* deactivate accel, otherwise post processing can not be enabled safely */
-            rslt = get_regs(SMI230_ACCEL_PWR_CTRL_REG, &current_acc_pwr_ctrl, 1, dev);
-            if (rslt != SMI230_OK)
-            {
-                return rslt;
-            }
+			rslt = set_regs(SMI230_ACCEL_PWR_CTRL_REG, &config_load,
+					1, dev);
+			if (rslt == SMI230_OK) {
+				/*delay required to switch power modes*/
+				dev->delay_ms(SMI230_POWER_CONFIG_DELAY);
+			} else {
+				return rslt;
+			}
 
-            rslt = set_regs(SMI230_ACCEL_PWR_CTRL_REG, &config_load, 1, dev);
-            if (rslt == SMI230_OK)
-            {
-                /*delay required to switch power modes*/
-                dev->delay_ms(SMI230_POWER_CONFIG_DELAY);
-            }
-            else
-            {
-                return rslt;
-            }
+			/* Disable config loading*/
+			rslt = set_regs(SMI230_ACCEL_INIT_CTRL_REG,
+					&config_load, 1, dev);
 
-            /* Disable config loading*/
-            rslt = set_regs(SMI230_ACCEL_INIT_CTRL_REG, &config_load, 1, dev);
+			if (rslt == SMI230_OK) {
+				for (index = 0;
+				     index < SMI230_CONFIG_STREAM_SIZE;
+				     index += dev->read_write_len) {
+					/* Write the config stream */
+					rslt = stream_transfer_write(
+						(dev->config_file_ptr + index),
+						index, dev);
+				}
+				if (rslt == SMI230_OK) {
+					/* Enable config loading and FIFO mode */
+					config_load = SMI230_ENABLE;
 
-            if (rslt == SMI230_OK)
-            {
-                for (index = 0; index < SMI230_CONFIG_STREAM_SIZE;
-                     index += dev->read_write_len)
-                {
-                    /* Write the config stream */
-                    rslt = stream_transfer_write((dev->config_file_ptr + index), index, dev);
-                }
-                if (rslt == SMI230_OK)
-                {
-                    /* Enable config loading and FIFO mode */
-                    config_load = SMI230_ENABLE;
+					rslt = set_regs(
+						SMI230_ACCEL_INIT_CTRL_REG,
+						&config_load, 1, dev);
 
-                    rslt = set_regs(SMI230_ACCEL_INIT_CTRL_REG, &config_load, 1, dev);
+					if (rslt == SMI230_OK) {
+						/* Wait till ASIC is initialized. Refer the data-sheet for more information */
+						dev->delay_ms(
+							SMI230_ASIC_INIT_TIME_MS);
 
-                    if (rslt == SMI230_OK)
-                    {
-                        /* Wait till ASIC is initialized. Refer the data-sheet for more information */
-                        dev->delay_ms(SMI230_ASIC_INIT_TIME_MS);
+						/* Check for config initialization status (1 = OK)*/
+						rslt = get_regs(
+							SMI230_ACCEL_INTERNAL_STAT_REG,
+							&reg_data, 1, dev);
+					}
+					if (rslt == SMI230_OK &&
+					    reg_data != 1) {
+						rslt = SMI230_E_CONFIG_STREAM_ERROR;
+					} else {
+						/* reactivate accel */
+						rslt = set_regs(
+							SMI230_ACCEL_PWR_CTRL_REG,
+							&current_acc_pwr_ctrl,
+							1, dev);
+						if (rslt == SMI230_OK) {
+							/*delay required to switch power modes*/
+							dev->delay_ms(
+								SMI230_POWER_CONFIG_DELAY);
+						}
+					}
+				}
+			}
+		} else {
+			rslt = SMI230_E_RD_WR_LENGTH_INVALID;
+		}
+	} else {
+		rslt = SMI230_E_NULL_PTR;
+	}
 
-                        /* Check for config initialization status (1 = OK)*/
-                        rslt = get_regs(SMI230_ACCEL_INTERNAL_STAT_REG, &reg_data, 1, dev);
-                    }
-                    if (rslt == SMI230_OK && reg_data != 1)
-                    {
-                        rslt = SMI230_E_CONFIG_STREAM_ERROR;
-                    }
-                    else
-                    {
-                        /* reactivate accel */
-                        rslt = set_regs(SMI230_ACCEL_PWR_CTRL_REG, &current_acc_pwr_ctrl, 1, dev);
-                        if (rslt == SMI230_OK)
-                        {
-                            /*delay required to switch power modes*/
-                            dev->delay_ms(SMI230_POWER_CONFIG_DELAY);
-                        }
-                    }
-                }
-            }
-        }
-        else
-        {
-            rslt = SMI230_E_RD_WR_LENGTH_INVALID;
-        }
-    }
-    else
-    {
-        rslt = SMI230_E_NULL_PTR;
-    }
-
-    return rslt;
+	return rslt;
 }
 
 /*!
  *  @brief This API writes the feature configuration to the accel sensor.
  */
-int8_t smi230_acc_write_feature_config(uint8_t reg_addr, const uint16_t *reg_data, uint8_t len,
-                                   const struct smi230_dev *dev)
+int8_t smi230_acc_write_feature_config(uint8_t reg_addr,
+				       const uint16_t *reg_data, uint8_t len,
+				       const struct smi230_dev *dev)
 {
+	int8_t rslt;
+	uint16_t read_length = (reg_addr * 2) + (len * 2);
+	int i;
 
-    int8_t rslt;
-    uint16_t read_length = (reg_addr * 2) + (len * 2);
-    int i;
+	if (WARN(read_length > CONFIG_SMI230_MAX_BUFFER_LEN,
+		 "SMI230 buffer overflow\n")) {
+		return SMI230_E_COM_FAIL;
+	}
 
-    if (WARN(read_length > CONFIG_SMI230_MAX_BUFFER_LEN, "SMI230 buffer overflow\n")) {
-        return SMI230_E_COM_FAIL;
-    }
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
+	if (rslt == SMI230_OK) {
+		/* Read feature space up to the given feature position */
+		rslt = smi230_acc_get_regs(SMI230_ACCEL_FEATURE_CFG_REG,
+					   &temp_buff[0], read_length, dev);
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
-    if (rslt == SMI230_OK)
-    {
-        /* Read feature space up to the given feature position */
-        rslt = smi230_acc_get_regs(SMI230_ACCEL_FEATURE_CFG_REG, &temp_buff[0], read_length, dev);
+		if (rslt == SMI230_OK) {
+			/* Apply the given feature config. */
+			for (i = 0; i < len; ++i) {
+				/* Be careful: the feature config space is 16bit aligned! */
+				temp_buff[(reg_addr * 2) + (i * 2)] =
+					reg_data[i] & 0xFF;
+				temp_buff[(reg_addr * 2) + (i * 2) + 1] =
+					reg_data[i] >> 8;
+			}
 
-        if (rslt == SMI230_OK)
-        {
-            /* Apply the given feature config. */
-            for (i = 0; i < len; ++i)
-            {
-                /* Be careful: the feature config space is 16bit aligned! */
-                temp_buff[(reg_addr * 2) + (i * 2)] = reg_data[i] & 0xFF;
-                temp_buff[(reg_addr * 2) + (i * 2) + 1] = reg_data[i] >> 8;
-            }
+			/* Write back updated feature space */
+			rslt = smi230_acc_set_regs(SMI230_ACCEL_FEATURE_CFG_REG,
+						   &temp_buff[0], read_length,
+						   dev);
+		}
+	}
 
-            /* Write back updated feature space */
-            rslt = smi230_acc_set_regs(SMI230_ACCEL_FEATURE_CFG_REG, &temp_buff[0], read_length, dev);
-        }
-    }
-
-    return rslt;
+	return rslt;
 }
 
 /*!
  *  @brief This API reads the data from the given register address of accel sensor.
  */
-int8_t smi230_acc_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const struct smi230_dev *dev)
+int8_t smi230_acc_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len,
+			   const struct smi230_dev *dev)
 {
-    int8_t rslt;
+	int8_t rslt;
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if ((rslt == SMI230_OK) && (reg_data != NULL))
-    {
-        if (len > 0)
-        {
-            /* Reading from the register */
-            rslt = get_regs(reg_addr, reg_data, len, dev);
-        }
-        else
-        {
-            rslt = SMI230_E_RD_WR_LENGTH_INVALID;
-        }
-    }
-    else
-    {
-        rslt = SMI230_E_NULL_PTR;
-    }
+	/* Proceed if null check is fine */
+	if ((rslt == SMI230_OK) && (reg_data != NULL)) {
+		if (len > 0) {
+			/* Reading from the register */
+			rslt = get_regs(reg_addr, reg_data, len, dev);
+		} else {
+			rslt = SMI230_E_RD_WR_LENGTH_INVALID;
+		}
+	} else {
+		rslt = SMI230_E_NULL_PTR;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  *  @brief This API writes the given data to the register address
  *  of accel sensor.
  */
-int8_t smi230_acc_set_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const struct smi230_dev *dev)
+int8_t smi230_acc_set_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len,
+			   const struct smi230_dev *dev)
 {
-    int8_t rslt;
+	int8_t rslt;
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if ((rslt == SMI230_OK) && (reg_data != NULL))
-    {
-        if (len > 0)
-        {
-            /* Writing to the register */
-            rslt = set_regs(reg_addr, reg_data, len, dev);
-        }
-        else
-        {
-            rslt = SMI230_E_RD_WR_LENGTH_INVALID;
-        }
-    }
-    else
-    {
-        rslt = SMI230_E_NULL_PTR;
-    }
+	/* Proceed if null check is fine */
+	if ((rslt == SMI230_OK) && (reg_data != NULL)) {
+		if (len > 0) {
+			/* Writing to the register */
+			rslt = set_regs(reg_addr, reg_data, len, dev);
+		} else {
+			rslt = SMI230_E_RD_WR_LENGTH_INVALID;
+		}
+	} else {
+		rslt = SMI230_E_NULL_PTR;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  *  @brief This API reads the error status from the accel sensor.
  */
-int8_t smi230_acc_get_error_status(struct smi230_err_reg *err_reg, const struct smi230_dev *dev)
+int8_t smi230_acc_get_error_status(struct smi230_err_reg *err_reg,
+				   const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data = 0;
+	int8_t rslt;
+	uint8_t data = 0;
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if (rslt == SMI230_OK)
-    {
-        if (err_reg != NULL)
-        {
-            /* Read the error codes */
-            rslt = get_regs(SMI230_ACCEL_ERR_REG, &data, 1, dev);
+	/* Proceed if null check is fine */
+	if (rslt == SMI230_OK) {
+		if (err_reg != NULL) {
+			/* Read the error codes */
+			rslt = get_regs(SMI230_ACCEL_ERR_REG, &data, 1, dev);
 
-            if (rslt == SMI230_OK)
-            {
-                /* Fatal error */
-                err_reg->fatal_err = SMI230_GET_BITS_POS_0(data, SMI230_FATAL_ERR);
+			if (rslt == SMI230_OK) {
+				/* Fatal error */
+				err_reg->fatal_err = SMI230_GET_BITS_POS_0(
+					data, SMI230_FATAL_ERR);
 
-                /* User error */
-                err_reg->err_code = SMI230_GET_BITS(data, SMI230_ERR_CODE);
-            }
-        }
-        else
-        {
-            rslt = SMI230_E_NULL_PTR;
-        }
-    }
+				/* User error */
+				err_reg->err_code =
+					SMI230_GET_BITS(data, SMI230_ERR_CODE);
+			}
+		} else {
+			rslt = SMI230_E_NULL_PTR;
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -777,30 +784,26 @@ int8_t smi230_acc_get_error_status(struct smi230_err_reg *err_reg, const struct 
  */
 int8_t smi230_acc_get_status(uint8_t *status, const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data = 0;
+	int8_t rslt;
+	uint8_t data = 0;
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if ((rslt == SMI230_OK) && (status != NULL))
-    {
-        /* Read the status */
-        rslt = get_regs(SMI230_ACCEL_STATUS_REG, &data, 1, dev);
+	/* Proceed if null check is fine */
+	if ((rslt == SMI230_OK) && (status != NULL)) {
+		/* Read the status */
+		rslt = get_regs(SMI230_ACCEL_STATUS_REG, &data, 1, dev);
 
-        if (rslt == SMI230_OK)
-        {
-            /* Updating the status */
-            *status = SMI230_GET_BITS(data, SMI230_ACCEL_STATUS);
-        }
-    }
-    else
-    {
-        rslt = SMI230_E_NULL_PTR;
-    }
+		if (rslt == SMI230_OK) {
+			/* Updating the status */
+			*status = SMI230_GET_BITS(data, SMI230_ACCEL_STATUS);
+		}
+	} else {
+		rslt = SMI230_E_NULL_PTR;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -808,37 +811,35 @@ int8_t smi230_acc_get_status(uint8_t *status, const struct smi230_dev *dev)
  */
 int8_t smi230_acc_soft_reset(const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data;
+	int8_t rslt;
+	uint8_t data;
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if (rslt == SMI230_OK)
-    {
-        data = SMI230_SOFT_RESET_CMD;
+	/* Proceed if null check is fine */
+	if (rslt == SMI230_OK) {
+		data = SMI230_SOFT_RESET_CMD;
 
-        /* Reset accel device */
-        rslt = set_regs(SMI230_ACCEL_SOFTRESET_REG, &data, 1, dev);
+		/* Reset accel device */
+		rslt = set_regs(SMI230_ACCEL_SOFTRESET_REG, &data, 1, dev);
 
-        if (rslt == SMI230_OK)
-        {
-            /* Delay 1 ms after reset value is written to its register */
-            dev->delay_ms(SMI230_ACCEL_SOFTRESET_DELAY_MS);
+		if (rslt == SMI230_OK) {
+			/* Delay 1 ms after reset value is written to its register */
+			dev->delay_ms(SMI230_ACCEL_SOFTRESET_DELAY_MS);
 
-            /* After soft reset SPI mode in the initialization phase, need to  perform a dummy SPI read
-             * operation, The soft-reset performs a fundamental reset to the device,
-             * which is largely equivalent to a power cycle. */
-            if (dev->intf == SMI230_SPI_INTF)
-            {
-                /* Dummy SPI read operation of Chip-ID */
-                rslt = get_regs(SMI230_ACCEL_CHIP_ID_REG, &data, 1, dev);
-            }
-        }
-    }
+			/* After soft reset SPI mode in the initialization phase, need to  perform a dummy SPI read
+			 * operation, The soft-reset performs a fundamental reset to the device,
+			 * which is largely equivalent to a power cycle. */
+			if (dev->intf == SMI230_SPI_INTF) {
+				/* Dummy SPI read operation of Chip-ID */
+				rslt = get_regs(SMI230_ACCEL_CHIP_ID_REG, &data,
+						1, dev);
+			}
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -846,28 +847,26 @@ int8_t smi230_acc_soft_reset(const struct smi230_dev *dev)
  */
 int8_t smi230_acc_fifo_reset(const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data;
+	int8_t rslt;
+	uint8_t data;
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if (rslt == SMI230_OK)
-    {
-        data = SMI230_FIFO_RESET_CMD;
+	/* Proceed if null check is fine */
+	if (rslt == SMI230_OK) {
+		data = SMI230_FIFO_RESET_CMD;
 
-        /* Reset accel device */
-        rslt = set_regs(SMI230_ACCEL_SOFTRESET_REG, &data, 1, dev);
+		/* Reset accel device */
+		rslt = set_regs(SMI230_ACCEL_SOFTRESET_REG, &data, 1, dev);
 
-        if (rslt == SMI230_OK)
-        {
-            /* Delay 1 ms after reset value is written to its register */
-            dev->delay_ms(SMI230_ACCEL_SOFTRESET_DELAY_MS);
-        }
-    }
+		if (rslt == SMI230_OK) {
+			/* Delay 1 ms after reset value is written to its register */
+			dev->delay_ms(SMI230_ACCEL_SOFTRESET_DELAY_MS);
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -877,26 +876,26 @@ int8_t smi230_acc_fifo_reset(const struct smi230_dev *dev)
  */
 int8_t smi230_acc_get_meas_conf(struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data[2];
+	int8_t rslt;
+	uint8_t data[2];
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if (rslt == SMI230_OK)
-    {
-        rslt = get_regs(SMI230_ACCEL_CONF_REG, data, 2, dev);
+	/* Proceed if null check is fine */
+	if (rslt == SMI230_OK) {
+		rslt = get_regs(SMI230_ACCEL_CONF_REG, data, 2, dev);
 
-        if (rslt == SMI230_OK)
-        {
-            dev->accel_cfg.odr = data[0] & SMI230_ACCEL_ODR_MASK;
-            dev->accel_cfg.bw = (data[0] & SMI230_ACCEL_BW_MASK) >> 4;
-            dev->accel_cfg.range = data[1] & SMI230_ACCEL_RANGE_MASK;
-        }
-    }
+		if (rslt == SMI230_OK) {
+			dev->accel_cfg.odr = data[0] & SMI230_ACCEL_ODR_MASK;
+			dev->accel_cfg.bw =
+				(data[0] & SMI230_ACCEL_BW_MASK) >> 4;
+			dev->accel_cfg.range =
+				data[1] & SMI230_ACCEL_RANGE_MASK;
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -905,68 +904,67 @@ int8_t smi230_acc_get_meas_conf(struct smi230_dev *dev)
  */
 int8_t smi230_acc_set_meas_conf(const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data[2] = { 0 };
-    uint8_t bw, range, odr;
-    uint8_t is_odr_invalid = FALSE, is_bw_invalid = FALSE, is_range_invalid = FALSE;
+	int8_t rslt;
+	uint8_t data[2] = { 0 };
+	uint8_t bw, range, odr;
+	uint8_t is_odr_invalid = FALSE, is_bw_invalid = FALSE,
+		is_range_invalid = FALSE;
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if (rslt == SMI230_OK)
-    {
-        odr = dev->accel_cfg.odr;
-        bw = dev->accel_cfg.bw;
-        range = dev->accel_cfg.range;
+	/* Proceed if null check is fine */
+	if (rslt == SMI230_OK) {
+		odr = dev->accel_cfg.odr;
+		bw = dev->accel_cfg.bw;
+		range = dev->accel_cfg.range;
 
-        /* Check for valid ODR */
-        if ((odr < SMI230_ACCEL_ODR_12_5_HZ) || (odr > SMI230_ACCEL_ODR_1600_HZ))
-        {
-            /* Updating the status */
-            is_odr_invalid = TRUE;
-        }
+		/* Check for valid ODR */
+		if ((odr < SMI230_ACCEL_ODR_12_5_HZ) ||
+		    (odr > SMI230_ACCEL_ODR_1600_HZ)) {
+			/* Updating the status */
+			is_odr_invalid = TRUE;
+		}
 
-        /* Check for valid bandwidth */
-        if (bw > SMI230_ACCEL_BW_NORMAL)
-        {
-            /* Updating the status */
-            is_bw_invalid = TRUE;
-        }
+		/* Check for valid bandwidth */
+		if (bw > SMI230_ACCEL_BW_NORMAL) {
+			/* Updating the status */
+			is_bw_invalid = TRUE;
+		}
 
-        /* Check for valid Range */
-        if (range > SMI230_ACCEL_RANGE_16G)
-        {
-            /* Updating the status */
-            is_range_invalid = TRUE;
-        }
+		/* Check for valid Range */
+		if (range > SMI230_ACCEL_RANGE_16G) {
+			/* Updating the status */
+			is_range_invalid = TRUE;
+		}
 
-        /* If ODR, BW and Range are valid, write it to accel config. registers */
-        if ((!is_odr_invalid) && (!is_bw_invalid) && (!is_range_invalid))
-        {
-            /* Read accel config. register */
-            rslt = get_regs(SMI230_ACCEL_CONF_REG, data, 2, dev);
-            if (rslt == SMI230_OK)
-            {
-                /* Update data with new odr and bw values */
-                data[0] = SMI230_SET_BITS_POS_0(data[0], SMI230_ACCEL_ODR, odr);
-                data[0] = SMI230_SET_BITS(data[0], SMI230_ACCEL_BW, bw);
+		/* If ODR, BW and Range are valid, write it to accel config. registers */
+		if ((!is_odr_invalid) && (!is_bw_invalid) &&
+		    (!is_range_invalid)) {
+			/* Read accel config. register */
+			rslt = get_regs(SMI230_ACCEL_CONF_REG, data, 2, dev);
+			if (rslt == SMI230_OK) {
+				/* Update data with new odr and bw values */
+				data[0] = SMI230_SET_BITS_POS_0(
+					data[0], SMI230_ACCEL_ODR, odr);
+				data[0] = SMI230_SET_BITS(data[0],
+							  SMI230_ACCEL_BW, bw);
 
-                /* Update data with current range values */
-                data[1] = SMI230_SET_BITS_POS_0(data[1], SMI230_ACCEL_RANGE, range);
+				/* Update data with current range values */
+				data[1] = SMI230_SET_BITS_POS_0(
+					data[1], SMI230_ACCEL_RANGE, range);
 
-                /* write to range register */
-                rslt = set_regs(SMI230_ACCEL_CONF_REG, data, 2, dev);
-            }
-        }
-        else
-        {
-            /* Invalid configuration present in ODR, BW, Range */
-            rslt = SMI230_E_INVALID_CONFIG;
-        }
-    }
+				/* write to range register */
+				rslt = set_regs(SMI230_ACCEL_CONF_REG, data, 2,
+						dev);
+			}
+		} else {
+			/* Invalid configuration present in ODR, BW, Range */
+			rslt = SMI230_E_INVALID_CONFIG;
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -975,25 +973,23 @@ int8_t smi230_acc_set_meas_conf(const struct smi230_dev *dev)
  */
 int8_t smi230_acc_get_power_mode(struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data;
+	int8_t rslt;
+	uint8_t data;
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if (rslt == SMI230_OK)
-    {
-        rslt = get_regs(SMI230_ACCEL_PWR_CONF_REG, &data, 1, dev);
+	/* Proceed if null check is fine */
+	if (rslt == SMI230_OK) {
+		rslt = get_regs(SMI230_ACCEL_PWR_CONF_REG, &data, 1, dev);
 
-        if (rslt == SMI230_OK)
-        {
-            /* Updating the current power mode */
-            dev->accel_cfg.power = data;
-        }
-    }
+		if (rslt == SMI230_OK) {
+			/* Updating the current power mode */
+			dev->accel_cfg.power = data;
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -1001,59 +997,52 @@ int8_t smi230_acc_get_power_mode(struct smi230_dev *dev)
  */
 int8_t smi230_acc_set_power_mode(const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t power_mode;
-    uint8_t data[2];
+	int8_t rslt;
+	uint8_t power_mode;
+	uint8_t data[2];
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if (rslt == SMI230_OK)
-    {
-        power_mode = dev->accel_cfg.power;
+	/* Proceed if null check is fine */
+	if (rslt == SMI230_OK) {
+		power_mode = dev->accel_cfg.power;
 
-        /* Configure data array to write to accel power configuration register */
-        if (power_mode == SMI230_ACCEL_PM_ACTIVE)
-        {
-            data[0] = SMI230_ACCEL_PM_ACTIVE;
-            data[1] = SMI230_ACCEL_POWER_ENABLE;
-        }
-        else if (power_mode == SMI230_ACCEL_PM_SUSPEND)
-        {
-            data[0] = SMI230_ACCEL_PM_SUSPEND;
-            data[1] = SMI230_ACCEL_POWER_DISABLE;
-        }
-        else
-        {
-            /* Invalid power input */
-            rslt = SMI230_E_INVALID_INPUT;
-        }
+		/* Configure data array to write to accel power configuration register */
+		if (power_mode == SMI230_ACCEL_PM_ACTIVE) {
+			data[0] = SMI230_ACCEL_PM_ACTIVE;
+			data[1] = SMI230_ACCEL_POWER_ENABLE;
+		} else if (power_mode == SMI230_ACCEL_PM_SUSPEND) {
+			data[0] = SMI230_ACCEL_PM_SUSPEND;
+			data[1] = SMI230_ACCEL_POWER_DISABLE;
+		} else {
+			/* Invalid power input */
+			rslt = SMI230_E_INVALID_INPUT;
+		}
 
-        if (rslt == SMI230_OK)
-        {
-            /*enable accel sensor*/
-            rslt = set_regs(SMI230_ACCEL_PWR_CONF_REG, &data[0], 1, dev);
+		if (rslt == SMI230_OK) {
+			/*enable accel sensor*/
+			rslt = set_regs(SMI230_ACCEL_PWR_CONF_REG, &data[0], 1,
+					dev);
 
-            if (rslt == SMI230_OK)
-            {
-                /*delay between power ctrl and power config*/
-                dev->delay_ms(SMI230_POWER_CONFIG_DELAY);
+			if (rslt == SMI230_OK) {
+				/*delay between power ctrl and power config*/
+				dev->delay_ms(SMI230_POWER_CONFIG_DELAY);
 
-                /* write to accel power configuration register */
-                rslt = set_regs(SMI230_ACCEL_PWR_CTRL_REG, &data[1], 1, dev);
+				/* write to accel power configuration register */
+				rslt = set_regs(SMI230_ACCEL_PWR_CTRL_REG,
+						&data[1], 1, dev);
 
-                if (rslt == SMI230_OK)
-                {
-                    /*delay required to switch power modes*/
-                    dev->delay_ms(SMI230_POWER_CONFIG_DELAY);
-                }
-            }
+				if (rslt == SMI230_OK) {
+					/*delay required to switch power modes*/
+					dev->delay_ms(
+						SMI230_POWER_CONFIG_DELAY);
+				}
+			}
+		}
+	}
 
-        }
-    }
-
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -1061,47 +1050,44 @@ int8_t smi230_acc_set_power_mode(const struct smi230_dev *dev)
  * store it in the smi230_sensor_data structure instance
  * passed by the user.
  */
-int8_t smi230_acc_get_data(struct smi230_sensor_data *accel, const struct smi230_dev *dev)
+int8_t smi230_acc_get_data(struct smi230_sensor_data *accel,
+			   const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data[6];
-    uint8_t lsb, msb;
-    uint16_t msblsb;
+	int8_t rslt;
+	uint8_t data[6];
+	uint8_t lsb, msb;
+	uint16_t msblsb;
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if ((rslt == SMI230_OK) && (accel != NULL))
-    {
-        /* Read accel sensor data */
-        rslt = get_regs(SMI230_ACCEL_X_LSB_REG, data, 6, dev);
+	/* Proceed if null check is fine */
+	if ((rslt == SMI230_OK) && (accel != NULL)) {
+		/* Read accel sensor data */
+		rslt = get_regs(SMI230_ACCEL_X_LSB_REG, data, 6, dev);
 
-        if (rslt == SMI230_OK)
-        {
-            lsb = data[0];
-            msb = data[1];
-            msblsb = (msb << 8) | lsb;
-            accel->x = ((int16_t) msblsb); /* Data in X axis */
+		if (rslt == SMI230_OK) {
+			lsb = data[0];
+			msb = data[1];
+			msblsb = (msb << 8) | lsb;
+			accel->x = ((int16_t)msblsb); /* Data in X axis */
 
-            lsb = data[2];
-            msb = data[3];
-            msblsb = (msb << 8) | lsb;
-            accel->y = ((int16_t) msblsb); /* Data in Y axis */
+			lsb = data[2];
+			msb = data[3];
+			msblsb = (msb << 8) | lsb;
+			accel->y = ((int16_t)msblsb); /* Data in Y axis */
 
-            lsb = data[4];
-            msb = data[5];
-            msblsb = (msb << 8) | lsb;
-            accel->z = ((int16_t) msblsb); /* Data in Z axis */
-        }
+			lsb = data[4];
+			msb = data[5];
+			msblsb = (msb << 8) | lsb;
+			accel->z = ((int16_t)msblsb); /* Data in Z axis */
+		}
 
-    }
-    else
-    {
-        rslt = SMI230_E_NULL_PTR;
-    }
+	} else {
+		rslt = SMI230_E_NULL_PTR;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -1109,176 +1095,164 @@ int8_t smi230_acc_get_data(struct smi230_sensor_data *accel, const struct smi230
  * based on the user settings in the smi230_int_cfg
  * structure instance.
  */
-int8_t smi230_acc_set_int_config(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev)
+int8_t
+smi230_acc_set_int_config(const struct smi230_accel_int_channel_cfg *int_config,
+			  const struct smi230_dev *dev)
 {
-    int8_t rslt;
+	int8_t rslt;
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if ((rslt == SMI230_OK) && (int_config != NULL))
-    {
-        switch (int_config->int_type)
-        {
-            case SMI230_ACCEL_DATA_RDY_INT:
+	/* Proceed if null check is fine */
+	if ((rslt == SMI230_OK) && (int_config != NULL)) {
+		switch (int_config->int_type) {
+		case SMI230_ACCEL_DATA_RDY_INT:
 
-                /* Data ready interrupt */
-                rslt = set_accel_data_ready_int(int_config, dev);
-                break;
-            case SMI230_ACCEL_SYNC_DATA_RDY_INT:
+			/* Data ready interrupt */
+			rslt = set_accel_data_ready_int(int_config, dev);
+			break;
+		case SMI230_ACCEL_SYNC_DATA_RDY_INT:
 
-                /* synchronized data ready interrupt */
-                rslt = set_accel_sync_data_ready_int(int_config, dev);
-                break;
-            case SMI230_ACCEL_SYNC_INPUT:
+			/* synchronized data ready interrupt */
+			rslt = set_accel_sync_data_ready_int(int_config, dev);
+			break;
+		case SMI230_ACCEL_SYNC_INPUT:
 
-                /* input for synchronization on accel */
-                rslt = set_accel_sync_input(int_config, dev);
-                break;
-            case SMI230_ACCEL_ANYMOTION_INT:
+			/* input for synchronization on accel */
+			rslt = set_accel_sync_input(int_config, dev);
+			break;
+		case SMI230_ACCEL_ANYMOTION_INT:
 
-                /* Anymotion interrupt */
-                rslt = set_accel_anymotion_int(int_config, dev);
-                break;
-            case SMI230_ACCEL_FIFO_WM_INT:
+			/* Anymotion interrupt */
+			rslt = set_accel_anymotion_int(int_config, dev);
+			break;
+		case SMI230_ACCEL_FIFO_WM_INT:
 
-                /* FIFO watermark interrupt */
-                rslt = set_fifo_wm_int(int_config, dev);
-                break;
-            case SMI230_ACCEL_FIFO_FULL_INT:
+			/* FIFO watermark interrupt */
+			rslt = set_fifo_wm_int(int_config, dev);
+			break;
+		case SMI230_ACCEL_FIFO_FULL_INT:
 
-                /* FIFO full interrupt */
-                rslt = set_fifo_full_int(int_config, dev);
-                break;
-            case SMI230_ACCEL_HIGH_G_INT:
+			/* FIFO full interrupt */
+			rslt = set_fifo_full_int(int_config, dev);
+			break;
+		case SMI230_ACCEL_HIGH_G_INT:
 
-                /* High-g interrupt */
-                rslt = set_accel_high_g_int(int_config, dev);
-                break;
+			/* High-g interrupt */
+			rslt = set_accel_high_g_int(int_config, dev);
+			break;
 
-            case SMI230_ACCEL_LOW_G_INT:
+		case SMI230_ACCEL_LOW_G_INT:
 
-                /* Low-g interrupt */
-                rslt = set_accel_low_g_int(int_config, dev);
-                break;
+			/* Low-g interrupt */
+			rslt = set_accel_low_g_int(int_config, dev);
+			break;
 
-            case SMI230_ACCEL_ORIENT_INT:
+		case SMI230_ACCEL_ORIENT_INT:
 
-                /* Orientation interrupt */
-                rslt = set_accel_orient_int(int_config, dev);
-                break;
+			/* Orientation interrupt */
+			rslt = set_accel_orient_int(int_config, dev);
+			break;
 
-            case SMI230_ACCEL_NO_MOTION_INT:
+		case SMI230_ACCEL_NO_MOTION_INT:
 
-                /* No-motion interrupt */
-                rslt = set_accel_no_motion_int(int_config, dev);
-                break;
+			/* No-motion interrupt */
+			rslt = set_accel_no_motion_int(int_config, dev);
+			break;
 
-            case SMI230_ACCEL_ERROR_INT:
+		case SMI230_ACCEL_ERROR_INT:
 
-                /* Error interrupt */
-                rslt = set_accel_err_int(int_config, dev);
-                break;
+			/* Error interrupt */
+			rslt = set_accel_err_int(int_config, dev);
+			break;
 
-            default:
-                rslt = SMI230_E_INVALID_CONFIG;
-                break;
-        }
-    }
-    else
-    {
-        rslt = SMI230_E_NULL_PTR;
-    }
+		default:
+			rslt = SMI230_E_INVALID_CONFIG;
+			break;
+		}
+	} else {
+		rslt = SMI230_E_NULL_PTR;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API reads the temperature of the sensor in degree Celcius.
  */
-int8_t smi230_acc_get_sensor_temperature(const struct smi230_dev *dev, int32_t *sensor_temp)
+int8_t smi230_acc_get_sensor_temperature(const struct smi230_dev *dev,
+					 int32_t *sensor_temp)
 {
-    int8_t rslt;
-    uint8_t data[2] = { 0 };
-    uint16_t msb, lsb;
-    uint16_t msblsb;
-    int16_t temp;
+	int8_t rslt;
+	uint8_t data[2] = { 0 };
+	uint16_t msb, lsb;
+	uint16_t msblsb;
+	int16_t temp;
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if ((rslt == SMI230_OK) && (sensor_temp != NULL))
-    {
-        /* Read sensor temperature */
-        rslt = get_regs(SMI230_TEMP_MSB_REG, data, 2, dev);
+	/* Proceed if null check is fine */
+	if ((rslt == SMI230_OK) && (sensor_temp != NULL)) {
+		/* Read sensor temperature */
+		rslt = get_regs(SMI230_TEMP_MSB_REG, data, 2, dev);
 
-        if (rslt == SMI230_OK)
-        {
-            msb = (data[0] << 3); /* MSB data */
-            lsb = (data[1] >> 5); /* LSB data */
-            msblsb = (uint16_t) (msb + lsb);
+		if (rslt == SMI230_OK) {
+			msb = (data[0] << 3); /* MSB data */
+			lsb = (data[1] >> 5); /* LSB data */
+			msblsb = (uint16_t)(msb + lsb);
 
-            if (msblsb > 1023)
-            {
-                /* Updating the msblsb */
-                temp = (int16_t) (msblsb - 2048);
-            }
-            else
-            {
-                temp = (int16_t) msblsb;
-            }
+			if (msblsb > 1023) {
+				/* Updating the msblsb */
+				temp = (int16_t)(msblsb - 2048);
+			} else {
+				temp = (int16_t)msblsb;
+			}
 
-            /* sensor temperature */
-            *sensor_temp = (temp * 125) + 23000;
-        }
+			/* sensor temperature */
+			*sensor_temp = (temp * 125) + 23000;
+		}
 
-    }
-    else
-    {
-        rslt = SMI230_E_NULL_PTR;
-    }
+	} else {
+		rslt = SMI230_E_NULL_PTR;
+	}
 
-    return rslt;
-
+	return rslt;
 }
 
 /*!
  *  @brief This API reads the sensor time of the accel sensor.
  */
-int8_t smi230_acc_get_sensor_time(const struct smi230_dev *dev, uint32_t *sensor_time)
+int8_t smi230_acc_get_sensor_time(const struct smi230_dev *dev,
+				  uint32_t *sensor_time)
 {
-    int8_t rslt;
-    uint8_t data[3] = { 0 };
-    uint32_t byte2, byte1, byte0;
+	int8_t rslt;
+	uint8_t data[3] = { 0 };
+	uint32_t byte2, byte1, byte0;
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if ((rslt == SMI230_OK) && (sensor_time != NULL))
-    {
-        /* Read 3-byte sensor time */
-        rslt = get_regs(SMI230_ACCEL_SENSORTIME_0_REG, data, 3, dev);
+	/* Proceed if null check is fine */
+	if ((rslt == SMI230_OK) && (sensor_time != NULL)) {
+		/* Read 3-byte sensor time */
+		rslt = get_regs(SMI230_ACCEL_SENSORTIME_0_REG, data, 3, dev);
 
-        if (rslt == SMI230_OK)
-        {
-            byte0 = data[0]; /* Lower byte */
-            byte1 = (data[1] << 8); /* Middle byte */
-            byte2 = (data[2] << 16); /* Higher byte */
+		if (rslt == SMI230_OK) {
+			byte0 = data[0]; /* Lower byte */
+			byte1 = (data[1] << 8); /* Middle byte */
+			byte2 = (data[2] << 16); /* Higher byte */
 
-            /* Sensor time */
-            *sensor_time = (byte2 | byte1 | byte0);
-        }
+			/* Sensor time */
+			*sensor_time = (byte2 | byte1 | byte0);
+		}
 
-    }
-    else
-    {
-        rslt = SMI230_E_NULL_PTR;
-    }
+	} else {
+		rslt = SMI230_E_NULL_PTR;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -1287,218 +1261,207 @@ int8_t smi230_acc_get_sensor_time(const struct smi230_dev *dev, uint32_t *sensor
  */
 int8_t smi230_acc_perform_selftest(struct smi230_dev *dev)
 {
-    int8_t rslt;
-    int8_t self_test_rslt = 0;
-    struct smi230_sensor_data accel_pos, accel_neg;
+	int8_t rslt;
+	struct smi230_sensor_data accel_pos, accel_neg;
 
-    /* Check for null pointer in the device structure */
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure */
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if (rslt == SMI230_OK)
-    {
-        /* pre-requisites for self test */
-        rslt = enable_self_test(dev);
+	/* Proceed if null check is fine */
+	if (rslt == SMI230_OK) {
+		/* pre-requisites for self test */
+		rslt = enable_self_test(dev);
 
-        if (rslt == SMI230_OK)
-        {
-            rslt = positive_excited_accel(&accel_pos, dev);
+		if (rslt == SMI230_OK) {
+			rslt = positive_excited_accel(&accel_pos, dev);
 
-            if (rslt == SMI230_OK)
-            {
-                rslt = negative_excited_accel(&accel_neg, dev);
+			if (rslt == SMI230_OK) {
+				rslt = negative_excited_accel(&accel_neg, dev);
 
-                if (rslt == SMI230_OK)
-                {
-                    /* Validate the self test result */
-                    rslt = validate_accel_self_test(&accel_pos, &accel_neg);
+				if (rslt == SMI230_OK) {
+					/* Validate the self test result */
+					rslt = validate_accel_self_test(
+						&accel_pos, &accel_neg);
+				}
+			}
+		}
+	}
 
-                    /* Store the status of self test result */
-                    self_test_rslt = rslt;
-
-                    /* Perform soft reset */
-                    rslt = smi230_acc_soft_reset(dev);
-
-                    /* Check to ensure bus operations are success */
-                    if (rslt == SMI230_OK)
-                    {
-                        /* Restore self_test_rslt as return value */
-                        rslt = self_test_rslt;
-                    }
-                }
-            }
-        }
-    }
-
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API sets the FIFO configuration in the sensor.
  */
-int8_t smi230_acc_set_fifo_config(const struct accel_fifo_config *config, const struct smi230_dev *dev)
+int8_t smi230_acc_set_fifo_config(const struct accel_fifo_config *config,
+				  const struct smi230_dev *dev)
 {
-    /* Variable to define error */
-    int8_t rslt;
+	/* Variable to define error */
+	int8_t rslt;
 
-    /* Array to store the default value of FIFO configuration
-     * reserved registers
-     */
-    uint8_t data_array[2] = { 0 };
+	/* Array to store the default value of FIFO configuration
+	 * reserved registers
+	 */
+	uint8_t data_array[2] = { 0 };
 
-    /* Check for null pointer in the device structure */
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure */
+	rslt = null_ptr_check(dev);
 
-    if (rslt == SMI230_OK)
-    {
-        /* Get the FIFO configurations from the FIFO configure_1 and configure_2 register */
-        rslt = smi230_acc_get_regs(SMI230_FIFO_CONFIG_0_ADDR, data_array, 2, dev);
-        if (rslt == SMI230_OK)
-        {
-            /* To set the stream mode or FIFO mode */
-            data_array[0] = SMI230_SET_BITS_POS_0(data_array[0], SMI230_ACC_FIFO_MODE_CONFIG, config->mode);
+	if (rslt == SMI230_OK) {
+		/* Get the FIFO configurations from the FIFO configure_1 and configure_2 register */
+		rslt = smi230_acc_get_regs(SMI230_FIFO_CONFIG_0_ADDR,
+					   data_array, 2, dev);
+		if (rslt == SMI230_OK) {
+			/* To set the stream mode or FIFO mode */
+			data_array[0] = SMI230_SET_BITS_POS_0(
+				data_array[0], SMI230_ACC_FIFO_MODE_CONFIG,
+				config->mode);
 
-            /* To enable the Accel in FIFO configuration */
-            data_array[1] = SMI230_SET_BITS(data_array[1], SMI230_ACCEL_EN, config->accel_en);
+			/* To enable the Accel in FIFO configuration */
+			data_array[1] =
+				SMI230_SET_BITS(data_array[1], SMI230_ACCEL_EN,
+						config->accel_en);
 
-            /* To enable the interrupt_1 in FIFO configuration */
-            data_array[1] = SMI230_SET_BITS(data_array[1], SMI230_ACCEL_INT1_EN, config->int1_en);
+			/* To enable the interrupt_1 in FIFO configuration */
+			data_array[1] = SMI230_SET_BITS(data_array[1],
+							SMI230_ACCEL_INT1_EN,
+							config->int1_en);
 
-            /* To enable the interrupt_2 in FIFO configuration */
-            data_array[1] = SMI230_SET_BITS(data_array[1], SMI230_ACCEL_INT2_EN, config->int2_en);
+			/* To enable the interrupt_2 in FIFO configuration */
+			data_array[1] = SMI230_SET_BITS(data_array[1],
+							SMI230_ACCEL_INT2_EN,
+							config->int2_en);
 
-            rslt = smi230_acc_set_regs(SMI230_FIFO_CONFIG_0_ADDR, data_array, 2, dev);
-        }
-    }
-    else
-    {
-        rslt = SMI230_E_NULL_PTR;
-    }
+			rslt = smi230_acc_set_regs(SMI230_FIFO_CONFIG_0_ADDR,
+						   data_array, 2, dev);
+		}
+	} else {
+		rslt = SMI230_E_NULL_PTR;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API reads the FIFO configuration from the sensor.
  */
-int8_t smi230_acc_get_fifo_config(struct accel_fifo_config *config, const struct smi230_dev *dev)
+int8_t smi230_acc_get_fifo_config(struct accel_fifo_config *config,
+				  const struct smi230_dev *dev)
 {
-    /* Variable to define error */
-    int8_t rslt;
+	/* Variable to define error */
+	int8_t rslt;
 
-    /* Array to store data */
-    uint8_t data[2] = { 0 };
+	/* Array to store data */
+	uint8_t data[2] = { 0 };
 
-    /* Check for null pointer in the device structure */
-    rslt = null_ptr_check(dev);
-    if ((rslt == SMI230_OK) && (config != NULL))
-    {
-        /* Get the FIFO configuration value */
-        rslt = smi230_acc_get_regs(SMI230_FIFO_CONFIG_0_ADDR, data, SMI230_FIFO_CONFIG_LENGTH, dev);
-        if (rslt == SMI230_OK)
-        {
-            /* Get mode selection */
-            config->mode = SMI230_GET_BITS_POS_0(data[0], SMI230_ACC_FIFO_MODE_CONFIG);
+	/* Check for null pointer in the device structure */
+	rslt = null_ptr_check(dev);
+	if ((rslt == SMI230_OK) && (config != NULL)) {
+		/* Get the FIFO configuration value */
+		rslt = smi230_acc_get_regs(SMI230_FIFO_CONFIG_0_ADDR, data,
+					   SMI230_FIFO_CONFIG_LENGTH, dev);
+		if (rslt == SMI230_OK) {
+			/* Get mode selection */
+			config->mode = SMI230_GET_BITS_POS_0(
+				data[0], SMI230_ACC_FIFO_MODE_CONFIG);
 
-            /* Get the accel enable */
-            config->accel_en = SMI230_GET_BITS(data[1], SMI230_ACCEL_EN);
+			/* Get the accel enable */
+			config->accel_en =
+				SMI230_GET_BITS(data[1], SMI230_ACCEL_EN);
 
-            /* Get the interrupt_1 enable/disable */
-            config->int1_en = SMI230_GET_BITS(data[1], SMI230_ACCEL_INT1_EN);
+			/* Get the interrupt_1 enable/disable */
+			config->int1_en =
+				SMI230_GET_BITS(data[1], SMI230_ACCEL_INT1_EN);
 
-            /* Get the interrupt_2 enable/disable */
-            config->int2_en = SMI230_GET_BITS(data[1], SMI230_ACCEL_INT2_EN);
-        }
-    }
-    else
-    {
-        rslt = SMI230_E_NULL_PTR;
-    }
+			/* Get the interrupt_2 enable/disable */
+			config->int2_en =
+				SMI230_GET_BITS(data[1], SMI230_ACCEL_INT2_EN);
+		}
+	} else {
+		rslt = SMI230_E_NULL_PTR;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API reads the FIFO data.
  */
-int8_t smi230_acc_read_fifo_data(struct smi230_fifo_frame *fifo, const struct smi230_dev *dev)
+int8_t smi230_acc_read_fifo_data(struct smi230_fifo_frame *fifo,
+				 const struct smi230_dev *dev)
 {
-    /* Variable to define error */
-    int8_t rslt;
+	/* Variable to define error */
+	int8_t rslt;
 
-    /* Array to store FIFO configuration data */
-    uint8_t config_data = 0;
+	/* Array to store FIFO configuration data */
+	uint8_t config_data = 0;
 
-    /* Variable to define FIFO address */
-    uint8_t addr = SMI230_FIFO_DATA_ADDR;
+	/* Variable to define FIFO address */
+	uint8_t addr = SMI230_FIFO_DATA_ADDR;
 
-    /* Check for null pointer in the device structure */
-    rslt = null_ptr_check(dev);
-    if ((rslt == SMI230_OK) && (fifo != NULL))
-    {
-        /* Clear the FIFO data structure */
-        reset_fifo_frame_structure(fifo);
+	/* Check for null pointer in the device structure */
+	rslt = null_ptr_check(dev);
+	if ((rslt == SMI230_OK) && (fifo != NULL)) {
+		/* Clear the FIFO data structure */
+		reset_fifo_frame_structure(fifo);
 
-        /* Read FIFO data */
-        rslt = smi230_acc_get_regs(addr, fifo->data, fifo->length, dev);
-        if (rslt == SMI230_OK)
-        {
-            /* Get the set FIFO frame configurations */
-            rslt = smi230_acc_get_regs(SMI230_FIFO_CONFIG_1_ADDR, &config_data, 1, dev);
-            if (rslt == SMI230_OK)
-            {
-                /* Get sensor enable status, of which the data
-                 * is to be read
-                 */
-                fifo->data_enable = (uint16_t)((uint16_t)config_data & SMI230_ACCEL_EN_MASK);
-            }
-        }
-        else
-        {
-            rslt = SMI230_E_COM_FAIL;
-        }
-    }
-    else
-    {
-        rslt = SMI230_E_NULL_PTR;
-    }
+		/* Read FIFO data */
+		rslt = smi230_acc_get_regs(addr, fifo->data, fifo->length, dev);
+		if (rslt == SMI230_OK) {
+			/* Get the set FIFO frame configurations */
+			rslt = smi230_acc_get_regs(SMI230_FIFO_CONFIG_1_ADDR,
+						   &config_data, 1, dev);
+			if (rslt == SMI230_OK) {
+				/* Get sensor enable status, of which the data
+				 * is to be read
+				 */
+				fifo->data_enable =
+					(uint16_t)((uint16_t)config_data &
+						   SMI230_ACCEL_EN_MASK);
+			}
+		} else {
+			rslt = SMI230_E_COM_FAIL;
+		}
+	} else {
+		rslt = SMI230_E_NULL_PTR;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API gets the length of FIFO data available in the sensor in
  * bytes.
  */
-int8_t smi230_acc_get_fifo_length(uint16_t *fifo_length, const struct smi230_dev *dev)
+int8_t smi230_acc_get_fifo_length(uint16_t *fifo_length,
+				  const struct smi230_dev *dev)
 {
-    /* Variable to define error */
-    int8_t rslt;
+	/* Variable to define error */
+	int8_t rslt;
 
-    /* Array to store FIFO data length */
-    uint8_t data[SMI230_FIFO_DATA_LENGTH] = { 0 };
+	/* Array to store FIFO data length */
+	uint8_t data[SMI230_FIFO_DATA_LENGTH] = { 0 };
 
-    /* Check for null pointer in the device structure */
-    rslt = null_ptr_check(dev);
-    if ((rslt == SMI230_OK) && (fifo_length != NULL))
-    {
-        /* read fifo length */
-        rslt = smi230_acc_get_regs(SMI230_FIFO_LENGTH_0_ADDR, data, SMI230_FIFO_DATA_LENGTH, dev);
-        if (rslt == SMI230_OK)
-        {
-            /* Get the MSB byte of FIFO length */
-            data[1] = SMI230_GET_BITS_POS_0(data[1], SMI230_FIFO_BYTE_COUNTER_MSB);
+	/* Check for null pointer in the device structure */
+	rslt = null_ptr_check(dev);
+	if ((rslt == SMI230_OK) && (fifo_length != NULL)) {
+		/* read fifo length */
+		rslt = smi230_acc_get_regs(SMI230_FIFO_LENGTH_0_ADDR, data,
+					   SMI230_FIFO_DATA_LENGTH, dev);
+		if (rslt == SMI230_OK) {
+			/* Get the MSB byte of FIFO length */
+			data[1] = SMI230_GET_BITS_POS_0(
+				data[1], SMI230_FIFO_BYTE_COUNTER_MSB);
 
-            /* Get total FIFO length */
-            (*fifo_length) = (uint16_t)((uint16_t)(data[1] << 8) | data[0]);
-        }
-        else
-        {
-            rslt = SMI230_E_NULL_PTR;
-        }
-    }
+			/* Get total FIFO length */
+			(*fifo_length) =
+				(uint16_t)((uint16_t)(data[1] << 8) | data[0]);
+		} else {
+			rslt = SMI230_E_NULL_PTR;
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -1506,26 +1469,23 @@ int8_t smi230_acc_get_fifo_length(uint16_t *fifo_length, const struct smi230_dev
  */
 int8_t smi230_acc_get_fifo_wm(uint16_t *wm, const struct smi230_dev *dev)
 {
-    int8_t rslt;
+	int8_t rslt;
 
-    uint8_t data[2] = { 0 };
+	uint8_t data[2] = { 0 };
 
-    /* Check for null pointer in the device structure */
-    rslt = null_ptr_check(dev);
-    if (rslt == SMI230_OK)
-    {
-        rslt = smi230_acc_get_regs(SMI230_FIFO_WTM_0_ADDR, data, SMI230_FIFO_WTM_LENGTH, dev);
-        if ((rslt == SMI230_OK) && (wm != NULL))
-        {
-            *wm = (data[1] << 8) | (data[0]);
-        }
-        else
-        {
-            rslt = SMI230_E_NULL_PTR;
-        }
-    }
+	/* Check for null pointer in the device structure */
+	rslt = null_ptr_check(dev);
+	if (rslt == SMI230_OK) {
+		rslt = smi230_acc_get_regs(SMI230_FIFO_WTM_0_ADDR, data,
+					   SMI230_FIFO_WTM_LENGTH, dev);
+		if ((rslt == SMI230_OK) && (wm != NULL)) {
+			*wm = (data[1] << 8) | (data[0]);
+		} else {
+			rslt = SMI230_E_NULL_PTR;
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -1533,27 +1493,27 @@ int8_t smi230_acc_get_fifo_wm(uint16_t *wm, const struct smi230_dev *dev)
  */
 int8_t smi230_acc_set_fifo_wm(uint16_t wm, const struct smi230_dev *dev)
 {
-    /* Variable to define error */
-    int8_t rslt;
+	/* Variable to define error */
+	int8_t rslt;
 
-    /* Array to store data */
-    uint8_t data[2] = { 0 };
+	/* Array to store data */
+	uint8_t data[2] = { 0 };
 
-    /* Check for null pointer in the device structure */
-    rslt = null_ptr_check(dev);
-    if (rslt == SMI230_OK)
-    {
-        /* Get LSB value of FIFO water-mark */
-        data[0] = SMI230_GET_LSB(wm);
+	/* Check for null pointer in the device structure */
+	rslt = null_ptr_check(dev);
+	if (rslt == SMI230_OK) {
+		/* Get LSB value of FIFO water-mark */
+		data[0] = SMI230_GET_LSB(wm);
 
-        /* Get MSB value of FIFO water-mark */
-        data[1] = SMI230_GET_MSB(wm);
+		/* Get MSB value of FIFO water-mark */
+		data[1] = SMI230_GET_MSB(wm);
 
-        /* Set the FIFO water-mark level */
-        rslt = smi230_acc_set_regs(SMI230_FIFO_WTM_0_ADDR, data, SMI230_FIFO_WTM_LENGTH, dev);
-    }
+		/* Set the FIFO water-mark level */
+		rslt = smi230_acc_set_regs(SMI230_FIFO_WTM_0_ADDR, data,
+					   SMI230_FIFO_WTM_LENGTH, dev);
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -1562,57 +1522,54 @@ int8_t smi230_acc_set_fifo_wm(uint16_t wm, const struct smi230_dev *dev)
  * structure instance.
  */
 int8_t smi230_acc_extract_accel(struct smi230_sensor_data *accel_data,
-                            uint16_t *accel_length,
-                            struct smi230_fifo_frame *fifo,
-                            const struct smi230_dev *dev)
+				uint16_t *accel_length,
+				struct smi230_fifo_frame *fifo,
+				const struct smi230_dev *dev)
 {
-    /* Variable to define error */
-    int8_t rslt;
+	/* Variable to define error */
+	int8_t rslt;
 
-    /* Check for null pointer in the device structure */
-    rslt = null_ptr_check(dev);
-    if ((rslt == SMI230_OK) && (accel_data != NULL) && (accel_length != NULL) && (fifo != NULL))
-    {
-        /* Parsing the FIFO data in header mode */
-        rslt = extract_acc_header_mode(accel_data, accel_length, fifo);
-    }
-    else
-    {
-        rslt = SMI230_E_NULL_PTR;
-    }
+	/* Check for null pointer in the device structure */
+	rslt = null_ptr_check(dev);
+	if ((rslt == SMI230_OK) && (accel_data != NULL) &&
+	    (accel_length != NULL) && (fifo != NULL)) {
+		/* Parsing the FIFO data in header mode */
+		rslt = extract_acc_header_mode(accel_data, accel_length, fifo);
+	} else {
+		rslt = SMI230_E_NULL_PTR;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API reads the down sampling rates which is configured for
  * accelerometer FIFO data.
  */
-int8_t smi230_acc_get_fifo_down_sample(uint8_t *fifo_downs, const struct smi230_dev *dev)
+int8_t smi230_acc_get_fifo_down_sample(uint8_t *fifo_downs,
+				       const struct smi230_dev *dev)
 {
-    /* Variable to define error */
-    int8_t rslt;
+	/* Variable to define error */
+	int8_t rslt;
 
-    /* Variable to store sampling rate */
-    uint8_t data = 0;
+	/* Variable to store sampling rate */
+	uint8_t data = 0;
 
-    /* Check for null pointer in the device structure */
-    rslt = null_ptr_check(dev);
-    if ((rslt == SMI230_OK) && (fifo_downs != NULL))
-    {
-        /* Read the accelerometer FIFO down data sampling rate */
-        rslt = smi230_acc_get_regs(SMI230_FIFO_DOWNS_ADDR, &data, 1, dev);
-        if (rslt == SMI230_OK)
-        {
-            (*fifo_downs) = SMI230_GET_BITS(data, SMI230_ACC_FIFO_DOWNS);
-        }
-    }
-    else
-    {
-        rslt = SMI230_E_NULL_PTR;
-    }
+	/* Check for null pointer in the device structure */
+	rslt = null_ptr_check(dev);
+	if ((rslt == SMI230_OK) && (fifo_downs != NULL)) {
+		/* Read the accelerometer FIFO down data sampling rate */
+		rslt = smi230_acc_get_regs(SMI230_FIFO_DOWNS_ADDR, &data, 1,
+					   dev);
+		if (rslt == SMI230_OK) {
+			(*fifo_downs) =
+				SMI230_GET_BITS(data, SMI230_ACC_FIFO_DOWNS);
+		}
+	} else {
+		rslt = SMI230_E_NULL_PTR;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -1621,28 +1578,30 @@ int8_t smi230_acc_get_fifo_down_sample(uint8_t *fifo_downs, const struct smi230_
  *
  * @note Reduction of sample rate by a factor 2**fifo_downs
  */
-int8_t smi230_acc_set_fifo_down_sample(uint8_t fifo_downs, const struct smi230_dev *dev)
+int8_t smi230_acc_set_fifo_down_sample(uint8_t fifo_downs,
+				       const struct smi230_dev *dev)
 {
-    /* Variable to define error */
-    int8_t rslt;
+	/* Variable to define error */
+	int8_t rslt;
 
-    /* Variable to store sampling rate */
-    uint8_t data = 0;
+	/* Variable to store sampling rate */
+	uint8_t data = 0;
 
-    /* Check for null pointer in the device structure */
-    rslt = null_ptr_check(dev);
-    if (rslt == SMI230_OK)
-    {
-        /* Set the accelerometer FIFO down sampling rate */
-        rslt = smi230_acc_get_regs(SMI230_FIFO_DOWNS_ADDR, &data, 1, dev);
-        if (rslt == SMI230_OK)
-        {
-            data = SMI230_SET_BITS(data, SMI230_ACC_FIFO_DOWNS, fifo_downs);
-            rslt = smi230_acc_set_regs(SMI230_FIFO_DOWNS_ADDR, &data, 1, dev);
-        }
-    }
+	/* Check for null pointer in the device structure */
+	rslt = null_ptr_check(dev);
+	if (rslt == SMI230_OK) {
+		/* Set the accelerometer FIFO down sampling rate */
+		rslt = smi230_acc_get_regs(SMI230_FIFO_DOWNS_ADDR, &data, 1,
+					   dev);
+		if (rslt == SMI230_OK) {
+			data = SMI230_SET_BITS(data, SMI230_ACC_FIFO_DOWNS,
+					       fifo_downs);
+			rslt = smi230_acc_set_regs(SMI230_FIFO_DOWNS_ADDR,
+						   &data, 1, dev);
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*****************************************************************************/
@@ -1654,348 +1613,343 @@ int8_t smi230_acc_set_fifo_down_sample(uint8_t fifo_downs, const struct smi230_d
  */
 static int8_t null_ptr_check(const struct smi230_dev *dev)
 {
-    int8_t rslt;
+	int8_t rslt;
 
-    if ((dev == NULL) || (dev->read == NULL) || (dev->write == NULL) || (dev->delay_ms == NULL))
-    {
-        /* Device structure pointer is not valid */
-        rslt = SMI230_E_NULL_PTR;
-    }
-    else
-    {
-        /* Device structure is fine */
-        rslt = SMI230_OK;
-    }
+	if ((dev == NULL) || (dev->read == NULL) || (dev->write == NULL) ||
+	    (dev->delay_ms == NULL)) {
+		/* Device structure pointer is not valid */
+		rslt = SMI230_E_NULL_PTR;
+	} else {
+		/* Device structure is fine */
+		rslt = SMI230_OK;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API reads the data from the given register address.
  */
-static int8_t get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const struct smi230_dev *dev)
+static int8_t get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len,
+		       const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint16_t index;
-    uint16_t temp_len = len + dev->dummy_byte;
+	int8_t rslt;
+	uint16_t index;
+	uint16_t temp_len = len + dev->dummy_byte;
 
-    if (WARN(temp_len > CONFIG_SMI230_MAX_BUFFER_LEN, "SMI230 buffer overflow\n")) {
-        return SMI230_E_COM_FAIL;
-    }
+	if (WARN(temp_len > CONFIG_SMI230_MAX_BUFFER_LEN,
+		 "SMI230 buffer overflow\n")) {
+		return SMI230_E_COM_FAIL;
+	}
 
-    if (dev->intf == SMI230_SPI_INTF)
-    {
-        /* Configuring reg_addr for SPI Interface */
-        reg_addr = reg_addr | SMI230_SPI_RD_MASK;
-    }
+	if (dev->intf == SMI230_SPI_INTF) {
+		/* Configuring reg_addr for SPI Interface */
+		reg_addr = reg_addr | SMI230_SPI_RD_MASK;
+	}
 
-    /* Read the data from the register */
-    rslt = dev->read(dev->accel_id, reg_addr, temp_buff, temp_len);
+	/* Read the data from the register */
+	rslt = dev->read(dev->accel_id, reg_addr, temp_buff, temp_len);
 
-    if (rslt == SMI230_OK)
-    {
-        for (index = 0; index < len; index++)
-        {
-            /* Updating the data buffer */
-            reg_data[index] = temp_buff[index + dev->dummy_byte];
-        }
-    }
-    else
-    {
-        /* Failure case */
-        rslt = SMI230_E_COM_FAIL;
-    }
+	if (rslt == SMI230_OK) {
+		for (index = 0; index < len; index++) {
+			/* Updating the data buffer */
+			reg_data[index] = temp_buff[index + dev->dummy_byte];
+		}
+	} else {
+		/* Failure case */
+		rslt = SMI230_E_COM_FAIL;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API writes the data to the given register address.
  */
-static int8_t set_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const struct smi230_dev *dev)
+static int8_t set_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len,
+		       const struct smi230_dev *dev)
 {
-    int8_t rslt;
+	int8_t rslt;
 
-    if (dev->intf == SMI230_SPI_INTF)
-    {
-        /* Configuring reg_addr for SPI Interface */
-        reg_addr = (reg_addr & SMI230_SPI_WR_MASK);
-    }
+	if (dev->intf == SMI230_SPI_INTF) {
+		/* Configuring reg_addr for SPI Interface */
+		reg_addr = (reg_addr & SMI230_SPI_WR_MASK);
+	}
 
-    /* write to an accel register */
-    rslt = dev->write(dev->accel_id, reg_addr, reg_data, len);
+	/* write to an accel register */
+	rslt = dev->write(dev->accel_id, reg_addr, reg_data, len);
 
-    if (rslt != SMI230_OK)
-    {
-        /* Updating the error status */
-        rslt = SMI230_E_COM_FAIL;
-    }
+	if (rslt != SMI230_OK) {
+		/* Updating the error status */
+		rslt = SMI230_E_COM_FAIL;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API configures the pins which fire the
  * interrupt signal when any interrupt occurs.
  */
-static int8_t set_int_pin_config(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev)
+static int8_t
+set_int_pin_config(const struct smi230_accel_int_channel_cfg *int_config,
+		   const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t reg_addr = 0, data, is_channel_invalid = FALSE;
+	int8_t rslt;
+	uint8_t reg_addr = 0, data, is_channel_invalid = FALSE;
 
-    switch (int_config->int_channel)
-    {
-        case SMI230_INT_CHANNEL_1:
+	switch (int_config->int_channel) {
+	case SMI230_INT_CHANNEL_1:
 
-            /* update reg_addr based on channel inputs */
-            reg_addr = SMI230_ACCEL_INT1_IO_CONF_REG;
-            break;
+		/* update reg_addr based on channel inputs */
+		reg_addr = SMI230_ACCEL_INT1_IO_CONF_REG;
+		break;
 
-        case SMI230_INT_CHANNEL_2:
+	case SMI230_INT_CHANNEL_2:
 
-            /* update reg_addr based on channel inputs */
-            reg_addr = SMI230_ACCEL_INT2_IO_CONF_REG;
-            break;
+		/* update reg_addr based on channel inputs */
+		reg_addr = SMI230_ACCEL_INT2_IO_CONF_REG;
+		break;
 
-        default:
-            is_channel_invalid = TRUE;
-            break;
-    }
+	default:
+		is_channel_invalid = TRUE;
+		break;
+	}
 
-    if (!is_channel_invalid)
-    {
-        /* Read interrupt pin configuration register */
-        rslt = get_regs(reg_addr, &data, 1, dev);
+	if (!is_channel_invalid) {
+		/* Read interrupt pin configuration register */
+		rslt = get_regs(reg_addr, &data, 1, dev);
 
-        if (rslt == SMI230_OK)
-        {
-            /* Update data with user configured smi230_int_cfg structure */
-            data = SMI230_SET_BITS(data, SMI230_ACCEL_INT_LVL, int_config->int_pin_cfg.lvl);
-            data = SMI230_SET_BITS(data, SMI230_ACCEL_INT_OD, int_config->int_pin_cfg.output_mode);
+		if (rslt == SMI230_OK) {
+			/* Update data with user configured smi230_int_cfg structure */
+			data = SMI230_SET_BITS(data, SMI230_ACCEL_INT_LVL,
+					       int_config->int_pin_cfg.lvl);
+			data = SMI230_SET_BITS(
+				data, SMI230_ACCEL_INT_OD,
+				int_config->int_pin_cfg.output_mode);
 
-            if (int_config->int_type == SMI230_ACCEL_SYNC_INPUT)
-            {
-                data = SMI230_SET_BITS_POS_0(data, SMI230_ACCEL_INT_EDGE, SMI230_ENABLE);
-                data = SMI230_SET_BITS(data, SMI230_ACCEL_INT_IN, int_config->int_pin_cfg.enable_int_pin);
-                data = SMI230_SET_BIT_VAL_0(data, SMI230_ACCEL_INT_IO);
-            }
-            else
-            {
-                data = SMI230_SET_BITS(data, SMI230_ACCEL_INT_IO, int_config->int_pin_cfg.enable_int_pin);
-                data = SMI230_SET_BIT_VAL_0(data, SMI230_ACCEL_INT_IN);
-            }
+			if (int_config->int_type == SMI230_ACCEL_SYNC_INPUT) {
+				data = SMI230_SET_BITS_POS_0(
+					data, SMI230_ACCEL_INT_EDGE,
+					SMI230_ENABLE);
+				data = SMI230_SET_BITS(
+					data, SMI230_ACCEL_INT_IN,
+					int_config->int_pin_cfg.enable_int_pin);
+				data = SMI230_SET_BIT_VAL_0(
+					data, SMI230_ACCEL_INT_IO);
+			} else {
+				data = SMI230_SET_BITS(
+					data, SMI230_ACCEL_INT_IO,
+					int_config->int_pin_cfg.enable_int_pin);
+				data = SMI230_SET_BIT_VAL_0(
+					data, SMI230_ACCEL_INT_IN);
+			}
 
-            /* Write to interrupt pin configuration register */
-            rslt = set_regs(reg_addr, &data, 1, dev);
-        }
-    }
-    else
-    {
-        rslt = SMI230_E_INVALID_INPUT;
-    }
+			/* Write to interrupt pin configuration register */
+			rslt = set_regs(reg_addr, &data, 1, dev);
+		}
+	} else {
+		rslt = SMI230_E_INVALID_INPUT;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API sets the data ready interrupt for accel sensor.
  */
-static int8_t set_accel_data_ready_int(const struct smi230_accel_int_channel_cfg *int_config,
-                                       const struct smi230_dev *dev)
+static int8_t
+set_accel_data_ready_int(const struct smi230_accel_int_channel_cfg *int_config,
+			 const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data = 0, conf;
+	int8_t rslt;
+	uint8_t data = 0, conf;
 
-    /* Read interrupt map register */
-    rslt = get_regs(SMI230_ACCEL_INT1_INT2_MAP_DATA_REG, &data, 1, dev);
+	/* Read interrupt map register */
+	rslt = get_regs(SMI230_ACCEL_INT1_INT2_MAP_DATA_REG, &data, 1, dev);
 
-    if (rslt == SMI230_OK)
-    {
-        conf = int_config->int_pin_cfg.enable_int_pin;
+	if (rslt == SMI230_OK) {
+		conf = int_config->int_pin_cfg.enable_int_pin;
 
-        switch (int_config->int_channel)
-        {
-            case SMI230_INT_CHANNEL_1:
+		switch (int_config->int_channel) {
+		case SMI230_INT_CHANNEL_1:
 
-                /* Updating the data */
-                data = SMI230_SET_BITS(data, SMI230_ACCEL_INT1_DRDY, conf);
-                break;
+			/* Updating the data */
+			data = SMI230_SET_BITS(data, SMI230_ACCEL_INT1_DRDY,
+					       conf);
+			break;
 
-            case SMI230_INT_CHANNEL_2:
+		case SMI230_INT_CHANNEL_2:
 
-                /* Updating the data */
-                data = SMI230_SET_BITS(data, SMI230_ACCEL_INT2_DRDY, conf);
-                break;
+			/* Updating the data */
+			data = SMI230_SET_BITS(data, SMI230_ACCEL_INT2_DRDY,
+					       conf);
+			break;
 
-            default:
-                rslt = SMI230_E_INVALID_INPUT;
-                break;
-        }
+		default:
+			rslt = SMI230_E_INVALID_INPUT;
+			break;
+		}
 
-        if (rslt == SMI230_OK)
-        {
-            /* Configure interrupt pins */
-            rslt = set_int_pin_config(int_config, dev);
+		if (rslt == SMI230_OK) {
+			/* Configure interrupt pins */
+			rslt = set_int_pin_config(int_config, dev);
 
-            if (rslt == SMI230_OK)
-            {
-                /* Write to interrupt map register */
-                rslt = set_regs(SMI230_ACCEL_INT1_INT2_MAP_DATA_REG, &data, 1, dev);
-            }
-        }
-    }
+			if (rslt == SMI230_OK) {
+				/* Write to interrupt map register */
+				rslt = set_regs(
+					SMI230_ACCEL_INT1_INT2_MAP_DATA_REG,
+					&data, 1, dev);
+			}
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API sets the synchronized data ready interrupt for accel sensor
  */
-static int8_t set_accel_sync_data_ready_int(const struct smi230_accel_int_channel_cfg *int_config,
-                                            const struct smi230_dev *dev)
+static int8_t set_accel_sync_data_ready_int(
+	const struct smi230_accel_int_channel_cfg *int_config,
+	const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data, reg_addr = 0;
+	int8_t rslt;
+	uint8_t data, reg_addr = 0;
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
-    if (rslt == SMI230_OK)
-    {
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
+	if (rslt == SMI230_OK) {
+		data = SMI230_ACCEL_INTA_DISABLE;
 
-        data = SMI230_ACCEL_INTA_DISABLE;
+		switch (int_config->int_channel) {
+		case SMI230_INT_CHANNEL_1:
+			reg_addr = SMI230_ACCEL_INT1_MAP_REG;
+			break;
 
-        switch (int_config->int_channel)
-        {
-            case SMI230_INT_CHANNEL_1:
-                reg_addr = SMI230_ACCEL_INT1_MAP_REG;
-                break;
+		case SMI230_INT_CHANNEL_2:
+			reg_addr = SMI230_ACCEL_INT2_MAP_REG;
+			break;
 
-            case SMI230_INT_CHANNEL_2:
-                reg_addr = SMI230_ACCEL_INT2_MAP_REG;
-                break;
+		default:
+			rslt = SMI230_E_INVALID_INPUT;
+			break;
+		}
 
-            default:
-                rslt = SMI230_E_INVALID_INPUT;
-                break;
-        }
+		if (rslt == SMI230_OK) {
+			if (int_config->int_pin_cfg.enable_int_pin ==
+			    SMI230_ENABLE) {
+				/*interrupt A mapped to INT1/INT2 */
+				data = SMI230_ACCEL_INTA_ENABLE;
+			}
 
-        if (rslt == SMI230_OK)
-        {
-            if (int_config->int_pin_cfg.enable_int_pin == SMI230_ENABLE)
-            {
-                /*interrupt A mapped to INT1/INT2 */
-                data = SMI230_ACCEL_INTA_ENABLE;
-            }
+			/* Write to interrupt map register */
+			rslt = set_regs(reg_addr, &data, 1, dev);
 
-            /* Write to interrupt map register */
-            rslt = set_regs(reg_addr, &data, 1, dev);
+			if (rslt == SMI230_OK) {
+				/*set input interrupt configuration*/
+				rslt = set_int_pin_config(int_config, dev);
+			}
+		}
+	}
 
-            if (rslt == SMI230_OK)
-            {
-                /*set input interrupt configuration*/
-                rslt = set_int_pin_config(int_config, dev);
-            }
-        }
-    }
-
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API configures the given interrupt channel as input for accel sensor
  */
-static int8_t set_accel_sync_input(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev)
+static int8_t
+set_accel_sync_input(const struct smi230_accel_int_channel_cfg *int_config,
+		     const struct smi230_dev *dev)
 {
-    int8_t rslt;
+	int8_t rslt;
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
-    if (rslt == SMI230_OK)
-    {
-        /*set input interrupt configuration*/
-        rslt = set_int_pin_config(int_config, dev);
-    }
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
+	if (rslt == SMI230_OK) {
+		/*set input interrupt configuration*/
+		rslt = set_int_pin_config(int_config, dev);
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API sets the anymotion interrupt for accel sensor
  */
-static int8_t set_accel_anymotion_int(const struct smi230_accel_int_channel_cfg *int_config,
-                                      const struct smi230_dev *dev)
+static int8_t
+set_accel_anymotion_int(const struct smi230_accel_int_channel_cfg *int_config,
+			const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data, reg_addr = 0;
+	int8_t rslt;
+	uint8_t data, reg_addr = 0;
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
-    if (rslt == SMI230_OK)
-    {
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
+	if (rslt == SMI230_OK) {
+		data = SMI230_ACCEL_INTB_DISABLE;
 
-        data = SMI230_ACCEL_INTB_DISABLE;
+		switch (int_config->int_channel) {
+		case SMI230_INT_CHANNEL_1:
+			reg_addr = SMI230_ACCEL_INT1_MAP_REG;
+			break;
 
-        switch (int_config->int_channel)
-        {
-            case SMI230_INT_CHANNEL_1:
-                reg_addr = SMI230_ACCEL_INT1_MAP_REG;
-                break;
+		case SMI230_INT_CHANNEL_2:
+			reg_addr = SMI230_ACCEL_INT2_MAP_REG;
+			break;
 
-            case SMI230_INT_CHANNEL_2:
-                reg_addr = SMI230_ACCEL_INT2_MAP_REG;
-                break;
+		default:
+			rslt = SMI230_E_INVALID_INPUT;
+			break;
+		}
 
-            default:
-                rslt = SMI230_E_INVALID_INPUT;
-                break;
-        }
+		if (rslt == SMI230_OK) {
+			if (int_config->int_pin_cfg.enable_int_pin ==
+			    SMI230_ENABLE) {
+				/*interrupt B mapped to INT1/INT2 */
+				data = SMI230_ACCEL_INTB_ENABLE;
+			}
 
-        if (rslt == SMI230_OK)
-        {
-            if (int_config->int_pin_cfg.enable_int_pin == SMI230_ENABLE)
-            {
-                /*interrupt B mapped to INT1/INT2 */
-                data = SMI230_ACCEL_INTB_ENABLE;
-            }
+			/* Write to interrupt map register */
+			rslt = set_regs(reg_addr, &data, 1, dev);
 
-            /* Write to interrupt map register */
-            rslt = set_regs(reg_addr, &data, 1, dev);
+			if (rslt == SMI230_OK) {
+				/*set input interrupt configuration*/
+				rslt = set_int_pin_config(int_config, dev);
+			}
+		}
+	}
 
-            if (rslt == SMI230_OK)
-            {
-                /*set input interrupt configuration*/
-                rslt = set_int_pin_config(int_config, dev);
-            }
-        }
-    }
-
-    return rslt;
+	return rslt;
 }
 
 /*!
  *  @brief This API writes the config stream data in memory using burst mode.
  */
-static int8_t stream_transfer_write(const uint8_t *stream_data, uint16_t index, const struct smi230_dev *dev)
+static int8_t stream_transfer_write(const uint8_t *stream_data, uint16_t index,
+				    const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t asic_msb = (uint8_t)((index / 2) >> 4);
-    uint8_t asic_lsb = ((index / 2) & 0x0F);
+	int8_t rslt;
+	uint8_t asic_msb = (uint8_t)((index / 2) >> 4);
+	uint8_t asic_lsb = ((index / 2) & 0x0F);
 
-    /* Write to feature config register */
-    rslt = set_regs(SMI230_ACCEL_RESERVED_5B_REG, &asic_lsb, 1, dev);
-    if (rslt == SMI230_OK)
-    {
-        /* Write to feature config register */
-        rslt = set_regs(SMI230_ACCEL_RESERVED_5C_REG, &asic_msb, 1, dev);
+	/* Write to feature config register */
+	rslt = set_regs(SMI230_ACCEL_RESERVED_5B_REG, &asic_lsb, 1, dev);
+	if (rslt == SMI230_OK) {
+		/* Write to feature config register */
+		rslt = set_regs(SMI230_ACCEL_RESERVED_5C_REG, &asic_msb, 1,
+				dev);
 
-        if (rslt == SMI230_OK)
-        {
-            /* Write to feature config registers */
-            rslt = set_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t *)stream_data, dev->read_write_len, dev);
-        }
-    }
+		if (rslt == SMI230_OK) {
+			/* Write to feature config registers */
+			rslt = set_regs(SMI230_ACCEL_FEATURE_CFG_REG,
+					(uint8_t *)stream_data,
+					dev->read_write_len, dev);
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -2003,166 +1957,167 @@ static int8_t stream_transfer_write(const uint8_t *stream_data, uint16_t index, 
  */
 static int8_t enable_self_test(struct smi230_dev *dev)
 {
-    int8_t rslt;
+	int8_t rslt;
 
-    /* Configuring sensors to perform accel self test */
-    dev->accel_cfg.odr = SMI230_ACCEL_ODR_1600_HZ;
-    dev->accel_cfg.bw = SMI230_ACCEL_BW_NORMAL;
+	/* Configuring sensors to perform accel self test */
+	dev->accel_cfg.odr = SMI230_ACCEL_ODR_1600_HZ;
+	dev->accel_cfg.bw = SMI230_ACCEL_BW_NORMAL;
 
-    /*check the chip id of the accel variant and assign the range */
-    dev->accel_cfg.range = SMI230_ACCEL_RANGE_16G;
+	/*check the chip id of the accel variant and assign the range */
+	dev->accel_cfg.range = SMI230_ACCEL_RANGE_16G;
 
-    dev->accel_cfg.power = SMI230_ACCEL_PM_ACTIVE;
+	dev->accel_cfg.power = SMI230_ACCEL_PM_ACTIVE;
 
-    /* Enable Accel sensor */
-    rslt = smi230_acc_set_power_mode(dev);
-    if (rslt == SMI230_OK)
-    {
-        /* Configure sensors with above configured settings */
-        rslt = smi230_acc_set_meas_conf(dev);
+	/* Enable Accel sensor */
+	rslt = smi230_acc_set_power_mode(dev);
+	if (rslt == SMI230_OK) {
+		/* Configure sensors with above configured settings */
+		rslt = smi230_acc_set_meas_conf(dev);
 
-        if (rslt == SMI230_OK)
-        {
-            /* Self test delay */
-            dev->delay_ms(SMI230_SELF_TEST_DELAY_MS);
-        }
-    }
+		if (rslt == SMI230_OK) {
+			/* Self test delay */
+			dev->delay_ms(SMI230_SELF_TEST_DELAY_MS);
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API reads the accel data with the positive excitation
  */
-static int8_t positive_excited_accel(struct smi230_sensor_data *accel_pos, const struct smi230_dev *dev)
+static int8_t positive_excited_accel(struct smi230_sensor_data *accel_pos,
+				     const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t reg_data = SMI230_ACCEL_POSITIVE_SELF_TEST;
+	int8_t rslt;
+	uint8_t reg_data = SMI230_ACCEL_POSITIVE_SELF_TEST;
 
-    /* Enable positive excitation for all 3 axes */
-    rslt = set_regs(SMI230_ACCEL_SELF_TEST_REG, &reg_data, 1, dev);
-    if (rslt == SMI230_OK)
-    {
-        /* Read accel data after 50ms delay */
-        dev->delay_ms(SMI230_SELF_TEST_DATA_READ_MS);
-        rslt = smi230_acc_get_data(accel_pos, dev);
-    }
+	/* Enable positive excitation for all 3 axes */
+	rslt = set_regs(SMI230_ACCEL_SELF_TEST_REG, &reg_data, 1, dev);
+	if (rslt == SMI230_OK) {
+		/* Read accel data after 50ms delay */
+		dev->delay_ms(SMI230_SELF_TEST_DATA_READ_MS);
+		rslt = smi230_acc_get_data(accel_pos, dev);
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API reads the accel data with the negative excitation
  */
-static int8_t negative_excited_accel(struct smi230_sensor_data *accel_neg, const struct smi230_dev *dev)
+static int8_t negative_excited_accel(struct smi230_sensor_data *accel_neg,
+				     const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t reg_data = SMI230_ACCEL_NEGATIVE_SELF_TEST;
+	int8_t rslt;
+	uint8_t reg_data = SMI230_ACCEL_NEGATIVE_SELF_TEST;
 
-    /* Enable negative excitation for all 3 axes */
-    rslt = set_regs(SMI230_ACCEL_SELF_TEST_REG, &reg_data, 1, dev);
-    if (rslt == SMI230_OK)
-    {
-        /* Read accel data after 50ms delay */
-        dev->delay_ms(SMI230_SELF_TEST_DATA_READ_MS);
-        rslt = smi230_acc_get_data(accel_neg, dev);
+	/* Enable negative excitation for all 3 axes */
+	rslt = set_regs(SMI230_ACCEL_SELF_TEST_REG, &reg_data, 1, dev);
+	if (rslt == SMI230_OK) {
+		/* Read accel data after 50ms delay */
+		dev->delay_ms(SMI230_SELF_TEST_DATA_READ_MS);
+		rslt = smi230_acc_get_data(accel_neg, dev);
 
-        if (rslt == SMI230_OK)
-        {
-            /* Disable self test */
-            reg_data = SMI230_ACCEL_SWITCH_OFF_SELF_TEST;
-            rslt = set_regs(SMI230_ACCEL_SELF_TEST_REG, &reg_data, 1, dev);
-        }
-    }
+		if (rslt == SMI230_OK) {
+			/* Disable self test */
+			reg_data = SMI230_ACCEL_SWITCH_OFF_SELF_TEST;
+			rslt = set_regs(SMI230_ACCEL_SELF_TEST_REG, &reg_data,
+					1, dev);
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API validates the self test results
  */
-static int8_t validate_accel_self_test(const struct smi230_sensor_data *accel_pos,
-                                       const struct smi230_sensor_data *accel_neg)
+static int8_t
+validate_accel_self_test(const struct smi230_sensor_data *accel_pos,
+			 const struct smi230_sensor_data *accel_neg)
 {
-    int8_t rslt;
+	int8_t rslt;
 
-    /*! Structure for difference of accel values in g */
-    struct selftest_delta_limit accel_data_diff = { 0 };
+	/*! Structure for difference of accel values in g */
+	struct selftest_delta_limit accel_data_diff = { 0 };
 
-    /*! Structure for difference of accel values in mg */
-    struct selftest_delta_limit accel_data_diff_mg = { 0 };
+	/*! Structure for difference of accel values in mg */
+	struct selftest_delta_limit accel_data_diff_mg = { 0 };
 
-    accel_data_diff.x = (uint16_t) (SMI230_ABS(accel_pos->x) + SMI230_ABS(accel_neg->x));
-    accel_data_diff.y = (uint16_t) (SMI230_ABS(accel_pos->y) + SMI230_ABS(accel_neg->y));
-    accel_data_diff.z = (uint16_t) (SMI230_ABS(accel_pos->z) + SMI230_ABS(accel_neg->z));
+	accel_data_diff.x =
+		(uint16_t)(SMI230_ABS(accel_pos->x) + SMI230_ABS(accel_neg->x));
+	accel_data_diff.y =
+		(uint16_t)(SMI230_ABS(accel_pos->y) + SMI230_ABS(accel_neg->y));
+	accel_data_diff.z =
+		(uint16_t)(SMI230_ABS(accel_pos->z) + SMI230_ABS(accel_neg->z));
 
-    /*! Converting LSB of the differences of
-     * accel values to mg */
-    convert_lsb_g(&accel_data_diff, &accel_data_diff_mg);
+	/*! Converting LSB of the differences of
+	 * accel values to mg */
+	convert_lsb_g(&accel_data_diff, &accel_data_diff_mg);
 
-    /* Validating accel data by comparing with minimum value of the axes in mg */
-    /* x axis limit 1000mg, y axis limit 1000mg and z axis limit 500mg */
-    if (accel_data_diff_mg.x >= 1000 && accel_data_diff_mg.y >= 1000 && accel_data_diff_mg.z >= 500)
-    {
-        /* Updating Okay status */
-        rslt = SMI230_OK;
-    }
-    else
-    {
-        /* Updating Error status */
-        rslt = SMI230_W_SELF_TEST_FAIL;
-    }
+	/* Validating accel data by comparing with minimum value of the axes in mg */
+	/* x axis limit 1000mg, y axis limit 1000mg and z axis limit 500mg */
+	if (accel_data_diff_mg.x >= 1000 && accel_data_diff_mg.y >= 1000 &&
+	    accel_data_diff_mg.z >= 500) {
+		/* Updating Okay status */
+		rslt = SMI230_OK;
+	} else {
+		/* Updating Error status */
+		rslt = SMI230_W_SELF_TEST_FAIL;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  *  @brief This API converts lsb value of axes to mg for self-test.
  */
 static void convert_lsb_g(const struct selftest_delta_limit *accel_data_diff,
-                          struct selftest_delta_limit *accel_data_diff_mg)
+			  struct selftest_delta_limit *accel_data_diff_mg)
 {
-    /* accel x value in mg */
-    accel_data_diff_mg->x = (uint16_t) ((accel_data_diff->x / (int32_t)LSB_PER_G) * 1000);
+	/* accel x value in mg */
+	accel_data_diff_mg->x =
+		(uint16_t)((accel_data_diff->x / (int32_t)LSB_PER_G) * 1000);
 
-    /* accel y value in mg */
-    accel_data_diff_mg->y = (uint16_t) ((accel_data_diff->y / (int32_t)LSB_PER_G) * 1000);
+	/* accel y value in mg */
+	accel_data_diff_mg->y =
+		(uint16_t)((accel_data_diff->y / (int32_t)LSB_PER_G) * 1000);
 
-    /* accel z value in mg */
-    accel_data_diff_mg->z = (uint16_t) ((accel_data_diff->z / (int32_t)LSB_PER_G) * 1000);
+	/* accel z value in mg */
+	accel_data_diff_mg->z =
+		(uint16_t)((accel_data_diff->z / (int32_t)LSB_PER_G) * 1000);
 }
 
 /*!
  * @brief This internal API is used to parse and store the skipped frame count
  * from the FIFO data.
  */
-static int8_t unpack_skipped_frame(uint16_t *data_index, struct smi230_fifo_frame *fifo)
+static int8_t unpack_skipped_frame(uint16_t *data_index,
+				   struct smi230_fifo_frame *fifo)
 {
-    /* Variables to define error */
-    int8_t rslt = SMI230_OK;
+	/* Variables to define error */
+	int8_t rslt = SMI230_OK;
 
-    /* Validate data index */
-    if ((*data_index) >= fifo->length)
-    {
-        /* Update the data index to the last byte */
-        (*data_index) = fifo->length;
+	/* Validate data index */
+	if ((*data_index) >= fifo->length) {
+		/* Update the data index to the last byte */
+		(*data_index) = fifo->length;
 
-        /* FIFO is empty */
-        rslt = SMI230_W_FIFO_EMPTY;
-    }
-    else
-    {
-        /* Update skipped frame count in the FIFO structure */
-        fifo->skipped_frame_count = fifo->data[(*data_index)];
+		/* FIFO is empty */
+		rslt = SMI230_W_FIFO_EMPTY;
+	} else {
+		/* Update skipped frame count in the FIFO structure */
+		fifo->skipped_frame_count = fifo->data[(*data_index)];
 
-        /* Move the data index by 1 byte */
-        (*data_index) = (*data_index) + 1;
+		/* Move the data index by 1 byte */
+		(*data_index) = (*data_index) + 1;
 
-        /* More frames could be read */
-        rslt = SMI230_W_PARTIAL_READ;
-    }
+		/* More frames could be read */
+		rslt = SMI230_W_PARTIAL_READ;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -2171,10 +2126,10 @@ static int8_t unpack_skipped_frame(uint16_t *data_index, struct smi230_fifo_fram
  */
 static void reset_fifo_frame_structure(struct smi230_fifo_frame *fifo)
 {
-    /* Reset FIFO data structure */
-    fifo->acc_byte_start_idx = 0;
-    fifo->sensor_time = 0;
-    fifo->skipped_frame_count = 0;
+	/* Reset FIFO data structure */
+	fifo->acc_byte_start_idx = 0;
+	fifo->sensor_time = 0;
+	fifo->skipped_frame_count = 0;
 }
 
 /*!
@@ -2182,30 +2137,29 @@ static void reset_fifo_frame_structure(struct smi230_fifo_frame *fifo)
  * FIFO data.
  */
 static void unpack_accel_data(struct smi230_sensor_data *acc,
-                              uint16_t data_start_index,
-                              const struct smi230_fifo_frame *fifo)
+			      uint16_t data_start_index,
+			      const struct smi230_fifo_frame *fifo)
 {
-    /* Variables to store LSB value */
-    uint16_t data_lsb;
+	/* Variables to store LSB value */
+	uint16_t data_lsb;
 
-    /* Variables to store MSB value */
-    uint16_t data_msb;
+	/* Variables to store MSB value */
+	uint16_t data_msb;
 
-    /* Accelerometer raw x data */
-    data_lsb = fifo->data[data_start_index++];
-    data_msb = fifo->data[data_start_index++];
-    acc->x = (int16_t)((data_msb << 8) | data_lsb);
+	/* Accelerometer raw x data */
+	data_lsb = fifo->data[data_start_index++];
+	data_msb = fifo->data[data_start_index++];
+	acc->x = (int16_t)((data_msb << 8) | data_lsb);
 
-    /* Accelerometer raw y data */
-    data_lsb = fifo->data[data_start_index++];
-    data_msb = fifo->data[data_start_index++];
-    acc->y = (int16_t)((data_msb << 8) | data_lsb);
+	/* Accelerometer raw y data */
+	data_lsb = fifo->data[data_start_index++];
+	data_msb = fifo->data[data_start_index++];
+	acc->y = (int16_t)((data_msb << 8) | data_lsb);
 
-    /* Accelerometer raw z data */
-    data_lsb = fifo->data[data_start_index++];
-    data_msb = fifo->data[data_start_index++];
-    acc->z = (int16_t)((data_msb << 8) | data_lsb);
-
+	/* Accelerometer raw z data */
+	data_lsb = fifo->data[data_start_index++];
+	data_msb = fifo->data[data_start_index++];
+	acc->z = (int16_t)((data_msb << 8) | data_lsb);
 }
 
 /*!
@@ -2213,52 +2167,48 @@ static void unpack_accel_data(struct smi230_sensor_data *acc,
  * FIFO data in header mode. It updates the current data
  * byte to be parsed.
  */
-static int8_t unpack_accel_frame(struct smi230_sensor_data *acc,
-                                 uint16_t *idx,
-                                 uint16_t *acc_idx,
-                                 uint16_t frame,
-                                 const struct smi230_fifo_frame *fifo)
+static int8_t unpack_accel_frame(struct smi230_sensor_data *acc, uint16_t *idx,
+				 uint16_t *acc_idx, uint16_t frame,
+				 const struct smi230_fifo_frame *fifo)
 {
-    /* Variable to define error */
-    int8_t rslt = SMI230_OK;
+	/* Variable to define error */
+	int8_t rslt = SMI230_OK;
 
-    switch (frame)
-    {
-        /* If frame contains only accelerometer data */
-        case SMI230_FIFO_HEADER_ACC_FRM:
+	switch (frame) {
+	/* If frame contains only accelerometer data */
+	case SMI230_FIFO_HEADER_ACC_FRM:
 
-            /* Partially read, then skip the data */
-            if (((*idx) + SMI230_FIFO_ACCEL_LENGTH) > fifo->length)
-            {
-                /* Update the data index as complete*/
-                (*idx) = fifo->length;
+		/* Partially read, then skip the data */
+		if (((*idx) + SMI230_FIFO_ACCEL_LENGTH) > fifo->length) {
+			/* Update the data index as complete*/
+			(*idx) = fifo->length;
 
-                /* FIFO is empty */
-                rslt = SMI230_W_FIFO_EMPTY;
-                break;
-            }
+			/* FIFO is empty */
+			rslt = SMI230_W_FIFO_EMPTY;
+			break;
+		}
 
-            /* Get the accelerometer data */
-            unpack_accel_data(&acc[(*acc_idx)], *idx, fifo);
+		/* Get the accelerometer data */
+		unpack_accel_data(&acc[(*acc_idx)], *idx, fifo);
 
-            /* Update data index */
-            (*idx) = (*idx) + SMI230_FIFO_ACCEL_LENGTH;
+		/* Update data index */
+		(*idx) = (*idx) + SMI230_FIFO_ACCEL_LENGTH;
 
-            /* Update accelerometer frame index */
-            (*acc_idx)++;
+		/* Update accelerometer frame index */
+		(*acc_idx)++;
 
-            break;
-        default:
+		break;
+	default:
 
-            /* Move the data index to the last byte in case of invalid values */
-            (*idx) = fifo->length;
+		/* Move the data index to the last byte in case of invalid values */
+		(*idx) = fifo->length;
 
-            /* FIFO is empty */
-            rslt = SMI230_W_FIFO_EMPTY;
-            break;
-    }
+		/* FIFO is empty */
+		rslt = SMI230_W_FIFO_EMPTY;
+		break;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -2266,68 +2216,70 @@ static int8_t unpack_accel_frame(struct smi230_sensor_data *acc,
  * current_frame_length parameter when unnecessary FIFO data appears while
  * extracting the user specified data.
  */
-static int8_t move_next_frame(uint16_t *data_index, uint8_t current_frame_length, const struct smi230_fifo_frame *fifo)
+static int8_t move_next_frame(uint16_t *data_index,
+			      uint8_t current_frame_length,
+			      const struct smi230_fifo_frame *fifo)
 {
-    /* Variables to define error */
-    int8_t rslt = SMI230_OK;
+	/* Variables to define error */
+	int8_t rslt = SMI230_OK;
 
-    /* Validate data index */
-    if (((*data_index) + current_frame_length) > fifo->length)
-    {
-        /* Move the data index to the last byte */
-        (*data_index) = fifo->length;
+	/* Validate data index */
+	if (((*data_index) + current_frame_length) > fifo->length) {
+		/* Move the data index to the last byte */
+		(*data_index) = fifo->length;
 
-        /* FIFO is empty */
-        rslt = SMI230_W_FIFO_EMPTY;
-    }
-    else
-    {
-        /* Move the data index to next frame */
-        (*data_index) = (*data_index) + current_frame_length;
-    }
+		/* FIFO is empty */
+		rslt = SMI230_W_FIFO_EMPTY;
+	} else {
+		/* Move the data index to next frame */
+		(*data_index) = (*data_index) + current_frame_length;
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This internal API is used to parse and store the sensor time from the
  * FIFO data.
  */
-static int8_t unpack_sensortime_frame(uint16_t *data_index, struct smi230_fifo_frame *fifo)
+static int8_t unpack_sensortime_frame(uint16_t *data_index,
+				      struct smi230_fifo_frame *fifo)
 {
-    /* Variables to define error */
-    int8_t rslt = SMI230_OK;
+	/* Variables to define error */
+	int8_t rslt = SMI230_OK;
 
-    /* Variables to define 3 bytes of sensor time */
-    uint32_t sensor_time_byte3 = 0;
-    uint16_t sensor_time_byte2 = 0;
-    uint8_t sensor_time_byte1 = 0;
+	/* Variables to define 3 bytes of sensor time */
+	uint32_t sensor_time_byte3 = 0;
+	uint16_t sensor_time_byte2 = 0;
+	uint8_t sensor_time_byte1 = 0;
 
-    /* Validate data index */
-    if (((*data_index) + SMI230_SENSOR_TIME_LENGTH) > fifo->length)
-    {
-        /* Move the data index to the last byte */
-        (*data_index) = fifo->length;
+	/* Validate data index */
+	if (((*data_index) + SMI230_SENSOR_TIME_LENGTH) > fifo->length) {
+		/* Move the data index to the last byte */
+		(*data_index) = fifo->length;
 
-        /* FIFO is empty */
-        rslt = SMI230_W_FIFO_EMPTY;
-    }
-    else
-    {
-        /* Get sensor time from the FIFO data */
-        sensor_time_byte3 = fifo->data[(*data_index) + SMI230_SENSOR_TIME_MSB_BYTE] << 16;
-        sensor_time_byte2 = fifo->data[(*data_index) + SMI230_SENSOR_TIME_XLSB_BYTE] << 8;
-        sensor_time_byte1 = fifo->data[(*data_index)];
+		/* FIFO is empty */
+		rslt = SMI230_W_FIFO_EMPTY;
+	} else {
+		/* Get sensor time from the FIFO data */
+		sensor_time_byte3 =
+			fifo->data[(*data_index) + SMI230_SENSOR_TIME_MSB_BYTE]
+			<< 16;
+		sensor_time_byte2 =
+			fifo->data[(*data_index) + SMI230_SENSOR_TIME_XLSB_BYTE]
+			<< 8;
+		sensor_time_byte1 = fifo->data[(*data_index)];
 
-        /* Update sensor time in the FIFO structure */
-        fifo->sensor_time = (uint32_t)(sensor_time_byte3 | sensor_time_byte2 | sensor_time_byte1);
+		/* Update sensor time in the FIFO structure */
+		fifo->sensor_time =
+			(uint32_t)(sensor_time_byte3 | sensor_time_byte2 |
+				   sensor_time_byte1);
 
-        /* Move the data index by 3 bytes */
-        (*data_index) = (*data_index) + SMI230_SENSOR_TIME_LENGTH;
+		/* Move the data index by 3 bytes */
+		(*data_index) = (*data_index) + SMI230_SENSOR_TIME_LENGTH;
+	}
 
-    }
-
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -2335,688 +2287,722 @@ static int8_t unpack_sensortime_frame(uint16_t *data_index, struct smi230_fifo_f
  * FIFO in header mode.
  */
 static int8_t extract_acc_header_mode(struct smi230_sensor_data *acc,
-                                      uint16_t *accel_length,
-                                      struct smi230_fifo_frame *fifo)
+				      uint16_t *accel_length,
+				      struct smi230_fifo_frame *fifo)
 {
-    /* Variable to define error */
-    int8_t rslt = SMI230_OK;
+	/* Variable to define error */
+	int8_t rslt = SMI230_OK;
 
-    /* Variable to define header frame */
-    uint8_t frame_header = 0;
+	/* Variable to define header frame */
+	uint8_t frame_header = 0;
 
-    /* Variable to index the data bytes */
-    uint16_t data_index;
+	/* Variable to index the data bytes */
+	uint16_t data_index;
 
-    /* Variable to index accelerometer frames */
-    uint16_t accel_index = 0;
+	/* Variable to index accelerometer frames */
+	uint16_t accel_index = 0;
 
-    /* Variable to indicate accelerometer frames read */
-    uint16_t frame_to_read = *accel_length;
+	/* Variable to indicate accelerometer frames read */
+	uint16_t frame_to_read = *accel_length;
 
-    for (data_index = fifo->acc_byte_start_idx; data_index < fifo->length;)
-    {
-        /* Get frame header byte */
-        frame_header = fifo->data[data_index];
+	for (data_index = fifo->acc_byte_start_idx;
+	     data_index < fifo->length;) {
+		/* Get frame header byte */
+		frame_header = fifo->data[data_index];
 
-        /* Index shifted to next byte where data starts */
-        data_index++;
-        switch (frame_header)
-        {
-            /* If header defines accelerometer frame */
-            case SMI230_FIFO_HEADER_ACC_FRM:
-            case SMI230_FIFO_HEADER_ALL_FRM:
+		/* Index shifted to next byte where data starts */
+		data_index++;
+		switch (frame_header) {
+		/* If header defines accelerometer frame */
+		case SMI230_FIFO_HEADER_ACC_FRM:
+		case SMI230_FIFO_HEADER_ALL_FRM:
 
-                /* Unpack from normal frames */
-                rslt = unpack_accel_frame(acc, &data_index, &accel_index, frame_header, fifo);
-                break;
+			/* Unpack from normal frames */
+			rslt = unpack_accel_frame(acc, &data_index,
+						  &accel_index, frame_header,
+						  fifo);
+			break;
 
-            /* If header defines sensor time frame */
-            case SMI230_FIFO_HEADER_SENS_TIME_FRM:
-                rslt = unpack_sensortime_frame(&data_index, fifo);
-                break;
+		/* If header defines sensor time frame */
+		case SMI230_FIFO_HEADER_SENS_TIME_FRM:
+			rslt = unpack_sensortime_frame(&data_index, fifo);
+			break;
 
-            /* If header defines skip frame */
-            case SMI230_FIFO_HEADER_SKIP_FRM:
-                rslt = unpack_skipped_frame(&data_index, fifo);
-                break;
+		/* If header defines skip frame */
+		case SMI230_FIFO_HEADER_SKIP_FRM:
+			rslt = unpack_skipped_frame(&data_index, fifo);
+			break;
 
-            /* If header defines Input configuration frame */
-            case SMI230_FIFO_HEADER_INPUT_CFG_FRM:
-                rslt = move_next_frame(&data_index, SMI230_FIFO_INPUT_CFG_LENGTH, fifo);
-                break;
+		/* If header defines Input configuration frame */
+		case SMI230_FIFO_HEADER_INPUT_CFG_FRM:
+			rslt = move_next_frame(&data_index,
+					       SMI230_FIFO_INPUT_CFG_LENGTH,
+					       fifo);
+			break;
 
-            /* If header defines sample drop frame */
-            case SMI230_FIFO_SAMPLE_DROP_FRM:
-                rslt = move_next_frame(&data_index, SMI230_FIFO_INPUT_CFG_LENGTH, fifo);
-                break;
+		/* If header defines sample drop frame */
+		case SMI230_FIFO_SAMPLE_DROP_FRM:
+			rslt = move_next_frame(&data_index,
+					       SMI230_FIFO_INPUT_CFG_LENGTH,
+					       fifo);
+			break;
 
-            /* If header defines invalid frame or end of valid data */
-            case SMI230_FIFO_HEAD_OVER_READ_MSB:
+		/* If header defines invalid frame or end of valid data */
+		case SMI230_FIFO_HEAD_OVER_READ_MSB:
 
-                /* Move the data index to the last byte to mark completion */
-                data_index = fifo->length;
+			/* Move the data index to the last byte to mark completion */
+			data_index = fifo->length;
 
-                /* FIFO is empty */
-                rslt = SMI230_W_FIFO_EMPTY;
-                break;
-            default:
+			/* FIFO is empty */
+			rslt = SMI230_W_FIFO_EMPTY;
+			break;
+		default:
 
-                /* Move the data index to the last byte in case of invalid values */
-                data_index = fifo->length;
+			/* Move the data index to the last byte in case of invalid values */
+			data_index = fifo->length;
 
-                /* FIFO is empty */
-                rslt = SMI230_W_FIFO_EMPTY;
-                break;
-        }
+			/* FIFO is empty */
+			rslt = SMI230_W_FIFO_EMPTY;
+			break;
+		}
 
-        /* Break if Number of frames to be read is complete or FIFO is mpty */
-        if ((frame_to_read == accel_index) || (rslt == SMI230_W_FIFO_EMPTY))
-        {
-            break;
-        }
-    }
+		/* Break if Number of frames to be read is complete or FIFO is mpty */
+		if ((frame_to_read == accel_index) ||
+		    (rslt == SMI230_W_FIFO_EMPTY)) {
+			break;
+		}
+	}
 
-    /* Update the accelerometer frame index */
-    (*accel_length) = accel_index;
+	/* Update the accelerometer frame index */
+	(*accel_length) = accel_index;
 
-    /* Update the accelerometer byte index */
-    fifo->acc_byte_start_idx = data_index;
+	/* Update the accelerometer byte index */
+	fifo->acc_byte_start_idx = data_index;
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API sets the FIFO water mark interrupt for accel sensor.
  */
-static int8_t set_fifo_wm_int(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev)
+static int8_t
+set_fifo_wm_int(const struct smi230_accel_int_channel_cfg *int_config,
+		const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data = 0, conf;
+	int8_t rslt;
+	uint8_t data = 0, conf;
 
-    /* Read interrupt map register */
-    rslt = get_regs(SMI230_ACCEL_INT1_INT2_MAP_DATA_REG, &data, 1, dev);
+	/* Read interrupt map register */
+	rslt = get_regs(SMI230_ACCEL_INT1_INT2_MAP_DATA_REG, &data, 1, dev);
 
-    if (rslt == SMI230_OK)
-    {
-        conf = int_config->int_pin_cfg.enable_int_pin;
+	if (rslt == SMI230_OK) {
+		conf = int_config->int_pin_cfg.enable_int_pin;
 
-        switch (int_config->int_channel)
-        {
-            case SMI230_INT_CHANNEL_1:
+		switch (int_config->int_channel) {
+		case SMI230_INT_CHANNEL_1:
 
-                /* Updating the data */
-                data = SMI230_SET_BITS(data, SMI230_ACCEL_INT1_FWM, conf);
-                break;
+			/* Updating the data */
+			data = SMI230_SET_BITS(data, SMI230_ACCEL_INT1_FWM,
+					       conf);
+			break;
 
-            case SMI230_INT_CHANNEL_2:
+		case SMI230_INT_CHANNEL_2:
 
-                /* Updating the data */
-                data = SMI230_SET_BITS(data, SMI230_ACCEL_INT2_FWM, conf);
-                break;
+			/* Updating the data */
+			data = SMI230_SET_BITS(data, SMI230_ACCEL_INT2_FWM,
+					       conf);
+			break;
 
-            default:
-                rslt = SMI230_E_INVALID_INPUT;
-                break;
-        }
+		default:
+			rslt = SMI230_E_INVALID_INPUT;
+			break;
+		}
 
-        if (rslt == SMI230_OK)
-        {
-            /* Configure interrupt pins */
-            rslt = set_int_pin_config(int_config, dev);
+		if (rslt == SMI230_OK) {
+			/* Configure interrupt pins */
+			rslt = set_int_pin_config(int_config, dev);
 
-            if (rslt == SMI230_OK)
-            {
-                /* Write to interrupt map register */
-                rslt = set_regs(SMI230_ACCEL_INT1_INT2_MAP_DATA_REG, &data, 1, dev);
-            }
-        }
-    }
+			if (rslt == SMI230_OK) {
+				/* Write to interrupt map register */
+				rslt = set_regs(
+					SMI230_ACCEL_INT1_INT2_MAP_DATA_REG,
+					&data, 1, dev);
+			}
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API sets the FIFO full interrupt for accel sensor.
  */
-static int8_t set_fifo_full_int(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev)
+static int8_t
+set_fifo_full_int(const struct smi230_accel_int_channel_cfg *int_config,
+		  const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data = 0, conf;
+	int8_t rslt;
+	uint8_t data = 0, conf;
 
-    /* Read interrupt map register */
-    rslt = get_regs(SMI230_ACCEL_INT1_INT2_MAP_DATA_REG, &data, 1, dev);
+	/* Read interrupt map register */
+	rslt = get_regs(SMI230_ACCEL_INT1_INT2_MAP_DATA_REG, &data, 1, dev);
 
-    if (rslt == SMI230_OK)
-    {
-        conf = int_config->int_pin_cfg.enable_int_pin;
+	if (rslt == SMI230_OK) {
+		conf = int_config->int_pin_cfg.enable_int_pin;
 
-        switch (int_config->int_channel)
-        {
-            case SMI230_INT_CHANNEL_1:
+		switch (int_config->int_channel) {
+		case SMI230_INT_CHANNEL_1:
 
-                /* Updating the data */
-                data = SMI230_SET_BITS_POS_0(data, SMI230_ACCEL_INT1_FFULL, conf);
-                break;
+			/* Updating the data */
+			data = SMI230_SET_BITS_POS_0(
+				data, SMI230_ACCEL_INT1_FFULL, conf);
+			break;
 
-            case SMI230_INT_CHANNEL_2:
+		case SMI230_INT_CHANNEL_2:
 
-                /* Updating the data */
-                data = SMI230_SET_BITS(data, SMI230_ACCEL_INT2_FFULL, conf);
-                break;
+			/* Updating the data */
+			data = SMI230_SET_BITS(data, SMI230_ACCEL_INT2_FFULL,
+					       conf);
+			break;
 
-            default:
-                rslt = SMI230_E_INVALID_INPUT;
-                break;
-        }
+		default:
+			rslt = SMI230_E_INVALID_INPUT;
+			break;
+		}
 
-        if (rslt == SMI230_OK)
-        {
-            /* Configure interrupt pins */
-            rslt = set_int_pin_config(int_config, dev);
+		if (rslt == SMI230_OK) {
+			/* Configure interrupt pins */
+			rslt = set_int_pin_config(int_config, dev);
 
-            if (rslt == SMI230_OK)
-            {
-                /* Write to interrupt map register */
-                rslt = set_regs(SMI230_ACCEL_INT1_INT2_MAP_DATA_REG, &data, 1, dev);
-            }
-        }
-    }
+			if (rslt == SMI230_OK) {
+				/* Write to interrupt map register */
+				rslt = set_regs(
+					SMI230_ACCEL_INT1_INT2_MAP_DATA_REG,
+					&data, 1, dev);
+			}
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API sets the high-g interrupt for accel sensor
  */
-static int8_t set_accel_high_g_int(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev)
+static int8_t
+set_accel_high_g_int(const struct smi230_accel_int_channel_cfg *int_config,
+		     const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data, reg_addr = 0;
+	int8_t rslt;
+	uint8_t data, reg_addr = 0;
 
-    /* Check for null pointer in the device structure */
-    rslt = null_ptr_check(dev);
-    if (rslt == SMI230_OK)
-    {
-        data = SMI230_ACCEL_HIGH_G_INT_DISABLE;
+	/* Check for null pointer in the device structure */
+	rslt = null_ptr_check(dev);
+	if (rslt == SMI230_OK) {
+		data = SMI230_ACCEL_HIGH_G_INT_DISABLE;
 
-        switch (int_config->int_channel)
-        {
-            case SMI230_INT_CHANNEL_1:
-                reg_addr = SMI230_ACCEL_INT1_MAP_REG;
-                break;
+		switch (int_config->int_channel) {
+		case SMI230_INT_CHANNEL_1:
+			reg_addr = SMI230_ACCEL_INT1_MAP_REG;
+			break;
 
-            case SMI230_INT_CHANNEL_2:
-                reg_addr = SMI230_ACCEL_INT2_MAP_REG;
-                break;
+		case SMI230_INT_CHANNEL_2:
+			reg_addr = SMI230_ACCEL_INT2_MAP_REG;
+			break;
 
-            default:
-                rslt = SMI230_E_INVALID_INPUT;
-                break;
-        }
+		default:
+			rslt = SMI230_E_INVALID_INPUT;
+			break;
+		}
 
-        if (rslt == SMI230_OK)
-        {
-            rslt = get_regs(reg_addr, &data, 1, dev);
+		if (rslt == SMI230_OK) {
+			rslt = get_regs(reg_addr, &data, 1, dev);
 
-            if (int_config->int_pin_cfg.enable_int_pin == SMI230_ENABLE)
-            {
-                /* Interrupt B mapped to INT1/INT2 */
-                data |= SMI230_ACCEL_HIGH_G_INT_ENABLE;
-            }
-            else
-            {
-                data &= ~SMI230_ACCEL_HIGH_G_INT_ENABLE;
-            }
+			if (int_config->int_pin_cfg.enable_int_pin ==
+			    SMI230_ENABLE) {
+				/* Interrupt B mapped to INT1/INT2 */
+				data |= SMI230_ACCEL_HIGH_G_INT_ENABLE;
+			} else {
+				data &= ~SMI230_ACCEL_HIGH_G_INT_ENABLE;
+			}
 
-            if (rslt == SMI230_OK)
-            {
-                /* Write to interrupt map register */
-                rslt = set_regs(reg_addr, &data, 1, dev);
-            }
+			if (rslt == SMI230_OK) {
+				/* Write to interrupt map register */
+				rslt = set_regs(reg_addr, &data, 1, dev);
+			}
 
-            if (rslt == SMI230_OK)
-            {
-                /* Set input interrupt configuration */
-                rslt = set_int_pin_config(int_config, dev);
-            }
-        }
-    }
+			if (rslt == SMI230_OK) {
+				/* Set input interrupt configuration */
+				rslt = set_int_pin_config(int_config, dev);
+			}
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API sets the low-g interrupt for accel sensor
  */
-static int8_t set_accel_low_g_int(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev)
+static int8_t
+set_accel_low_g_int(const struct smi230_accel_int_channel_cfg *int_config,
+		    const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data, reg_addr = 0;
+	int8_t rslt;
+	uint8_t data, reg_addr = 0;
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
-    if (rslt == SMI230_OK)
-    {
-        data = SMI230_ACCEL_LOW_G_INT_DISABLE;
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
+	if (rslt == SMI230_OK) {
+		data = SMI230_ACCEL_LOW_G_INT_DISABLE;
 
-        switch (int_config->int_channel)
-        {
-            case SMI230_INT_CHANNEL_1:
-                reg_addr = SMI230_ACCEL_INT1_MAP_REG;
-                break;
+		switch (int_config->int_channel) {
+		case SMI230_INT_CHANNEL_1:
+			reg_addr = SMI230_ACCEL_INT1_MAP_REG;
+			break;
 
-            case SMI230_INT_CHANNEL_2:
-                reg_addr = SMI230_ACCEL_INT2_MAP_REG;
-                break;
+		case SMI230_INT_CHANNEL_2:
+			reg_addr = SMI230_ACCEL_INT2_MAP_REG;
+			break;
 
-            default:
-                rslt = SMI230_E_INVALID_INPUT;
-                break;
-        }
+		default:
+			rslt = SMI230_E_INVALID_INPUT;
+			break;
+		}
 
-        if (rslt == SMI230_OK)
-        {
-            rslt = get_regs(reg_addr, &data, 1, dev);
+		if (rslt == SMI230_OK) {
+			rslt = get_regs(reg_addr, &data, 1, dev);
 
-            if (int_config->int_pin_cfg.enable_int_pin == SMI230_ENABLE)
-            {
-                /* Interrupt B mapped to INT1/INT2 */
-                data |= SMI230_ACCEL_LOW_G_INT_ENABLE;
-            }
-            else
-            {
-                data &= ~SMI230_ACCEL_LOW_G_INT_DISABLE;
-            }
+			if (int_config->int_pin_cfg.enable_int_pin ==
+			    SMI230_ENABLE) {
+				/* Interrupt B mapped to INT1/INT2 */
+				data |= SMI230_ACCEL_LOW_G_INT_ENABLE;
+			} else {
+				data &= ~SMI230_ACCEL_LOW_G_INT_DISABLE;
+			}
 
-            if (rslt == SMI230_OK)
-            {
-                /* Write to interrupt map register */
-                rslt = set_regs(reg_addr, &data, 1, dev);
-            }
+			if (rslt == SMI230_OK) {
+				/* Write to interrupt map register */
+				rslt = set_regs(reg_addr, &data, 1, dev);
+			}
 
-            if (rslt == SMI230_OK)
-            {
-                /* Set input interrupt configuration */
-                rslt = set_int_pin_config(int_config, dev);
-            }
-        }
-    }
+			if (rslt == SMI230_OK) {
+				/* Set input interrupt configuration */
+				rslt = set_int_pin_config(int_config, dev);
+			}
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API sets the orientation interrupt for accel sensor
  */
-static int8_t set_accel_orient_int(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev)
+static int8_t
+set_accel_orient_int(const struct smi230_accel_int_channel_cfg *int_config,
+		     const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data, reg_addr = 0;
+	int8_t rslt;
+	uint8_t data, reg_addr = 0;
 
-    /* Check for null pointer in the device structure */
-    rslt = null_ptr_check(dev);
-    if (rslt == SMI230_OK)
-    {
-        data = SMI230_ACCEL_ORIENT_INT_DISABLE;
+	/* Check for null pointer in the device structure */
+	rslt = null_ptr_check(dev);
+	if (rslt == SMI230_OK) {
+		data = SMI230_ACCEL_ORIENT_INT_DISABLE;
 
-        switch (int_config->int_channel)
-        {
-            case SMI230_INT_CHANNEL_1:
-                reg_addr = SMI230_ACCEL_INT1_MAP_REG;
-                break;
+		switch (int_config->int_channel) {
+		case SMI230_INT_CHANNEL_1:
+			reg_addr = SMI230_ACCEL_INT1_MAP_REG;
+			break;
 
-            case SMI230_INT_CHANNEL_2:
-                reg_addr = SMI230_ACCEL_INT2_MAP_REG;
-                break;
+		case SMI230_INT_CHANNEL_2:
+			reg_addr = SMI230_ACCEL_INT2_MAP_REG;
+			break;
 
-            default:
-                rslt = SMI230_E_INVALID_INPUT;
-                break;
-        }
+		default:
+			rslt = SMI230_E_INVALID_INPUT;
+			break;
+		}
 
-        if (rslt == SMI230_OK)
-        {
-            rslt = get_regs(reg_addr, &data, 1, dev);
+		if (rslt == SMI230_OK) {
+			rslt = get_regs(reg_addr, &data, 1, dev);
 
-            if (int_config->int_pin_cfg.enable_int_pin == SMI230_ENABLE)
-            {
-                /* Interrupt B mapped to INT1/INT2 */
-                data |= SMI230_ACCEL_ORIENT_INT_ENABLE;
-            }
-            else
-            {
-                data &= ~SMI230_ACCEL_ORIENT_INT_ENABLE;
-            }
+			if (int_config->int_pin_cfg.enable_int_pin ==
+			    SMI230_ENABLE) {
+				/* Interrupt B mapped to INT1/INT2 */
+				data |= SMI230_ACCEL_ORIENT_INT_ENABLE;
+			} else {
+				data &= ~SMI230_ACCEL_ORIENT_INT_ENABLE;
+			}
 
-            if (rslt == SMI230_OK)
-            {
-                /* Write to interrupt map register */
-                rslt = set_regs(reg_addr, &data, 1, dev);
-            }
+			if (rslt == SMI230_OK) {
+				/* Write to interrupt map register */
+				rslt = set_regs(reg_addr, &data, 1, dev);
+			}
 
-            if (rslt == SMI230_OK)
-            {
-                /* Set input interrupt configuration */
-                rslt = set_int_pin_config(int_config, dev);
-            }
-        }
-    }
+			if (rslt == SMI230_OK) {
+				/* Set input interrupt configuration */
+				rslt = set_int_pin_config(int_config, dev);
+			}
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API sets no-motion interrupt for accel sensor
  */
-static int8_t set_accel_no_motion_int(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev)
+static int8_t
+set_accel_no_motion_int(const struct smi230_accel_int_channel_cfg *int_config,
+			const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data, reg_addr = 0;
+	int8_t rslt;
+	uint8_t data, reg_addr = 0;
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
-    if (rslt == SMI230_OK)
-    {
-        data = SMI230_ACCEL_NO_MOT_INT_DISABLE;
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
+	if (rslt == SMI230_OK) {
+		data = SMI230_ACCEL_NO_MOT_INT_DISABLE;
 
-        switch (int_config->int_channel)
-        {
-            case SMI230_INT_CHANNEL_1:
-                reg_addr = SMI230_ACCEL_INT1_MAP_REG;
-                break;
+		switch (int_config->int_channel) {
+		case SMI230_INT_CHANNEL_1:
+			reg_addr = SMI230_ACCEL_INT1_MAP_REG;
+			break;
 
-            case SMI230_INT_CHANNEL_2:
-		reg_addr = SMI230_ACCEL_INT2_MAP_REG;
-                break;
+		case SMI230_INT_CHANNEL_2:
+			reg_addr = SMI230_ACCEL_INT2_MAP_REG;
+			break;
 
-            default:
-                rslt = SMI230_E_INVALID_INPUT;
-                break;
-        }
+		default:
+			rslt = SMI230_E_INVALID_INPUT;
+			break;
+		}
 
-        if (rslt == SMI230_OK)
-        {
-            rslt = get_regs(reg_addr, &data, 1, dev);
+		if (rslt == SMI230_OK) {
+			rslt = get_regs(reg_addr, &data, 1, dev);
 
-            if (int_config->int_pin_cfg.enable_int_pin == SMI230_ENABLE)
-            {
-                /* Interrupt B mapped to INT1/INT2 */
-                data |= SMI230_ACCEL_NO_MOT_INT_ENABLE;
-            }
-            else
-            {
-                data &= ~SMI230_ACCEL_NO_MOT_INT_ENABLE;
-            }
+			if (int_config->int_pin_cfg.enable_int_pin ==
+			    SMI230_ENABLE) {
+				/* Interrupt B mapped to INT1/INT2 */
+				data |= SMI230_ACCEL_NO_MOT_INT_ENABLE;
+			} else {
+				data &= ~SMI230_ACCEL_NO_MOT_INT_ENABLE;
+			}
 
-            if (rslt == SMI230_OK)
-            {
-                /* Write to interrupt map register */
-                rslt = set_regs(reg_addr, &data, 1, dev);
-            }
+			if (rslt == SMI230_OK) {
+				/* Write to interrupt map register */
+				rslt = set_regs(reg_addr, &data, 1, dev);
+			}
 
-            if (rslt == SMI230_OK)
-            {
-                /* Set input interrupt configuration */
-                rslt = set_int_pin_config(int_config, dev);
-            }
-        }
-    }
+			if (rslt == SMI230_OK) {
+				/* Set input interrupt configuration */
+				rslt = set_int_pin_config(int_config, dev);
+			}
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API sets error interrupt for accel sensor
  */
-static int8_t set_accel_err_int(const struct smi230_accel_int_channel_cfg *int_config, const struct smi230_dev *dev)
+static int8_t
+set_accel_err_int(const struct smi230_accel_int_channel_cfg *int_config,
+		  const struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data, reg_addr = 0;
+	int8_t rslt;
+	uint8_t data, reg_addr = 0;
 
-    /* Check for null pointer in the device structure*/
-    rslt = null_ptr_check(dev);
-    if (rslt == SMI230_OK)
-    {
-        data = SMI230_ACCEL_ERR_INT_DISABLE;
+	/* Check for null pointer in the device structure*/
+	rslt = null_ptr_check(dev);
+	if (rslt == SMI230_OK) {
+		data = SMI230_ACCEL_ERR_INT_DISABLE;
 
-        switch (int_config->int_channel)
-        {
-            case SMI230_INT_CHANNEL_1:
-                reg_addr = SMI230_ACCEL_INT1_MAP_REG;
-                break;
+		switch (int_config->int_channel) {
+		case SMI230_INT_CHANNEL_1:
+			reg_addr = SMI230_ACCEL_INT1_MAP_REG;
+			break;
 
-            case SMI230_INT_CHANNEL_2:
-                reg_addr = SMI230_ACCEL_INT2_MAP_REG;
-                break;
+		case SMI230_INT_CHANNEL_2:
+			reg_addr = SMI230_ACCEL_INT2_MAP_REG;
+			break;
 
-            default:
-                rslt = SMI230_E_INVALID_INPUT;
-                break;
-        }
+		default:
+			rslt = SMI230_E_INVALID_INPUT;
+			break;
+		}
 
-        if (rslt == SMI230_OK)
-        {
-            rslt = get_regs(reg_addr, &data, 1, dev);
+		if (rslt == SMI230_OK) {
+			rslt = get_regs(reg_addr, &data, 1, dev);
 
-            if (int_config->int_pin_cfg.enable_int_pin == SMI230_ENABLE)
-            {
-                /* Interrupt B mapped to INT1/INT2 */
-                data |= SMI230_ACCEL_ERR_INT_ENABLE;
-            }
-            else
-            {
-                data &= ~SMI230_ACCEL_ERR_INT_ENABLE;
-            }
+			if (int_config->int_pin_cfg.enable_int_pin ==
+			    SMI230_ENABLE) {
+				/* Interrupt B mapped to INT1/INT2 */
+				data |= SMI230_ACCEL_ERR_INT_ENABLE;
+			} else {
+				data &= ~SMI230_ACCEL_ERR_INT_ENABLE;
+			}
 
-            if (rslt == SMI230_OK)
-            {
-                /* Write to interrupt map register */
-                rslt = set_regs(reg_addr, &data, 1, dev);
-            }
+			if (rslt == SMI230_OK) {
+				/* Write to interrupt map register */
+				rslt = set_regs(reg_addr, &data, 1, dev);
+			}
 
-            if (rslt == SMI230_OK)
-            {
-                /* Set input interrupt configuration */
-                rslt = set_int_pin_config(int_config, dev);
-            }
-        }
-    }
+			if (rslt == SMI230_OK) {
+				/* Set input interrupt configuration */
+				rslt = set_int_pin_config(int_config, dev);
+			}
+		}
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  *  @brief This API is used to enable/disable and configure the anymotion
  *  feature.
  */
-int8_t smi230_configure_anymotion(struct smi230_anymotion_cfg *anymotion_cfg, struct smi230_dev *dev)
+int8_t smi230_configure_anymotion(struct smi230_anymotion_cfg *anymotion_cfg,
+				  struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint16_t data[SMI230_ACCEL_ANYMOTION_LEN];
+	int8_t rslt;
+	uint16_t data[SMI230_ACCEL_ANYMOTION_LEN];
 
-    /* Check for null pointer in the device structure */
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure */
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if (rslt == SMI230_OK)
-    {
-        /* Enable data synchronization */
-        data[0] = (anymotion_cfg->threshold & SMI230_ACCEL_ANYMOTION_THRESHOLD_MASK);
-        data[0] |=
-            ((anymotion_cfg->enable << SMI230_ACCEL_ANYMOTION_NOMOTION_SEL_SHIFT) &
-             SMI230_ACCEL_ANYMOTION_NOMOTION_SEL_MASK);
-        data[1] = (anymotion_cfg->duration & SMI230_ACCEL_ANYMOTION_DURATION_MASK);
-        data[1] |= ((anymotion_cfg->x_en << SMI230_ACCEL_ANYMOTION_X_EN_SHIFT) & SMI230_ACCEL_ANYMOTION_X_EN_MASK);
-        data[1] |= ((anymotion_cfg->y_en << SMI230_ACCEL_ANYMOTION_Y_EN_SHIFT) & SMI230_ACCEL_ANYMOTION_Y_EN_MASK);
-        data[1] |= ((anymotion_cfg->z_en << SMI230_ACCEL_ANYMOTION_Z_EN_SHIFT) & SMI230_ACCEL_ANYMOTION_Z_EN_MASK);
-        rslt = smi230_acc_write_feature_config(SMI230_ACCEL_ANYMOTION_ADR, &data[0], SMI230_ACCEL_ANYMOTION_LEN, dev);
-    }
+	/* Proceed if null check is fine */
+	if (rslt == SMI230_OK) {
+		/* Enable data synchronization */
+		data[0] = (anymotion_cfg->threshold &
+			   SMI230_ACCEL_ANYMOTION_THRESHOLD_MASK);
+		data[0] |= ((anymotion_cfg->enable
+			     << SMI230_ACCEL_ANYMOTION_NOMOTION_SEL_SHIFT) &
+			    SMI230_ACCEL_ANYMOTION_NOMOTION_SEL_MASK);
+		data[1] = (anymotion_cfg->duration &
+			   SMI230_ACCEL_ANYMOTION_DURATION_MASK);
+		data[1] |= ((anymotion_cfg->x_en
+			     << SMI230_ACCEL_ANYMOTION_X_EN_SHIFT) &
+			    SMI230_ACCEL_ANYMOTION_X_EN_MASK);
+		data[1] |= ((anymotion_cfg->y_en
+			     << SMI230_ACCEL_ANYMOTION_Y_EN_SHIFT) &
+			    SMI230_ACCEL_ANYMOTION_Y_EN_MASK);
+		data[1] |= ((anymotion_cfg->z_en
+			     << SMI230_ACCEL_ANYMOTION_Z_EN_SHIFT) &
+			    SMI230_ACCEL_ANYMOTION_Z_EN_MASK);
+		rslt = smi230_acc_write_feature_config(
+			SMI230_ACCEL_ANYMOTION_ADR, &data[0],
+			SMI230_ACCEL_ANYMOTION_LEN, dev);
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API sets high-g configurations like threshold,
  * hysteresis, duration, and output configuration.
  */
-int8_t smi230_set_high_g_config(const struct smi230_high_g_cfg *config, struct smi230_dev *dev)
+int8_t smi230_set_high_g_config(const struct smi230_high_g_cfg *config,
+				struct smi230_dev *dev)
 {
-    /* Variable to define error */
-    int8_t rslt;
+	/* Variable to define error */
+	int8_t rslt;
 
-    /* Array to define the feature configuration */
-    uint16_t feature_config[SMI230_HIGH_G_START_ADR + 3] = { 0 };
+	/* Array to define the feature configuration */
+	uint16_t feature_config[SMI230_HIGH_G_START_ADR + 3] = { 0 };
 
-    rslt = get_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
+	rslt = get_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config,
+			sizeof(feature_config), dev);
 
-    if (rslt == SMI230_OK)
-    {
-        uint8_t idx = SMI230_HIGH_G_START_ADR;
+	if (rslt == SMI230_OK) {
+		uint8_t idx = SMI230_HIGH_G_START_ADR;
 
-        /* Set threshold */
-        feature_config[idx] = SMI230_SET_BITS_POS_0(feature_config[idx], SMI230_HIGH_G_THRES, config->threshold);
+		/* Set threshold */
+		feature_config[idx] = SMI230_SET_BITS_POS_0(feature_config[idx],
+							    SMI230_HIGH_G_THRES,
+							    config->threshold);
 
-        /* Set hysteresis */
-        feature_config[idx + 1] = SMI230_SET_BITS_POS_0(feature_config[idx + 1],
-                                                         SMI230_HIGH_G_HYST,
-                                                         config->hysteresis);
+		/* Set hysteresis */
+		feature_config[idx + 1] =
+			SMI230_SET_BITS_POS_0(feature_config[idx + 1],
+					      SMI230_HIGH_G_HYST,
+					      config->hysteresis);
 
-        /* Set x-select */
-        feature_config[idx + 1] = SMI230_SET_BITS(feature_config[idx + 1], SMI230_HIGH_G_X_SEL, config->select_x);
+		/* Set x-select */
+		feature_config[idx + 1] =
+			SMI230_SET_BITS(feature_config[idx + 1],
+					SMI230_HIGH_G_X_SEL, config->select_x);
 
-        /* Set y-select */
-        feature_config[idx + 1] = SMI230_SET_BITS(feature_config[idx + 1], SMI230_HIGH_G_Y_SEL, config->select_y);
+		/* Set y-select */
+		feature_config[idx + 1] =
+			SMI230_SET_BITS(feature_config[idx + 1],
+					SMI230_HIGH_G_Y_SEL, config->select_y);
 
-        /* Set z-select */
-        feature_config[idx + 1] = SMI230_SET_BITS(feature_config[idx + 1], SMI230_HIGH_G_Z_SEL, config->select_z);
+		/* Set z-select */
+		feature_config[idx + 1] =
+			SMI230_SET_BITS(feature_config[idx + 1],
+					SMI230_HIGH_G_Z_SEL, config->select_z);
 
-        /* High-g enable */
-        feature_config[idx + 1] = SMI230_SET_BITS(feature_config[idx + 1], SMI230_HIGH_G_ENABLE, config->enable);
+		/* High-g enable */
+		feature_config[idx + 1] =
+			SMI230_SET_BITS(feature_config[idx + 1],
+					SMI230_HIGH_G_ENABLE, config->enable);
 
-        /* Set duration */
-        feature_config[idx + 2] = SMI230_SET_BITS_POS_0(feature_config[idx + 2], SMI230_HIGH_G_DUR, config->duration);
+		/* Set duration */
+		feature_config[idx + 2] =
+			SMI230_SET_BITS_POS_0(feature_config[idx + 2],
+					      SMI230_HIGH_G_DUR,
+					      config->duration);
 
-        rslt = set_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t*) feature_config, 32, dev);
-    }
+		rslt = set_regs(SMI230_ACCEL_FEATURE_CFG_REG,
+				(uint8_t *)feature_config, 32, dev);
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API gets high-g configurations like threshold,
  * hysteresis, duration, and output configuration.
  */
-int8_t smi230_get_high_g_config(struct smi230_high_g_cfg *config, struct smi230_dev *dev)
+int8_t smi230_get_high_g_config(struct smi230_high_g_cfg *config,
+				struct smi230_dev *dev)
 {
-    /* Variable to define error */
-    int8_t rslt;
+	/* Variable to define error */
+	int8_t rslt;
 
-    /* Array to define the feature configuration */
-    uint16_t feature_config[SMI230_HIGH_G_START_ADR + 3] = { 0 };
+	/* Array to define the feature configuration */
+	uint16_t feature_config[SMI230_HIGH_G_START_ADR + 3] = { 0 };
 
-    rslt = get_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
+	rslt = get_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config,
+			sizeof(feature_config), dev);
 
-    if (rslt == SMI230_OK)
-    {
-        /* Define the offset in bytes for high-g select */
-        uint8_t idx = SMI230_HIGH_G_START_ADR;
+	if (rslt == SMI230_OK) {
+		/* Define the offset in bytes for high-g select */
+		uint8_t idx = SMI230_HIGH_G_START_ADR;
 
-        /* Get threshold */
-        config->threshold = SMI230_GET_BITS_POS_0(feature_config[idx], SMI230_HIGH_G_THRES);
+		/* Get threshold */
+		config->threshold = SMI230_GET_BITS_POS_0(feature_config[idx],
+							  SMI230_HIGH_G_THRES);
 
-        /* Get hysteresis */
-        config->hysteresis = SMI230_GET_BITS_POS_0(feature_config[idx + 1], SMI230_HIGH_G_HYST);
+		/* Get hysteresis */
+		config->hysteresis = SMI230_GET_BITS_POS_0(
+			feature_config[idx + 1], SMI230_HIGH_G_HYST);
 
-        /* Get x_select */
-        config->select_x = SMI230_GET_BITS(feature_config[idx + 1], SMI230_HIGH_G_X_SEL);
+		/* Get x_select */
+		config->select_x = SMI230_GET_BITS(feature_config[idx + 1],
+						   SMI230_HIGH_G_X_SEL);
 
-        /* Get y_select */
-        config->select_y = SMI230_GET_BITS(feature_config[idx + 1], SMI230_HIGH_G_Y_SEL);
+		/* Get y_select */
+		config->select_y = SMI230_GET_BITS(feature_config[idx + 1],
+						   SMI230_HIGH_G_Y_SEL);
 
-        /* Get z_select */
-        config->select_z = SMI230_GET_BITS(feature_config[idx + 1], SMI230_HIGH_G_Z_SEL);
+		/* Get z_select */
+		config->select_z = SMI230_GET_BITS(feature_config[idx + 1],
+						   SMI230_HIGH_G_Z_SEL);
 
-        /* Get high-g enable */
-        config->enable = SMI230_GET_BITS(feature_config[idx + 1], SMI230_HIGH_G_ENABLE);
+		/* Get high-g enable */
+		config->enable = SMI230_GET_BITS(feature_config[idx + 1],
+						 SMI230_HIGH_G_ENABLE);
 
-        /* Get duration */
-        config->duration = SMI230_GET_BITS_POS_0(feature_config[idx + 2], SMI230_HIGH_G_DUR);
-    }
+		/* Get duration */
+		config->duration = SMI230_GET_BITS_POS_0(
+			feature_config[idx + 2], SMI230_HIGH_G_DUR);
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API sets low-g configurations like threshold,
  * hysteresis, duration, and output configuration.
  */
-int8_t smi230_set_low_g_config(const struct smi230_low_g_cfg *config, struct smi230_dev *dev)
+int8_t smi230_set_low_g_config(const struct smi230_low_g_cfg *config,
+			       struct smi230_dev *dev)
 {
-    /* Variable to define error */
-    int8_t rslt;
+	/* Variable to define error */
+	int8_t rslt;
 
-    /* Array to define the feature configuration */
-    uint16_t feature_config[SMI230_LOW_G_START_ADR + 3] = { 0 };
+	/* Array to define the feature configuration */
+	uint16_t feature_config[SMI230_LOW_G_START_ADR + 3] = { 0 };
 
-    rslt = get_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
+	rslt = get_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config,
+			sizeof(feature_config), dev);
 
-    if (rslt == SMI230_OK)
-    {
-        uint8_t idx = SMI230_LOW_G_START_ADR;
+	if (rslt == SMI230_OK) {
+		uint8_t idx = SMI230_LOW_G_START_ADR;
 
-        /* Set threshold */
-        feature_config[idx] = SMI230_SET_BITS_POS_0(feature_config[idx], SMI230_LOW_G_THRES, config->threshold);
+		/* Set threshold */
+		feature_config[idx] = SMI230_SET_BITS_POS_0(feature_config[idx],
+							    SMI230_LOW_G_THRES,
+							    config->threshold);
 
-        /* Set hysteresis */
-        feature_config[idx +
-                       1] = SMI230_SET_BITS_POS_0(feature_config[idx + 1], SMI230_LOW_G_HYST, config->hysteresis);
+		/* Set hysteresis */
+		feature_config[idx + 1] =
+			SMI230_SET_BITS_POS_0(feature_config[idx + 1],
+					      SMI230_LOW_G_HYST,
+					      config->hysteresis);
 
-        /* Low-g enable */
-        feature_config[idx + 1] = SMI230_SET_BITS(feature_config[idx + 1], SMI230_LOW_G_ENABLE, config->enable);
+		/* Low-g enable */
+		feature_config[idx + 1] =
+			SMI230_SET_BITS(feature_config[idx + 1],
+					SMI230_LOW_G_ENABLE, config->enable);
 
-        /* Set duration */
-        feature_config[idx + 2] = SMI230_SET_BITS_POS_0(feature_config[idx + 2], SMI230_LOW_G_DUR, config->duration);
+		/* Set duration */
+		feature_config[idx + 2] =
+			SMI230_SET_BITS_POS_0(feature_config[idx + 2],
+					      SMI230_LOW_G_DUR,
+					      config->duration);
 
-        rslt = set_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t*) feature_config, sizeof(feature_config), dev);
-    }
+		rslt = set_regs(SMI230_ACCEL_FEATURE_CFG_REG,
+				(uint8_t *)feature_config,
+				sizeof(feature_config), dev);
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API gets low-g configurations like threshold,
  * hysteresis and duration
  */
-int8_t smi230_get_low_g_config(struct smi230_low_g_cfg *config, struct smi230_dev *dev)
+int8_t smi230_get_low_g_config(struct smi230_low_g_cfg *config,
+			       struct smi230_dev *dev)
 {
-    /* Variable to define error */
-    int8_t rslt;
+	/* Variable to define error */
+	int8_t rslt;
 
-    /* Array to define the feature configuration */
-    uint16_t feature_config[SMI230_LOW_G_START_ADR + 3] = { 0 };
+	/* Array to define the feature configuration */
+	uint16_t feature_config[SMI230_LOW_G_START_ADR + 3] = { 0 };
 
-    rslt = get_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
+	rslt = get_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config,
+			sizeof(feature_config), dev);
 
-    if (rslt == SMI230_OK)
-    {
-        /* Define the offset in bytes for low-g select */
-        uint8_t idx = SMI230_LOW_G_START_ADR;
+	if (rslt == SMI230_OK) {
+		/* Define the offset in bytes for low-g select */
+		uint8_t idx = SMI230_LOW_G_START_ADR;
 
-        /* Get threshold */
-        config->threshold = SMI230_GET_BITS_POS_0(feature_config[idx], SMI230_LOW_G_THRES);
+		/* Get threshold */
+		config->threshold = SMI230_GET_BITS_POS_0(feature_config[idx],
+							  SMI230_LOW_G_THRES);
 
-        /* Get hysteresis */
-        config->hysteresis = SMI230_GET_BITS_POS_0(feature_config[idx + 1], SMI230_LOW_G_HYST);
+		/* Get hysteresis */
+		config->hysteresis = SMI230_GET_BITS_POS_0(
+			feature_config[idx + 1], SMI230_LOW_G_HYST);
 
-        /* Get high-g enable */
-        config->enable = SMI230_GET_BITS(feature_config[idx + 1], SMI230_LOW_G_ENABLE);
+		/* Get high-g enable */
+		config->enable = SMI230_GET_BITS(feature_config[idx + 1],
+						 SMI230_LOW_G_ENABLE);
 
-        /* Get duration */
-        config->duration = SMI230_GET_BITS_POS_0(feature_config[idx + 2], SMI230_LOW_G_DUR);
+		/* Get duration */
+		config->duration = SMI230_GET_BITS_POS_0(
+			feature_config[idx + 2], SMI230_LOW_G_DUR);
+	}
 
-    }
-
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -3024,46 +3010,60 @@ int8_t smi230_get_low_g_config(struct smi230_low_g_cfg *config, struct smi230_de
  * detection, symmetrical modes, blocking mode, theta and hysteresis
  *
  */
-int8_t smi230_set_orient_config(const struct smi230_orient_cfg *config, struct smi230_dev *dev)
+int8_t smi230_set_orient_config(const struct smi230_orient_cfg *config,
+				struct smi230_dev *dev)
 {
-    /* Variable to define error */
-    int8_t rslt;
+	/* Variable to define error */
+	int8_t rslt;
 
-    /* Array to define the feature configuration */
-    uint16_t feature_config[SMI230_ORIENT_START_ADR + 2] = { 0 };
+	/* Array to define the feature configuration */
+	uint16_t feature_config[SMI230_ORIENT_START_ADR + 2] = { 0 };
 
-    rslt = get_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
+	rslt = get_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config,
+			sizeof(feature_config), dev);
 
-    if (rslt == SMI230_OK)
-    {
-        /* Define the offset in bytes for orient select */
-        uint8_t idx = SMI230_ORIENT_START_ADR;
+	if (rslt == SMI230_OK) {
+		/* Define the offset in bytes for orient select */
+		uint8_t idx = SMI230_ORIENT_START_ADR;
 
-        /* Set orientation feature - enabled/disabled */
-        feature_config[idx] = SMI230_SET_BITS_POS_0(feature_config[idx], SMI230_ORIENT_ENABLE, config->enable);
+		/* Set orientation feature - enabled/disabled */
+		feature_config[idx] =
+			SMI230_SET_BITS_POS_0(feature_config[idx],
+					      SMI230_ORIENT_ENABLE,
+					      config->enable);
 
-        /* Set upside/down detection */
-        feature_config[idx] = SMI230_SET_BITS(feature_config[idx], SMI230_ORIENT_UP_DOWN, config->ud_en);
+		/* Set upside/down detection */
+		feature_config[idx] =
+			SMI230_SET_BITS(feature_config[idx],
+					SMI230_ORIENT_UP_DOWN, config->ud_en);
 
-        /* Set symmetrical modes */
-        feature_config[idx] = SMI230_SET_BITS(feature_config[idx], SMI230_ORIENT_SYMM_MODE, config->mode);
+		/* Set symmetrical modes */
+		feature_config[idx] =
+			SMI230_SET_BITS(feature_config[idx],
+					SMI230_ORIENT_SYMM_MODE, config->mode);
 
-        /* Set blocking mode */
-        feature_config[idx] = SMI230_SET_BITS(feature_config[idx], SMI230_ORIENT_BLOCK_MODE, config->blocking);
+		/* Set blocking mode */
+		feature_config[idx] = SMI230_SET_BITS(feature_config[idx],
+						      SMI230_ORIENT_BLOCK_MODE,
+						      config->blocking);
 
-        /* Set theta */
-        feature_config[idx] = SMI230_SET_BITS(feature_config[idx], SMI230_ORIENT_THETA, config->theta);
+		/* Set theta */
+		feature_config[idx] =
+			SMI230_SET_BITS(feature_config[idx],
+					SMI230_ORIENT_THETA, config->theta);
 
-        /* Set hysteresis */
-        feature_config[idx + 1] = SMI230_SET_BITS_POS_0(feature_config[idx + 1],
-                                                         SMI230_ORIENT_HYST,
-                                                         config->hysteresis);
+		/* Set hysteresis */
+		feature_config[idx + 1] =
+			SMI230_SET_BITS_POS_0(feature_config[idx + 1],
+					      SMI230_ORIENT_HYST,
+					      config->hysteresis);
 
-        rslt = set_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
+		rslt = set_regs(SMI230_ACCEL_FEATURE_CFG_REG,
+				(uint8_t *)feature_config,
+				sizeof(feature_config), dev);
+	}
 
-    }
-
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -3071,154 +3071,187 @@ int8_t smi230_set_orient_config(const struct smi230_orient_cfg *config, struct s
  * detection, symmetrical modes, blocking mode, theta, hysteresis and output
  * configuration.
  */
-int8_t smi230_get_orient_config(struct smi230_orient_cfg *config, struct smi230_dev *dev)
+int8_t smi230_get_orient_config(struct smi230_orient_cfg *config,
+				struct smi230_dev *dev)
 {
-    /* Variable to define error */
-    int8_t rslt;
+	/* Variable to define error */
+	int8_t rslt;
 
-    /* Array to define the feature configuration */
-    uint16_t feature_config[SMI230_ORIENT_START_ADR + 2] = { 0 };
+	/* Array to define the feature configuration */
+	uint16_t feature_config[SMI230_ORIENT_START_ADR + 2] = { 0 };
 
-    rslt = get_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
+	rslt = get_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config,
+			sizeof(feature_config), dev);
 
-    if (rslt == SMI230_OK)
-    {
-        /* Define the offset in bytes for orient select */
-        uint8_t idx = SMI230_ORIENT_START_ADR;
+	if (rslt == SMI230_OK) {
+		/* Define the offset in bytes for orient select */
+		uint8_t idx = SMI230_ORIENT_START_ADR;
 
-        /* Get orientation feature - enabled/disabled */
-        config->enable = SMI230_GET_BITS_POS_0(feature_config[idx], SMI230_ORIENT_ENABLE);
+		/* Get orientation feature - enabled/disabled */
+		config->enable = SMI230_GET_BITS_POS_0(feature_config[idx],
+						       SMI230_ORIENT_ENABLE);
 
-        /* Get upside/down detection */
-        config->ud_en = SMI230_GET_BITS(feature_config[idx], SMI230_ORIENT_UP_DOWN);
+		/* Get upside/down detection */
+		config->ud_en = SMI230_GET_BITS(feature_config[idx],
+						SMI230_ORIENT_UP_DOWN);
 
-        /* Get symmetrical modes */
-        config->mode = SMI230_GET_BITS(feature_config[idx], SMI230_ORIENT_SYMM_MODE);
+		/* Get symmetrical modes */
+		config->mode = SMI230_GET_BITS(feature_config[idx],
+					       SMI230_ORIENT_SYMM_MODE);
 
-        /* Get blocking mode */
-        config->blocking = SMI230_GET_BITS(feature_config[idx], SMI230_ORIENT_BLOCK_MODE);
+		/* Get blocking mode */
+		config->blocking = SMI230_GET_BITS(feature_config[idx],
+						   SMI230_ORIENT_BLOCK_MODE);
 
-        /* Get theta */
-        config->theta = SMI230_GET_BITS(feature_config[idx], SMI230_ORIENT_THETA);
+		/* Get theta */
+		config->theta = SMI230_GET_BITS(feature_config[idx],
+						SMI230_ORIENT_THETA);
 
-        /* Get hysteresis */
-        config->hysteresis = SMI230_GET_BITS_POS_0(feature_config[idx + 1], SMI230_ORIENT_HYST);
-    }
+		/* Get hysteresis */
+		config->hysteresis = SMI230_GET_BITS_POS_0(
+			feature_config[idx + 1], SMI230_ORIENT_HYST);
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This internal API sets no-motion configurations like axes select,
  * duration, threshold and output-configuration.
  */
-int8_t smi230_set_no_motion_config(const struct smi230_no_motion_cfg *config, struct smi230_dev *dev)
+int8_t smi230_set_no_motion_config(const struct smi230_no_motion_cfg *config,
+				   struct smi230_dev *dev)
 {
-    /* Variable to define error */
-    int8_t rslt;
+	/* Variable to define error */
+	int8_t rslt;
 
-    /* Array to define the feature configuration */
-    uint16_t feature_config[SMI230_NO_MOTION_START_ADR + 2] = { 0 };
+	/* Array to define the feature configuration */
+	uint16_t feature_config[SMI230_NO_MOTION_START_ADR + 2] = { 0 };
 
-    rslt = get_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
+	rslt = get_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config,
+			sizeof(feature_config), dev);
 
-    if (rslt == SMI230_OK)
-    {
-        /* Define the offset in bytes for orient select */
-        uint8_t idx = SMI230_NO_MOTION_START_ADR;
+	if (rslt == SMI230_OK) {
+		/* Define the offset in bytes for orient select */
+		uint8_t idx = SMI230_NO_MOTION_START_ADR;
 
-        feature_config[idx] =
-            SMI230_SET_BITS_POS_0(feature_config[idx], SMI230_NO_MOTION_THRESHOLD, config->threshold);
+		feature_config[idx] =
+			SMI230_SET_BITS_POS_0(feature_config[idx],
+					      SMI230_NO_MOTION_THRESHOLD,
+					      config->threshold);
 
-        feature_config[idx] = SMI230_SET_BITS(feature_config[idx], SMI230_NO_MOTION_SEL, config->enable);
+		feature_config[idx] =
+			SMI230_SET_BITS(feature_config[idx],
+					SMI230_NO_MOTION_SEL, config->enable);
 
-        feature_config[idx + 1] = SMI230_SET_BITS_POS_0(feature_config[idx + 1],
-                                                         SMI230_NO_MOTION_DURATION,
-                                                         config->duration);
+		feature_config[idx + 1] =
+			SMI230_SET_BITS_POS_0(feature_config[idx + 1],
+					      SMI230_NO_MOTION_DURATION,
+					      config->duration);
 
-        feature_config[idx + 1] = SMI230_SET_BITS(feature_config[idx + 1], SMI230_NO_MOTION_X_EN, config->select_x);
+		feature_config[idx + 1] =
+			SMI230_SET_BITS(feature_config[idx + 1],
+					SMI230_NO_MOTION_X_EN,
+					config->select_x);
 
-        feature_config[idx + 1] = SMI230_SET_BITS(feature_config[idx + 1], SMI230_NO_MOTION_Y_EN, config->select_y);
+		feature_config[idx + 1] =
+			SMI230_SET_BITS(feature_config[idx + 1],
+					SMI230_NO_MOTION_Y_EN,
+					config->select_y);
 
-        feature_config[idx + 1] = SMI230_SET_BITS(feature_config[idx + 1], SMI230_NO_MOTION_Z_EN, config->select_z);
+		feature_config[idx + 1] =
+			SMI230_SET_BITS(feature_config[idx + 1],
+					SMI230_NO_MOTION_Z_EN,
+					config->select_z);
 
-        rslt = set_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
-    }
+		rslt = set_regs(SMI230_ACCEL_FEATURE_CFG_REG,
+				(uint8_t *)feature_config,
+				sizeof(feature_config), dev);
+	}
 
-    return rslt;
+	return rslt;
 }
 
-int8_t smi230_get_no_motion_config(struct smi230_no_motion_cfg *config, struct smi230_dev *dev)
+int8_t smi230_get_no_motion_config(struct smi230_no_motion_cfg *config,
+				   struct smi230_dev *dev)
 {
-    /* Variable to define error */
-    int8_t rslt;
+	/* Variable to define error */
+	int8_t rslt;
 
-    /* Array to define the feature configuration */
-    uint16_t feature_config[SMI230_NO_MOTION_START_ADR + 2] = { 0 };
+	/* Array to define the feature configuration */
+	uint16_t feature_config[SMI230_NO_MOTION_START_ADR + 2] = { 0 };
 
-    rslt = get_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
+	rslt = get_regs(SMI230_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config,
+			sizeof(feature_config), dev);
 
-    if (rslt == SMI230_OK)
-    {
-        /* Define the offset in bytes for orient select */
-        uint8_t idx = SMI230_NO_MOTION_START_ADR;
+	if (rslt == SMI230_OK) {
+		/* Define the offset in bytes for orient select */
+		uint8_t idx = SMI230_NO_MOTION_START_ADR;
 
-        config->threshold = SMI230_GET_BITS_POS_0(feature_config[idx], SMI230_NO_MOTION_THRESHOLD);
+		config->threshold = SMI230_GET_BITS_POS_0(
+			feature_config[idx], SMI230_NO_MOTION_THRESHOLD);
 
-        config->enable = SMI230_GET_BITS(feature_config[idx], SMI230_NO_MOTION_SEL);
+		config->enable = SMI230_GET_BITS(feature_config[idx],
+						 SMI230_NO_MOTION_SEL);
 
-        config->duration = SMI230_GET_BITS_POS_0(feature_config[idx + 1], SMI230_NO_MOTION_DURATION);
+		config->duration = SMI230_GET_BITS_POS_0(
+			feature_config[idx + 1], SMI230_NO_MOTION_DURATION);
 
-        config->select_x = SMI230_GET_BITS(feature_config[idx + 1], SMI230_NO_MOTION_X_EN);
+		config->select_x = SMI230_GET_BITS(feature_config[idx + 1],
+						   SMI230_NO_MOTION_X_EN);
 
-        config->select_y = SMI230_GET_BITS(feature_config[idx + 1], SMI230_NO_MOTION_Y_EN);
+		config->select_y = SMI230_GET_BITS(feature_config[idx + 1],
+						   SMI230_NO_MOTION_Y_EN);
 
-        config->select_z = SMI230_GET_BITS(feature_config[idx + 1], SMI230_NO_MOTION_Z_EN);
+		config->select_z = SMI230_GET_BITS(feature_config[idx + 1],
+						   SMI230_NO_MOTION_Z_EN);
+	}
 
-    }
-
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API gets the output values of orientation: portrait-
  * landscape and face up-down.
  */
-int8_t smi230_get_orient_output(struct smi230_orient_out *orient_out, struct smi230_dev *dev)
+int8_t smi230_get_orient_output(struct smi230_orient_out *orient_out,
+				struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data;
+	int8_t rslt;
+	uint8_t data;
 
-    /* Search for orientation output feature and extract its configuration details */
-    rslt = get_regs(SMI230_REG_ORIENT_HIGHG_OUT, &data, 1, dev);
-    if (rslt == SMI230_OK)
-    {
-        orient_out->portrait_landscape = SMI230_GET_BITS_POS_0(data, SMI230_ORIENT_PORTRAIT_LANDSCAPE);
-        orient_out->faceup_down = SMI230_GET_BITS(data, SMI230_ORIENT_FACEUP_DOWN);
-    }
+	/* Search for orientation output feature and extract its configuration details */
+	rslt = get_regs(SMI230_REG_ORIENT_HIGHG_OUT, &data, 1, dev);
+	if (rslt == SMI230_OK) {
+		orient_out->portrait_landscape = SMI230_GET_BITS_POS_0(
+			data, SMI230_ORIENT_PORTRAIT_LANDSCAPE);
+		orient_out->faceup_down =
+			SMI230_GET_BITS(data, SMI230_ORIENT_FACEUP_DOWN);
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
  * @brief This API gets the output values of high_g: Axis and Direction
  */
-int8_t smi230_get_high_g_output(struct smi230_high_g_out *high_g_out, struct smi230_dev *dev)
+int8_t smi230_get_high_g_output(struct smi230_high_g_out *high_g_out,
+				struct smi230_dev *dev)
 {
-    int8_t rslt;
-    uint8_t data;
+	int8_t rslt;
+	uint8_t data;
 
-    /* Search for high-g output feature and extract its configuration details */
-    rslt = get_regs(SMI230_REG_ORIENT_HIGHG_OUT, &data, 1, dev);
-    if (rslt == SMI230_OK)
-    {
-        high_g_out->x = SMI230_GET_BITS(data, SMI230_HIGH_G_AXIS_X);
-        high_g_out->y = SMI230_GET_BITS(data, SMI230_HIGH_G_AXIS_Y);
-        high_g_out->z = SMI230_GET_BITS(data, SMI230_HIGH_G_AXIS_Z);
-        high_g_out->direction = SMI230_GET_BITS(data, SMI230_HIGH_G_AXIS_DIRECTION);
-    }
+	/* Search for high-g output feature and extract its configuration details */
+	rslt = get_regs(SMI230_REG_ORIENT_HIGHG_OUT, &data, 1, dev);
+	if (rslt == SMI230_OK) {
+		high_g_out->x = SMI230_GET_BITS(data, SMI230_HIGH_G_AXIS_X);
+		high_g_out->y = SMI230_GET_BITS(data, SMI230_HIGH_G_AXIS_Y);
+		high_g_out->z = SMI230_GET_BITS(data, SMI230_HIGH_G_AXIS_Z);
+		high_g_out->direction =
+			SMI230_GET_BITS(data, SMI230_HIGH_G_AXIS_DIRECTION);
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /*!
@@ -3226,22 +3259,21 @@ int8_t smi230_get_high_g_output(struct smi230_high_g_out *high_g_out, struct smi
  */
 int8_t smi230_apply_config_file(struct smi230_dev *dev)
 {
-    int8_t rslt;
+	int8_t rslt;
 
-    /* Check for null pointer in the device structure */
-    rslt = null_ptr_check(dev);
+	/* Check for null pointer in the device structure */
+	rslt = null_ptr_check(dev);
 
-    /* Proceed if null check is fine */
-    if (rslt == SMI230_OK)
-    {
-        /* Assign stream file */
-        dev->config_file_ptr = smi230_config_file;
+	/* Proceed if null check is fine */
+	if (rslt == SMI230_OK) {
+		/* Assign stream file */
+		dev->config_file_ptr = smi230_config_file;
 
-        /* Upload binary */
-        rslt = smi230_acc_write_config_file(dev);
-    }
+		/* Upload binary */
+		rslt = smi230_acc_write_config_file(dev);
+	}
 
-    return rslt;
+	return rslt;
 }
 
 /** @}*/

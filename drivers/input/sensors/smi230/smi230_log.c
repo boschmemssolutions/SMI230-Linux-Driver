@@ -7,8 +7,8 @@
  * Copyright (c) 2020-2021 Robert Bosch GmbH. All rights reserved.
  * Copyright 2011~2018 Bosch Sensortec GmbH All Rights Reserved
  *
- * This file is free software licensed under the terms of version 2 
- * of the GNU General Public License, available from the file LICENSE-GPL 
+ * This file is free software licensed under the terms of version 2
+ * of the GNU General Public License, available from the file LICENSE-GPL
  * in the main directory of this source tree.
  *
  * BSD LICENSE
@@ -76,5 +76,5 @@ uint8_t get_debug_log_level(void)
 EXPORT_SYMBOL(set_debug_log_level);
 EXPORT_SYMBOL(get_debug_log_level);
 
-#endif/*BOSCH_DRIVER_LOG_FUNC*/
+#endif /*BOSCH_DRIVER_LOG_FUNC*/
 /*@}*/

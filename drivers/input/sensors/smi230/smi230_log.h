@@ -7,8 +7,8 @@
  * Copyright (c) 2020 Robert Bosch GmbH. All rights reserved.
  * Copyright 2011~2018 Bosch Sensortec GmbH All Rights Reserved
  *
- * This file is free software licensed under the terms of version 2 
- * of the GNU General Public License, available from the file LICENSE-GPL 
+ * This file is free software licensed under the terms of version 2
+ * of the GNU General Public License, available from the file LICENSE-GPL
  * in the main directory of this source tree.
  *
  * BSD LICENSE
@@ -79,125 +79,149 @@
 #endif
 
 #ifdef BOSCH_DRIVER_LOG_FUNC
-	#ifdef BSLOG_VAR_DEF
-		uint8_t debug_log_level = LOG_LEVEL;
-	#else
-		extern uint8_t debug_log_level;
-	#endif
+#ifdef BSLOG_VAR_DEF
+uint8_t debug_log_level = LOG_LEVEL;
+#else
+extern uint8_t debug_log_level;
+#endif
 
-	/*! print error message */
-	#define PERR(fmt, args...) do\
-	{\
-		if (debug_log_level >= LOG_LEVEL_E)\
-			printk(KERN_INFO "\n" "[E]" KERN_ERR MODULE_TAG \
-				"<%s><%d>" fmt "\n", __func__, __LINE__, ##args);\
+/*! print error message */
+#define PERR(fmt, args...)                                                     \
+	do {                                                                   \
+		if (debug_log_level >= LOG_LEVEL_E)                            \
+			printk(KERN_INFO "\n"                                  \
+					 "[E]" KERN_ERR MODULE_TAG             \
+					 "<%s><%d>" fmt "\n",                  \
+			       __func__, __LINE__, ##args);                    \
 	} while (0)
 
-	/*! print notice message */
-	#define PNOTICE(fmt, args...) do\
-	{\
-		if (debug_log_level >= LOG_LEVEL_N)\
-			printk(KERN_INFO "\n" "[N]" KERN_NOTICE MODULE_TAG \
-				"<%s><%d>" fmt "\n", __func__, __LINE__, ##args);\
+/*! print notice message */
+#define PNOTICE(fmt, args...)                                                  \
+	do {                                                                   \
+		if (debug_log_level >= LOG_LEVEL_N)                            \
+			printk(KERN_INFO "\n"                                  \
+					 "[N]" KERN_NOTICE MODULE_TAG          \
+					 "<%s><%d>" fmt "\n",                  \
+			       __func__, __LINE__, ##args);                    \
 	} while (0)
 
-	/*! print information message */
-	#define PINFO(fmt, args...) do\
-	{\
-		if (debug_log_level >= LOG_LEVEL_I)\
-			printk(KERN_INFO "\n" "[I]" KERN_INFO MODULE_TAG \
-				"<%s><%d>" fmt "\n", __func__, __LINE__, ##args);\
+/*! print information message */
+#define PINFO(fmt, args...)                                                    \
+	do {                                                                   \
+		if (debug_log_level >= LOG_LEVEL_I)                            \
+			printk(KERN_INFO "\n"                                  \
+					 "[I]" KERN_INFO MODULE_TAG            \
+					 "<%s><%d>" fmt "\n",                  \
+			       __func__, __LINE__, ##args);                    \
 	} while (0)
 
-	/*! print debug message */
-	#define PDEBUG(fmt, args...) do\
-	{\
-		if (debug_log_level >= LOG_LEVEL_D)\
-			printk(KERN_INFO "\n" "[D]" KERN_DEBUG MODULE_TAG \
-				"<%s><%d>" fmt "\n", __func__, __LINE__, ##args);\
+/*! print debug message */
+#define PDEBUG(fmt, args...)                                                   \
+	do {                                                                   \
+		if (debug_log_level >= LOG_LEVEL_D)                            \
+			printk(KERN_INFO "\n"                                  \
+					 "[D]" KERN_DEBUG MODULE_TAG           \
+					 "<%s><%d>" fmt "\n",                  \
+			       __func__, __LINE__, ##args);                    \
 	} while (0)
 
-	/*! print debug fw download message */
-	#define PDEBUG_FWDL(fmt, args...) do\
-	{\
-		if (debug_log_level >= LOG_LEVEL_DF)\
-			printk(KERN_INFO "\n" "[DF]" KERN_DEBUG MODULE_TAG \
-				"<%s><%d>" fmt "\n", __func__, __LINE__, ##args);\
+/*! print debug fw download message */
+#define PDEBUG_FWDL(fmt, args...)                                              \
+	do {                                                                   \
+		if (debug_log_level >= LOG_LEVEL_DF)                           \
+			printk(KERN_INFO "\n"                                  \
+					 "[DF]" KERN_DEBUG MODULE_TAG          \
+					 "<%s><%d>" fmt "\n",                  \
+			       __func__, __LINE__, ##args);                    \
 	} while (0)
 
-	/*! print debug data log message */
-	#define PDEBUG_DLOG(fmt, args...) do\
-	{\
-		if (debug_log_level >= LOG_LEVEL_DA)\
-			printk(KERN_INFO "\n" "[DA]" KERN_DEBUG MODULE_TAG \
-				"<%s><%d>" fmt "\n", __func__, __LINE__, ##args);\
+/*! print debug data log message */
+#define PDEBUG_DLOG(fmt, args...)                                              \
+	do {                                                                   \
+		if (debug_log_level >= LOG_LEVEL_DA)                           \
+			printk(KERN_INFO "\n"                                  \
+					 "[DA]" KERN_DEBUG MODULE_TAG          \
+					 "<%s><%d>" fmt "\n",                  \
+			       __func__, __LINE__, ##args);                    \
 	} while (0)
 
-	void set_debug_log_level(uint8_t level);
-	uint8_t get_debug_log_level(void);
+void set_debug_log_level(uint8_t level);
+uint8_t get_debug_log_level(void);
 
 #else
 
-	#if (LOG_LEVEL >= LOG_LEVEL_E)
-	/*! print error message */
-	#define PERR(fmt, args...) \
-		printk(KERN_INFO "\n" "[E]" KERN_ERR MODULE_TAG \
-		"<%s><%d>" fmt "\n", __func__, __LINE__, ##args)
-	#else
-	/*! invalid message */
-	#define PERR(fmt, args...)
-	#endif
+#if (LOG_LEVEL >= LOG_LEVEL_E)
+/*! print error message */
+#define PERR(fmt, args...)                                                     \
+	printk(KERN_INFO "\n"                                                  \
+			 "[E]" KERN_ERR MODULE_TAG "<%s><%d>" fmt "\n",        \
+	       __func__, __LINE__, ##args)
+#else
+/*! invalid message */
+#define PERR(fmt, args...)
+#endif
 
-	#if (LOG_LEVEL >= LOG_LEVEL_N)
-	/*! print notice message */
-	#define PNOTICE(fmt, args...) \
-		printk(KERN_INFO "\n" "[N]" KERN_NOTICE MODULE_TAG \
-		"<%s><%d>" fmt "\n", __func__, __LINE__, ##args)
-	#else
-	/*! invalid message */
-	#define PNOTICE(fmt, args...)
-	#endif
+#if (LOG_LEVEL >= LOG_LEVEL_N)
+/*! print notice message */
+#define PNOTICE(fmt, args...)                                                  \
+	printk(KERN_INFO "\n"                                                  \
+			 "[N]" KERN_NOTICE MODULE_TAG "<%s><%d>" fmt "\n",     \
+	       __func__, __LINE__, ##args)
+#else
+/*! invalid message */
+#define PNOTICE(fmt, args...)
+#endif
 
-	#if (LOG_LEVEL >= LOG_LEVEL_I)
-	/*! print information message */
-	#define PINFO(fmt, args...) printk(KERN_INFO "\n" "[I]" KERN_INFO MODULE_TAG \
-		"<%s><%d>" fmt "\n", __func__, __LINE__, ##args)
-	#else
-	/*! invalid message */
-	#define PINFO(fmt, args...)
-	#endif
+#if (LOG_LEVEL >= LOG_LEVEL_I)
+/*! print information message */
+#define PINFO(fmt, args...)                                                    \
+	printk(KERN_INFO "\n"                                                  \
+			 "[I]" KERN_INFO MODULE_TAG "<%s><%d>" fmt "\n",       \
+	       __func__, __LINE__, ##args)
+#else
+/*! invalid message */
+#define PINFO(fmt, args...)
+#endif
 
-	#if (LOG_LEVEL >= LOG_LEVEL_D)
-	/*! print debug message */
-	#define PDEBUG(fmt, args...) printk(KERN_INFO "\n" "[D]" KERN_DEBUG MODULE_TAG \
-		"<%s><%d>" fmt "\n", __func__, __LINE__, ##args)
-	#else
-	/*! invalid message */
-	#define PDEBUG(fmt, args...)
-	#endif
+#if (LOG_LEVEL >= LOG_LEVEL_D)
+/*! print debug message */
+#define PDEBUG(fmt, args...)                                                   \
+	printk(KERN_INFO "\n"                                                  \
+			 "[D]" KERN_DEBUG MODULE_TAG "<%s><%d>" fmt "\n",      \
+	       __func__, __LINE__, ##args)
+#else
+/*! invalid message */
+#define PDEBUG(fmt, args...)
+#endif
 
-	#if (LOG_LEVEL >= LOG_LEVEL_DF)
-	/*! print debug fw download message */
-	#define PDEBUG_FWDL(fmt, args...) printk(KERN_INFO "\n" "[DF]" KERN_DEBUG MODULE_TAG \
-		"<%s><%d>" fmt "\n", __func__, __LINE__, ##args)
-	#else
-	/*! invalid message */
-	#define PDEBUG_FWDL(fmt, args...)
-	#endif
+#if (LOG_LEVEL >= LOG_LEVEL_DF)
+/*! print debug fw download message */
+#define PDEBUG_FWDL(fmt, args...)                                              \
+	printk(KERN_INFO "\n"                                                  \
+			 "[DF]" KERN_DEBUG MODULE_TAG "<%s><%d>" fmt "\n",     \
+	       __func__, __LINE__, ##args)
+#else
+/*! invalid message */
+#define PDEBUG_FWDL(fmt, args...)
+#endif
 
-	#if (LOG_LEVEL >= LOG_LEVEL_DA)
-	/*! print debug data log message */
-	#define PDEBUG_DLOG(fmt, args...) printk(KERN_INFO "\n" "[DA]" KERN_DEBUG MODULE_TAG \
-		"<%s><%d>" fmt "\n", __func__, __LINE__, ##args)
-	#else
-	/*! invalid message */
-	#define PDEBUG_DLOG(fmt, args...)
-	#endif
+#if (LOG_LEVEL >= LOG_LEVEL_DA)
+/*! print debug data log message */
+#define PDEBUG_DLOG(fmt, args...)                                              \
+	printk(KERN_INFO "\n"                                                  \
+			 "[DA]" KERN_DEBUG MODULE_TAG "<%s><%d>" fmt "\n",     \
+	       __func__, __LINE__, ##args)
+#else
+/*! invalid message */
+#define PDEBUG_DLOG(fmt, args...)
+#endif
 
-	#define set_debug_log_level(level) {}
-	#define get_debug_log_level() (LOG_LEVEL)
+#define set_debug_log_level(level)                                             \
+	{                                                                      \
+	}
+#define get_debug_log_level() (LOG_LEVEL)
 
 #endif
 
-#endif/*_SMI230_LOG_H*/
+#endif /*_SMI230_LOG_H*/
 /*@}*/
