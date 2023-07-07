@@ -1389,7 +1389,7 @@ smi230_acc_no_motion_duration_store(struct device *dev,
 	return count;
 }
 
-static int smi230_acc_show_self_test(struct device *dev,
+static ssize_t smi230_acc_show_self_test(struct device *dev,
 				     struct device_attribute *attr, char *buf)
 {
 	int err, rslt;
@@ -1995,6 +1995,12 @@ int smi230_acc_remove(struct device *dev)
 static int smi230_acc_configuration(struct smi230_dev *p_smi230_dev)
 {
 	int err;
+#ifdef CONFIG_SMI230_ACC_FIFO
+	struct accel_fifo_config fifo_config;
+#endif
+#ifdef CONFIG_SMI230_DATA_SYNC
+	struct smi230_data_sync_cfg sync_cfg;
+#endif
 
 	/* Reset the accelerometer and wait for 1 ms - delay taken care inside the function */
 	err = smi230_acc_soft_reset(p_smi230_dev);
@@ -2321,12 +2327,6 @@ int smi230_acc_probe(struct device *dev, struct smi230_dev *smi230_dev)
 {
 	int err = 0;
 	struct smi230_client_data *client_data = NULL;
-#ifdef CONFIG_SMI230_DATA_SYNC
-	struct smi230_data_sync_cfg sync_cfg;
-#endif
-#ifdef CONFIG_SMI230_ACC_FIFO
-	struct accel_fifo_config fifo_config;
-#endif
 
 	if (dev == NULL || smi230_dev == NULL)
 		return -EINVAL;

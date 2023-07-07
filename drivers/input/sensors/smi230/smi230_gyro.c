@@ -960,7 +960,7 @@ int8_t smi230_gyro_read_fifo_data(struct smi230_fifo_frame *fifo,
  * @brief This API gets the length of FIFO data available in the sensor in
  * bytes.
  */
-int8_t smi230_gyro_get_fifo_length(uint8_t *fifo_length,
+int8_t smi230_gyro_get_fifo_length(uint16_t *fifo_bytes,
 				   const struct smi230_dev *dev)
 {
 	/* Variable to define error */
@@ -971,13 +971,13 @@ int8_t smi230_gyro_get_fifo_length(uint8_t *fifo_length,
 
 	/* Check for null pointer in the device structure */
 	rslt = null_ptr_check(dev);
-	if ((rslt == SMI230_OK) && (fifo_length != NULL)) {
+	if ((rslt == SMI230_OK) && (fifo_bytes != NULL)) {
 		/* read fifo length */
 		rslt = smi230_gyro_get_regs(SMI230_GYRO_FIFO_STATUS_ADDR, &data,
 					    1, dev);
 		if (rslt == SMI230_OK) {
 			/* Get total FIFO length */
-			(*fifo_length) = data & 0x7F;
+			(*fifo_bytes) = (uint16_t)(data & 0x7F) * SMI230_FIFO_GYRO_FRAME_LENGTH;
 		} else {
 			rslt = SMI230_E_NULL_PTR;
 		}

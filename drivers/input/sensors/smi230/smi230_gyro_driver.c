@@ -474,22 +474,23 @@ static void smi230_gyro_fifo_handle(struct smi230_client_data *client_data)
 {
 	struct smi230_fifo_frame fifo;
 	int err = 0, i;
-	uint8_t fifo_length, extract_length;
+	uint8_t fifo_frames;
+	uint16_t fifo_bytes;
 	uint32_t tsamp;
 	uint64_t timestamp_ns;
 	struct timespec64 ts;
 
-	err = smi230_gyro_get_fifo_length(&fifo_length, p_smi230_dev);
+	err = smi230_gyro_get_fifo_length(&fifo_bytes, p_smi230_dev);
 	if (err != SMI230_OK) {
 		PERR("FIFO get length error!");
 		return;
 	}
 
 #if 0
-	PINFO("GYRO FIFO length %d", fifo_length);
+	PINFO("GYRO FIFO length %d", fifo_bytes);
 #endif
 	fifo.data = fifo_buf;
-	fifo.length = fifo_length;
+	fifo.length = fifo_bytes;
 	err = smi230_gyro_read_fifo_data(&fifo, p_smi230_dev);
 	if (err != SMI230_OK) {
 		PERR("FIFO read data error %d", err);
@@ -530,13 +531,12 @@ static void smi230_gyro_fifo_handle(struct smi230_client_data *client_data)
 		break;
 	}
 
-	extract_length = SMI230_MAX_GYRO_FIFO_FRAME;
-	err = smi230_gyro_extract_fifo(fifo_gyro_data, &extract_length, &fifo,
+	err = smi230_gyro_extract_fifo(fifo_gyro_data, &fifo_frames, &fifo,
 				       p_smi230_dev);
 
-	timestamp_ns = client_data->timestamp - tsamp * extract_length;
+	timestamp_ns = client_data->timestamp - tsamp * fifo_frames;
 
-	for (i = 0; i < extract_length; i++) {
+	for (i = 0; i < fifo_frames; i++) {
 		timestamp_ns += tsamp;
 		ts = ns_to_timespec64(timestamp_ns);
 
