@@ -977,7 +977,8 @@ int8_t smi230_gyro_get_fifo_length(uint16_t *fifo_bytes,
 					    1, dev);
 		if (rslt == SMI230_OK) {
 			/* Get total FIFO length */
-			(*fifo_bytes) = (uint16_t)(data & 0x7F) * SMI230_FIFO_GYRO_FRAME_LENGTH;
+			(*fifo_bytes) = (uint16_t)(data & 0x7F) *
+					SMI230_FIFO_GYRO_FRAME_LENGTH;
 		} else {
 			rslt = SMI230_E_NULL_PTR;
 		}

@@ -1,29 +1,13 @@
+# SPDX-License-Identifier: GPL-2.0-only
 #
-# Makefile for Bosch sensor driver.
+# Makefile for Bosch SMI230 driver
 #
 
-ifneq ($(CONFIG_BOSCH_DRIVER_LOG_FUNC),n)
-	EXTRA_CFLAGS += -DBOSCH_DRIVER_LOG_FUNC
-endif
+all:
+	$(MAKE) -C $(KERNEL_SRC) M=$(PWD) modules
 
+modules_install:
+	$(MAKE) -C $(KERNEL_SRC) M=$(PWD) modules_install
 
-obj-$(CONFIG_INPUT_SMI230)    += smi230.o
-smi230-objs := smi230_log.o smi230_acc.o smi230_gyro.o
-
-ifeq ($(CONFIG_SMI230_DATA_SYNC),y)
-	smi230-objs += smi230_data_sync.o
-endif
-
-ifeq ($(CONFIG_SMI230_ACC_DRIVER),y)
-	smi230-objs += smi230_acc_driver.o
-endif
-
-ifeq ($(CONFIG_SMI230_GYRO_DRIVER),y)
-	smi230-objs += smi230_gyro_driver.o
-endif
-
-ifeq ($(CONFIG_SMI230_I2C),y)
-	smi230-objs += smi230_i2c_driver.o
-else
-	smi230-objs += smi230_spi_driver.o
-endif
+clean:
+	$(MAKE) -C $(KERNEL_SRC) M=$(PWD) clean

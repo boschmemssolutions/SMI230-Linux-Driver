@@ -44,44 +44,44 @@
  *
  **/
 
-#include <linux/types.h>
-#include <linux/interrupt.h>
-#include <linux/input.h>
-#include <linux/workqueue.h>
 #include <linux/firmware.h>
 #include <linux/gpio.h>
+#include <linux/input.h>
+#include <linux/interrupt.h>
+#include <linux/math64.h>
 #include <linux/of_gpio.h>
 #include <linux/of_irq.h>
 #include <linux/time64.h>
+#include <linux/types.h>
+#include <linux/workqueue.h>
 
-#include "smi230_driver.h"
 #include "smi230_data_sync.h"
+#include "smi230_driver.h"
 
 #define MODULE_TAG MODULE_NAME
-#include "smi230_log.h"
 #include "smi230.h"
+#include "smi230_log.h"
 
 #define SMI230_MIN_VALUE -32768
 #define SMI230_MAX_VALUE 32767
 
-#ifdef CONFIG_SMI230_GYRO_FIFO
 #define SMI230_MAX_GYRO_FIFO_FRAME 100
 #define SMI230_MAX_GYRO_FIFO_BYTES                                             \
 	(SMI230_MAX_GYRO_FIFO_FRAME * SMI230_FIFO_GYRO_FRAME_LENGTH)
 
 static uint8_t fifo_buf[SMI230_MAX_GYRO_FIFO_BYTES];
-#endif
 
 struct smi230_client_data {
 	struct device *dev;
 	struct input_dev *input;
 	int IRQ;
 	int gpio_pin;
-	struct work_struct irq_work;
 	uint64_t timestamp;
+	uint64_t timestamp_old;
 };
 
 static struct smi230_dev *p_smi230_dev;
+static struct smi230_sensor_data fifo_gyro_data[SMI230_MAX_GYRO_FIFO_FRAME];
 
 static ssize_t smi230_gyro_show_chip_id(struct device *dev,
 					struct device_attribute *attr,
@@ -151,6 +151,7 @@ static ssize_t smi230_gyro_store_fifo_wm(struct device *dev,
 		return err;
 	}
 
+	p_smi230_dev->gyro_cfg.fifo_wm = fifo_wm;
 	PDEBUG("set fifo wm to %d", fifo_wm);
 
 	return count;
@@ -466,75 +467,32 @@ static int smi230_input_init(struct smi230_client_data *client_data)
 	return err;
 }
 
-#ifndef CONFIG_SMI230_DATA_SYNC
-#ifdef CONFIG_SMI230_GYRO_FIFO
-static struct smi230_sensor_data fifo_gyro_data[SMI230_MAX_GYRO_FIFO_FRAME];
-
 static void smi230_gyro_fifo_handle(struct smi230_client_data *client_data)
 {
 	struct smi230_fifo_frame fifo;
 	int err = 0, i;
 	uint8_t fifo_frames;
-	uint16_t fifo_bytes;
 	uint32_t tsamp;
 	uint64_t timestamp_ns;
 	struct timespec64 ts;
 
-	err = smi230_gyro_get_fifo_length(&fifo_bytes, p_smi230_dev);
-	if (err != SMI230_OK) {
-		PERR("FIFO get length error!");
-		return;
-	}
-
-#if 0
-	PINFO("GYRO FIFO length %d", fifo_bytes);
-#endif
 	fifo.data = fifo_buf;
-	fifo.length = fifo_bytes;
+	fifo.length = (uint16_t)(p_smi230_dev->gyro_cfg.fifo_wm) *
+		      SMI230_FIFO_GYRO_FRAME_LENGTH;
+
 	err = smi230_gyro_read_fifo_data(&fifo, p_smi230_dev);
 	if (err != SMI230_OK) {
 		PERR("FIFO read data error %d", err);
 		return;
 	}
 
-#if 0
-	/* this event shall never be mixed with sensor data  */
-	/* this event here is to indicate IRQ timing if needed */
-	input_event(client_data->input, EV_MSC, MSC_RAW, (int)fifo.length);
-	input_sync(client_data->input);
-#endif
-
-	switch (p_smi230_dev->gyro_cfg.odr) {
-	case SMI230_GYRO_BW_523_ODR_2000_HZ:
-		tsamp = 500000;
-		break;
-	case SMI230_GYRO_BW_230_ODR_2000_HZ:
-		tsamp = 500000;
-		break;
-	case SMI230_GYRO_BW_116_ODR_1000_HZ:
-		tsamp = 1000000;
-		break;
-	case SMI230_GYRO_BW_47_ODR_400_HZ:
-		tsamp = 2500000;
-		break;
-	case SMI230_GYRO_BW_23_ODR_200_HZ:
-		tsamp = 5000000;
-		break;
-	case SMI230_GYRO_BW_12_ODR_100_HZ:
-		tsamp = 10000000;
-		break;
-	case SMI230_GYRO_BW_64_ODR_200_HZ:
-		tsamp = 5000000;
-		break;
-	case SMI230_GYRO_BW_32_ODR_100_HZ:
-		tsamp = 10000000;
-		break;
-	}
-
 	err = smi230_gyro_extract_fifo(fifo_gyro_data, &fifo_frames, &fifo,
 				       p_smi230_dev);
 
-	timestamp_ns = client_data->timestamp - tsamp * fifo_frames;
+	tsamp = div_u64(client_data->timestamp - client_data->timestamp_old,
+			fifo_frames);
+	timestamp_ns = client_data->timestamp_old;
+	client_data->timestamp_old = client_data->timestamp;
 
 	for (i = 0; i < fifo_frames; i++) {
 		timestamp_ns += tsamp;
@@ -553,8 +511,6 @@ static void smi230_gyro_fifo_handle(struct smi230_client_data *client_data)
 		input_sync(client_data->input);
 	}
 }
-
-#else /* new data */
 
 __maybe_unused static void
 smi230_new_data_ready_handle(struct smi230_client_data *client_data)
@@ -576,41 +532,44 @@ smi230_new_data_ready_handle(struct smi230_client_data *client_data)
 
 	input_sync(client_data->input);
 }
-#endif
-#endif
 
-__maybe_unused static void smi230_irq_work_func(struct work_struct *work)
+static irqreturn_t smi230_irq_work_func(int irq, void *handle)
 {
-#ifndef CONFIG_SMI230_DATA_SYNC
-	struct smi230_client_data *client_data =
-		container_of(work, struct smi230_client_data, irq_work);
+	int err;
+	uint8_t data = 0;
+	struct smi230_client_data *client_data = handle;
 
-#ifdef CONFIG_SMI230_GYRO_FIFO
-	smi230_gyro_fifo_handle(client_data);
-#else
-	smi230_new_data_ready_handle(client_data);
-#endif
+	err = smi230_gyro_get_regs(SMI230_GYRO_INT_STAT_1_REG, &data, 1,
+				   p_smi230_dev);
+	if (err != SMI230_OK) {
+		PERR("Read gyro interrupt status failed %d", err);
+		return IRQ_HANDLED;
+	}
 
-#endif
+	if (data & 0x10)
+		smi230_gyro_fifo_handle(client_data);
+
+	if (data & 0x80)
+		smi230_new_data_ready_handle(client_data);
+
+	return IRQ_HANDLED;
 }
 
 static irqreturn_t smi230_irq_handle(int irq, void *handle)
 {
 	struct smi230_client_data *client_data = handle;
-	int err = 0;
 
-	client_data->timestamp = ktime_get_ns();
-	err = schedule_work(&client_data->irq_work);
-	if (err < 0)
-		PERR("schedule_work failed\n");
+	client_data->timestamp = ktime_get_boottime_ns();
 
-	return IRQ_HANDLED;
+	if (IS_ENABLED(CONFIG_SMI230_DATA_SYNC))
+		return IRQ_HANDLED;
+	else
+		return IRQ_WAKE_THREAD;
 }
 
 __maybe_unused static void
 smi230_free_irq(struct smi230_client_data *client_data)
 {
-	cancel_work_sync(&client_data->irq_work);
 	free_irq(client_data->IRQ, client_data);
 	gpio_free(client_data->gpio_pin);
 }
@@ -619,8 +578,6 @@ __maybe_unused static int
 smi230_request_irq(struct smi230_client_data *client_data)
 {
 	int err = 0;
-
-	INIT_WORK(&client_data->irq_work, smi230_irq_work_func);
 
 	client_data->gpio_pin = of_get_named_gpio_flags(
 		client_data->dev->of_node, "gpio_irq", 0, NULL);
@@ -637,8 +594,9 @@ smi230_request_irq(struct smi230_client_data *client_data)
 		return err;
 	}
 	client_data->IRQ = gpio_to_irq(client_data->gpio_pin);
-	err = request_irq(client_data->IRQ, smi230_irq_handle,
-			  IRQF_TRIGGER_RISING, SENSOR_GYRO_NAME, client_data);
+	err = request_threaded_irq(client_data->IRQ, smi230_irq_handle,
+				   smi230_irq_work_func, IRQF_TRIGGER_RISING,
+				   SENSOR_GYRO_NAME, client_data);
 	if (err < 0) {
 		PDEBUG("request_irq\n");
 		return err;
@@ -756,10 +714,12 @@ int smi230_gyro_probe(struct device *dev, struct smi230_dev *smi230_dev)
 
 	PINFO("GYRO FIFO set water mark");
 	err |= smi230_gyro_set_fifo_wm(100, p_smi230_dev);
+	p_smi230_dev->gyro_cfg.fifo_wm = 100;
 #endif
 #ifdef CONFIG_SMI230_GYRO_FIFO_FULL
 	PINFO("GYRO FIFO full enabled");
 	fifo_config.wm_en = 0x08;
+	p_smi230_dev->gyro_cfg.fifo_wm = 100;
 #endif
 
 	/* disable external event sync on both int3 and int 4 */

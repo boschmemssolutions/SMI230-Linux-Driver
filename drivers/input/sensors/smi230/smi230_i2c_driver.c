@@ -44,17 +44,17 @@
  *
  **/
 
-#include <linux/types.h>
+#include <linux/delay.h>
 #include <linux/i2c.h>
 #include <linux/module.h>
-#include <linux/delay.h>
 #include <linux/slab.h>
+#include <linux/types.h>
 
 #include "smi230_driver.h"
 
 #define MODULE_TAG MODULE_NAME
-#include "smi230_log.h"
 #include "smi230.h"
+#include "smi230_log.h"
 
 #define SMI230_MAX_RETRY_I2C_XFER   10
 #define SMI230_I2C_WRITE_DELAY_TIME 10
@@ -148,8 +148,8 @@ static int smi230_acc_i2c_probe(struct i2c_client *client,
 
 	if ((smi230_i2c_adapter != NULL) &&
 	    (smi230_i2c_adapter == client->adapter)) {
-		PINFO("%s i2c adapter is at %x", SENSOR_ACC_NAME,
-		      (unsigned int)client->adapter);
+		PINFO("%s i2c adapter is at 0x%p", SENSOR_ACC_NAME,
+		      (void *)client->adapter);
 	} else {
 		PERR("%s i2c driver is not initialized yet before ACC driver!",
 		     SENSOR_GYRO_NAME);
@@ -215,8 +215,8 @@ static int smi230_gyro_i2c_probe(struct i2c_client *client,
 
 	if (smi230_i2c_adapter == NULL) {
 		smi230_i2c_adapter = client->adapter;
-		PINFO("%s i2c adapter is at %x", SENSOR_GYRO_NAME,
-		      (unsigned int)client->adapter);
+		PINFO("%s i2c adapter is at 0x%px", SENSOR_GYRO_NAME,
+		      (void *)client->adapter);
 	} else {
 		PERR("%s i2c driver should be initialized first!",
 		     SENSOR_GYRO_NAME);

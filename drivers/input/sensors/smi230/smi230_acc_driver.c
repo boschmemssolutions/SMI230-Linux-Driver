@@ -44,47 +44,43 @@
  *
  **/
 
-#include <linux/types.h>
-#include <linux/interrupt.h>
-#include <linux/input.h>
-#include <linux/workqueue.h>
 #include <linux/firmware.h>
 #include <linux/gpio.h>
+#include <linux/input.h>
+#include <linux/interrupt.h>
+#include <linux/math64.h>
 #include <linux/of_gpio.h>
 #include <linux/of_irq.h>
 #include <linux/time64.h>
 #include <linux/timekeeping.h>
+#include <linux/types.h>
+#include <linux/workqueue.h>
 
-#include "smi230_driver.h"
-#include "smi230_data_sync.h"
-
-#define MODULE_TAG MODULE_NAME
-#include "smi230_log.h"
 #include "smi230.h"
+#include "smi230_data_sync.h"
+#include "smi230_driver.h"
+#include "smi230_log.h"
 
-#define SMI230_ACC_ENABLE_INT2 1
-#define SMI230_MIN_VALUE       -32768
-#define SMI230_MAX_VALUE       32767
+#define SMI230_MIN_VALUE -32768
+#define SMI230_MAX_VALUE 32767
 
-#ifdef CONFIG_SMI230_ACC_FIFO
 #define SMI230_MAX_ACC_FIFO_BYTES 1024
 /*1024 bytes fifo host max 147 data frames*/
 #define SMI230_MAX_ACC_FIFO_FRAME 147
 
 static uint8_t fifo_buf[SMI230_MAX_ACC_FIFO_BYTES];
-#endif
+static struct smi230_sensor_data fifo_accel_data[SMI230_MAX_ACC_FIFO_FRAME];
 
 struct smi230_client_data {
 	struct device *dev;
 	struct input_dev *input;
 	int IRQ;
 	int gpio_pin;
-	struct work_struct irq_work;
 	uint64_t timestamp;
+	uint64_t timestamp_old;
 };
 
 static struct smi230_dev *p_smi230_dev;
-static struct workqueue_struct *p_workqueue;
 static struct smi230_anymotion_cfg anymotion_cfg;
 static struct smi230_orient_cfg orientation_cfg;
 static struct smi230_no_motion_cfg no_motion_cfg;
@@ -1241,16 +1237,17 @@ static ssize_t smi230_acc_no_motion_enable_store(struct device *dev,
 
 	smi230_set_no_motion_config(&no_motion_cfg, p_smi230_dev);
 
-#ifdef CONFIG_SMI230_ACC_INT1
-	int_config.accel_int_config_1.int_type = SMI230_ACCEL_NO_MOTION_INT;
-	err |= smi230_acc_set_int_config(&int_config.accel_int_config_1,
-					 p_smi230_dev);
-#endif
-#ifdef CONFIG_SMI230_ACC_INT2
-	int_config.accel_int_config_2.int_type = SMI230_ACCEL_NO_MOTION_INT;
-	err |= smi230_acc_set_int_config(&int_config.accel_int_config_2,
-					 p_smi230_dev);
-#endif
+	if (IS_ENABLED(CONFIG_SMI230_ACC_INT1)) {
+		int_config.accel_int_config_1.int_type =
+			SMI230_ACCEL_NO_MOTION_INT;
+		err |= smi230_acc_set_int_config(&int_config.accel_int_config_1,
+						 p_smi230_dev);
+	} else if (IS_ENABLED(CONFIG_SMI230_ACC_INT2)) {
+		int_config.accel_int_config_2.int_type =
+			SMI230_ACCEL_NO_MOTION_INT;
+		err |= smi230_acc_set_int_config(&int_config.accel_int_config_2,
+						 p_smi230_dev);
+	}
 
 	if (err != SMI230_OK) {
 		PERR("set no_motion interrupt failed");
@@ -1390,7 +1387,8 @@ smi230_acc_no_motion_duration_store(struct device *dev,
 }
 
 static ssize_t smi230_acc_show_self_test(struct device *dev,
-				     struct device_attribute *attr, char *buf)
+					 struct device_attribute *attr,
+					 char *buf)
 {
 	int err, rslt;
 
@@ -1580,7 +1578,6 @@ static int smi230_input_init(struct smi230_client_data *client_data)
 	return err;
 }
 
-#ifdef CONFIG_SMI230_DATA_SYNC
 static void
 smi230_data_sync_ready_handle(struct smi230_client_data *client_data)
 {
@@ -1614,7 +1611,6 @@ smi230_data_sync_ready_handle(struct smi230_client_data *client_data)
 
 	input_sync(client_data->input);
 }
-#endif
 
 static void smi230_orientation_handle(struct smi230_client_data *client_data)
 {
@@ -1751,9 +1747,6 @@ static void smi230_low_g_handle(struct smi230_client_data *client_data)
 	PINFO("low-g detected.");
 }
 
-#ifdef CONFIG_SMI230_ACC_FIFO
-static struct smi230_sensor_data fifo_accel_data[SMI230_MAX_ACC_FIFO_FRAME];
-
 static void smi230_acc_fifo_handle(struct smi230_client_data *client_data)
 {
 	struct smi230_fifo_frame fifo;
@@ -1776,53 +1769,6 @@ static void smi230_acc_fifo_handle(struct smi230_client_data *client_data)
 		return;
 	}
 
-#if 0
-	PINFO("ACC FIFO length %d", fifo.length);
-	PINFO("====================");
-	PINFO("ACC FIFO data %d", fifo.data[0]);
-	PINFO("ACC FIFO data %d", fifo.data[1]);
-	PINFO("ACC FIFO data %d", fifo.data[2]);
-	PINFO("ACC FIFO data %d", fifo.data[3]);
-	PINFO("ACC FIFO data %d", fifo.data[4]);
-	PINFO("ACC FIFO data %d", fifo.data[5]);
-	PINFO("ACC FIFO data %d", fifo.data[6]);
-	PINFO("--------------------");
-#endif
-
-#if 0
-	/* this event shall never be mixed with sensor data  */
-	/* this event here is to indicate IRQ timing if needed */
-	input_event(client_data->input, EV_MSC, MSC_RAW, (int)fifo.length);
-	input_sync(client_data->input);
-#endif
-
-	switch (p_smi230_dev->accel_cfg.odr) {
-	case SMI230_ACCEL_ODR_12_5_HZ:
-		tsamp = 80000000;
-		break;
-	case SMI230_ACCEL_ODR_25_HZ:
-		tsamp = 40000000;
-		break;
-	case SMI230_ACCEL_ODR_50_HZ:
-		tsamp = 20000000;
-		break;
-	case SMI230_ACCEL_ODR_100_HZ:
-		tsamp = 10000000;
-		break;
-	case SMI230_ACCEL_ODR_200_HZ:
-		tsamp = 5000000;
-		break;
-	case SMI230_ACCEL_ODR_400_HZ:
-		tsamp = 2500000;
-		break;
-	case SMI230_ACCEL_ODR_800_HZ:
-		tsamp = 1250000;
-		break;
-	case SMI230_ACCEL_ODR_1600_HZ:
-		tsamp = 625000;
-		break;
-	}
-
 	/* make sure all frames are read out,
 	 * the actual frame numbers will be returned
 	 * through fifo_length itself*/
@@ -1830,7 +1776,10 @@ static void smi230_acc_fifo_handle(struct smi230_client_data *client_data)
 	err = smi230_acc_extract_accel(fifo_accel_data, &fifo_length, &fifo,
 				       p_smi230_dev);
 
-	timestamp_ns = client_data->timestamp - tsamp * fifo_length;
+	tsamp = div_u64(client_data->timestamp - client_data->timestamp_old,
+			fifo_length);
+	timestamp_ns = client_data->timestamp_old;
+	client_data->timestamp_old = client_data->timestamp;
 
 	for (i = 0; i < fifo_length; i++) {
 		timestamp_ns += tsamp;
@@ -1850,10 +1799,7 @@ static void smi230_acc_fifo_handle(struct smi230_client_data *client_data)
 	}
 }
 
-#else /* new data */
-
-__maybe_unused static void
-smi230_new_data_ready_handle(struct smi230_client_data *client_data)
+static void smi230_new_data_ready_handle(struct smi230_client_data *client_data)
 {
 	struct smi230_sensor_data accel_data;
 	int err = 0;
@@ -1872,32 +1818,65 @@ smi230_new_data_ready_handle(struct smi230_client_data *client_data)
 
 	input_sync(client_data->input);
 }
-#endif
 
-static void smi230_irq_work_func(struct work_struct *work)
+static int smi230_acc_toggle_int_pin(uint8_t enable)
 {
-	struct smi230_client_data *client_data =
-		container_of(work, struct smi230_client_data, irq_work);
+	int err;
+	uint8_t reg_addr = 0;
+	uint8_t data = 0;
+
+	if (IS_ENABLED(CONFIG_SMI230_ACC_INT1))
+		reg_addr = SMI230_ACCEL_INT1_IO_CONF_REG;
+	else if (IS_ENABLED(CONFIG_SMI230_ACC_INT2))
+		reg_addr = SMI230_ACCEL_INT2_IO_CONF_REG;
+	else {
+		PERR("Invalid Kconfig for interrupt pin.");
+		return SMI230_E_INVALID_CONFIG;
+	}
+
+	err = smi230_acc_get_regs(reg_addr, &data, 1, p_smi230_dev);
+	if (err != SMI230_OK) {
+		PERR("Error reading INT_IO_CONF_REG");
+		return err;
+	}
+
+	data = SMI230_SET_BITS(data, SMI230_ACCEL_INT_IO, enable);
+
+	err = smi230_acc_set_regs(reg_addr, &data, 1, p_smi230_dev);
+	if (err != SMI230_OK)
+		PERR("Error writing INT_IO_CONF_REG");
+
+	return err;
+}
+
+static irqreturn_t smi230_irq_work_func(int irq, void *handle)
+{
+	struct smi230_client_data *client_data = handle;
 	int err = 0;
 	uint8_t int_stat[2];
+
+	err = smi230_acc_toggle_int_pin(0);
+	if (err != SMI230_OK)
+		PERR("deactivate int pin error");
 
 	err = smi230_acc_get_regs(SMI230_ACCEL_INT_STAT_0_REG, int_stat, 2,
 				  p_smi230_dev);
 	if (err) {
 		PERR("read int status error");
-		return;
+		return IRQ_HANDLED;
 	}
 
-#if defined(CONFIG_SMI230_ACC_FIFO)
-	if (int_stat[1] & (SMI230_ACCEL_FIFO_FULL | SMI230_ACCEL_FIFO_WTM))
-		smi230_acc_fifo_handle(client_data);
-#elif defined(CONFIG_SMI230_DATA_SYNC)
-	if (int_stat[0] & SMI230_ACCEL_DATA_SYNC_INT_ENABLE)
-		smi230_data_sync_ready_handle(client_data);
-#else
-	if (int_stat[1] & SMI230_ACCEL_DATA_READY_INT)
-		smi230_new_data_ready_handle(client_data);
-#endif
+	if (IS_ENABLED(CONFIG_SMI230_ACC_FIFO)) {
+		if (int_stat[1] &
+		    (SMI230_ACCEL_FIFO_FULL | SMI230_ACCEL_FIFO_WTM))
+			smi230_acc_fifo_handle(client_data);
+	} else if (IS_ENABLED(CONFIG_SMI230_DATA_SYNC)) {
+		if (int_stat[0] & SMI230_ACCEL_DATA_SYNC_INT_ENABLE)
+			smi230_data_sync_ready_handle(client_data);
+	} else {
+		if (int_stat[1] & SMI230_ACCEL_DATA_READY_INT)
+			smi230_new_data_ready_handle(client_data);
+	}
 
 	if (int_stat[0] & SMI230_ACCEL_ANY_MOT_INT_ENABLE)
 		smi230_anymotion_handle(client_data);
@@ -1913,36 +1892,31 @@ static void smi230_irq_work_func(struct work_struct *work)
 
 	if (int_stat[0] & SMI230_ACCEL_LOW_G_INT_ENABLE)
 		smi230_low_g_handle(client_data);
+
+	err = smi230_acc_toggle_int_pin(1);
+	if (err != SMI230_OK)
+		PERR("activate int pin error");
+
+	return IRQ_HANDLED;
 }
 
 static irqreturn_t smi230_irq_handle(int irq, void *handle)
 {
 	struct smi230_client_data *client_data = handle;
-	int err = 0;
 
 	client_data->timestamp = ktime_get_boottime_ns();
-
-	err = queue_work(p_workqueue, &client_data->irq_work);
-	if (err < 0)
-		PERR("schedule_work failed\n");
-
-	return IRQ_HANDLED;
+	return IRQ_WAKE_THREAD;
 }
 
 static void smi230_free_irq(struct smi230_client_data *client_data)
 {
-	cancel_work_sync(&client_data->irq_work);
 	free_irq(client_data->IRQ, client_data);
 	gpio_free(client_data->gpio_pin);
-	destroy_workqueue(p_workqueue);
 }
 
 static int smi230_request_irq(struct smi230_client_data *client_data)
 {
 	int err = 0;
-
-	p_workqueue = create_singlethread_workqueue("smi230");
-	INIT_WORK(&client_data->irq_work, smi230_irq_work_func);
 
 	client_data->gpio_pin = of_get_named_gpio_flags(
 		client_data->dev->of_node, "gpio_irq", 0, NULL);
@@ -1959,8 +1933,9 @@ static int smi230_request_irq(struct smi230_client_data *client_data)
 		return err;
 	}
 	client_data->IRQ = gpio_to_irq(client_data->gpio_pin);
-	err = request_irq(client_data->IRQ, smi230_irq_handle,
-			  IRQF_TRIGGER_RISING, SENSOR_ACC_NAME, client_data);
+	err = request_threaded_irq(client_data->IRQ, smi230_irq_handle,
+				   smi230_irq_work_func, IRQF_TRIGGER_RISING,
+				   SENSOR_ACC_NAME, client_data);
 	if (err < 0) {
 		PDEBUG("request_irq\n");
 		return err;
