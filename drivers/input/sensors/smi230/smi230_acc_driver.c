@@ -2034,11 +2034,22 @@ static int smi230_acc_configuration(struct smi230_dev *p_smi230_dev)
 #endif
 #ifdef CONFIG_SMI230_ACC_FIFO_FULL
 	PINFO("ACC FIFO full is enabled");
+	int_config.accel_int_config_1.int_type = SMI230_ACCEL_FIFO_FULL_INT;
 	int_config.accel_int_config_2.int_type = SMI230_ACCEL_FIFO_FULL_INT;
 #endif
 
+#ifdef CONFIG_SMI230_ACC_INT1
+	err |= smi230_acc_set_int_config(&int_config.accel_int_config_1,
+					 p_smi230_dev);
+#endif
+#ifdef CONFIG_SMI230_ACC_INT2
 	err |= smi230_acc_set_int_config(&int_config.accel_int_config_2,
 					 p_smi230_dev);
+#endif
+	if (err != SMI230_OK) {
+		PERR("Set int config failed");
+		return err;
+	}
 
 	fifo_config.mode = SMI230_ACC_FIFO_MODE;
 	fifo_config.accel_en = 1;
