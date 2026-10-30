@@ -155,8 +155,12 @@ static ssize_t smi230_acc_store_fifo_wm(struct device *dev,
 	uint16_t fifo_wm;
 
 	err = kstrtou16(buf, 10, &fifo_wm);
-	err |= smi230_acc_set_fifo_wm(fifo_wm, p_smi230_dev);
+	if (err) {
+		PERR("invalid params");
+		return err;
+	}
 
+	err = smi230_acc_set_fifo_wm(fifo_wm, p_smi230_dev);
 	if (err != SMI230_OK) {
 		PERR("set fifo wm faild");
 		return err;
@@ -182,6 +186,15 @@ static ssize_t smi230_acc_show_acc_pwr_cfg(struct device *dev,
 			p_smi230_dev->accel_cfg.power);
 }
 
+#ifdef CONFIG_SMI230_DATA_SYNC
+/* Remember the last configured data-sync mode so it can be re-applied after a
+ * suspend/re-activate cycle. A plain power-mode change puts the accelerometer
+ * back into normal mode and leaves the sync engine disarmed. */
+static struct smi230_data_sync_cfg current_data_sync_cfg = {
+	.mode = SMI230_ACCEL_DATA_SYNC_MODE_OFF
+};
+#endif
+
 static ssize_t smi230_acc_store_acc_pwr_cfg(struct device *dev,
 					    struct device_attribute *attr,
 					    const char *buf, size_t count)
@@ -192,6 +205,7 @@ static ssize_t smi230_acc_store_acc_pwr_cfg(struct device *dev,
 	err = kstrtoul(buf, 10, &pwr_cfg);
 	if (err)
 		return err;
+
 	mutex_lock(&interrupt_handling_lock);
 	if (pwr_cfg == 3) {
 		p_smi230_dev->accel_cfg.power = SMI230_ACCEL_PM_SUSPEND;
@@ -199,6 +213,28 @@ static ssize_t smi230_acc_store_acc_pwr_cfg(struct device *dev,
 	} else if (pwr_cfg == 0) {
 		p_smi230_dev->accel_cfg.power = SMI230_ACCEL_PM_ACTIVE;
 		err = smi230_acc_set_power_mode(p_smi230_dev);
+		/* Only the watermark FIFO path needs a re-activation flush:
+		 * clear any stale/overflowed FIFO content left from before the
+		 * suspend so the accelerometer starts from an empty buffer and
+		 * a clean watermark edge is generated on re-activation. In
+		 * FIFO-full and data-sync modes this flush is unnecessary and
+		 * delays/suppresses the first interrupt after re-activation. */
+		if (err == 0 && IS_ENABLED(CONFIG_SMI230_ACC_FIFO_WM))
+			err = smi230_acc_fifo_reset(p_smi230_dev);
+#ifdef CONFIG_SMI230_DATA_SYNC
+		/* Re-arm the data-sync engine after re-activation. The power
+		 * mode change above puts the accelerometer back into normal
+		 * mode, so without re-applying the sync configuration
+		 * smi230_get_synchronized_data() keeps failing and no events
+		 * are produced even though the interrupt still fires. */
+		if (err == 0 && current_data_sync_cfg.mode !=
+					SMI230_ACCEL_DATA_SYNC_MODE_OFF)
+			err = smi230_configure_data_synchronization(
+				current_data_sync_cfg, p_smi230_dev);
+#endif
+	} else {
+		PERR("invalid param");
+		err = -EINVAL;
 	}
 
 	PDEBUG("set power cfg to %ld, err %d", pwr_cfg, err);
@@ -298,6 +334,10 @@ static ssize_t smi230_acc_store_datasync_odr(struct device *dev,
 		PERR("setting datasync ODR failed");
 		return err;
 	}
+
+	/* Remember the mode so it can be re-armed after a suspend/re-activate
+	 * cycle (see smi230_acc_store_acc_pwr_cfg). */
+	current_data_sync_cfg = sync_cfg;
 	return count;
 }
 #else
@@ -516,6 +556,7 @@ static ssize_t smi230_acc_store_range(struct device *dev,
 	mutex_lock(&interrupt_handling_lock);
 	err = smi230_acc_set_meas_conf(p_smi230_dev);
 	if (err) {
+		mutex_unlock(&interrupt_handling_lock);
 		PERR("setting range failed");
 		return err;
 	}
@@ -523,6 +564,7 @@ static ssize_t smi230_acc_store_range(struct device *dev,
 	err = smi230_acc_get_regs(SMI230_ACCEL_RANGE_REG, &data, 1,
 				  p_smi230_dev);
 	if (err) {
+		mutex_unlock(&interrupt_handling_lock);
 		PERR("read back range failed");
 		return err;
 	}
@@ -531,6 +573,7 @@ static ssize_t smi230_acc_store_range(struct device *dev,
 		msleep(1);
 		err = smi230_acc_set_meas_conf(p_smi230_dev);
 		if (err) {
+			mutex_unlock(&interrupt_handling_lock);
 			PERR("setting range failed");
 			return err;
 		}
@@ -538,6 +581,7 @@ static ssize_t smi230_acc_store_range(struct device *dev,
 		err = smi230_acc_get_regs(SMI230_ACCEL_RANGE_REG, &data, 1,
 					  p_smi230_dev);
 		if (err) {
+			mutex_unlock(&interrupt_handling_lock);
 			PERR("read back range failed");
 			return err;
 		}
@@ -1434,18 +1478,23 @@ static ssize_t smi230_acc_show_self_test(struct device *dev,
 {
 	int err, rslt;
 
+	mutex_lock(&interrupt_handling_lock);
 	smi230_acc_get_power_mode(p_smi230_dev);
-	if (p_smi230_dev->accel_cfg.power != 0x00)
+	if (p_smi230_dev->accel_cfg.power != 0x00) {
+		mutex_unlock(&interrupt_handling_lock);
 		return snprintf(buf, PAGE_SIZE,
 				"acc disabled, enable it firstly\n");
+	}
 
 	rslt = smi230_acc_perform_selftest(p_smi230_dev);
 	err = smi230_acc_configuration(p_smi230_dev);
 	if (err != SMI230_OK) {
 		dev_err(dev, "Sensor initialization failed.");
+		mutex_unlock(&interrupt_handling_lock);
 		return -EIO;
 	}
 
+	mutex_unlock(&interrupt_handling_lock);
 	if (rslt != SMI230_OK)
 		return snprintf(buf, PAGE_SIZE, "self test failure\n");
 	else
@@ -1603,7 +1652,10 @@ static int smi230_input_init(struct smi230_client_data *client_data)
 	if (dev == NULL)
 		return -ENOMEM;
 
-	dev->id.bustype = BUS_I2C;
+	if (IS_ENABLED(CONFIG_SMI230_I2C))
+		dev->id.bustype = BUS_I2C;
+	else
+		dev->id.bustype = BUS_SPI;
 	dev->name = SENSOR_ACC_NAME;
 	dev_set_name(&dev->dev, SENSOR_ACC_NAME);
 	input_set_drvdata(dev, client_data);
@@ -1832,6 +1884,18 @@ static void smi230_acc_fifo_full_handle(struct smi230_client_data *client_data)
 	err = smi230_acc_extract_accel(fifo_accel_data, &fifo_length, &fifo,
 				       p_smi230_dev);
 
+	/* No accel frames were extracted although the FIFO signalled full.
+	 * This happens on a partial/empty or stuck FIFO read (most likely at
+	 * low ODR or right after a suspend/re-activate cycle). Reset the FIFO
+	 * to clear the stuck state and re-arm the FIFO-full interrupt, and
+	 * guard the div_u64() below against a zero divisor, which would be a
+	 * divide-by-zero in the IRQ thread and would halt the event stream. */
+	if (fifo_length == 0) {
+		PINFO("ACC FIFO full yielded no frames, resetting FIFO");
+		smi230_acc_fifo_reset(p_smi230_dev);
+		return;
+	}
+
 	tsamp = div_u64(client_data->timestamp - client_data->timestamp_old,
 			fifo_length);
 	timestamp_ns = client_data->timestamp_old;
@@ -1860,9 +1924,10 @@ static void smi230_acc_fifo_wm_handle(struct smi230_client_data *client_data)
 	struct smi230_fifo_frame fifo;
 	int err = 0, i;
 	uint16_t fifo_length, mod, fifo_length_bytes;
-	bool repeat = false;
 	uint32_t tsamp;
 	uint64_t timestamp_ns;
+	uint64_t now;
+	bool first_pass = true;
 	struct timespec64 ts;
 
 	err = smi230_acc_get_fifo_length(&fifo_length, p_smi230_dev);
@@ -1892,40 +1957,77 @@ static void smi230_acc_fifo_wm_handle(struct smi230_client_data *client_data)
 		err = smi230_acc_extract_accel(fifo_accel_data, &fifo_length,
 					       &fifo, p_smi230_dev);
 
-		tsamp = div_u64(client_data->timestamp -
-					client_data->timestamp_old,
-				fifo_length);
+		/* Overflow recovery. The accel FIFO runs in stop-at-full mode,
+		 * so once it overflows the buffer freezes: no new samples are
+		 * stored, the fill level stays at/above the watermark and no
+		 * further watermark edge is generated, which permanently stops
+		 * the accel interrupt. The overflow surfaces here either as a
+		 * Skip Frame (skipped_frame_count > 0) or as a read that yields
+		 * no accel frames (fifo_length == 0) while the FIFO still
+		 * reported data. Reset the FIFO (0xB0 -> ACC_SOFTRESET) to
+		 * clear the overrun and re-arm the watermark interrupt. The
+		 * early break also guards the div_u64() below against a
+		 * fifo_length of 0. */
+		if (fifo.skipped_frame_count > 0 || fifo_length == 0) {
+			PINFO("ACC FIFO overflow detected (skipped %u), resetting FIFO",
+			      fifo.skipped_frame_count);
+			smi230_acc_fifo_reset(p_smi230_dev);
+			break;
+		}
+
+		/* First pass uses the timestamp captured in the top-half at
+		 * IRQ time. Subsequent passes drain FIFO data that arrived
+		 * after that instant, so capture a fresh timestamp for each
+		 * of them to keep the per-sample spacing meaningful. */
+		if (first_pass) {
+			now = client_data->timestamp;
+			first_pass = false;
+		} else {
+			now = ktime_get_boottime_ns();
+		}
+
+		/* Guard against a non-monotonic timestamp: a watermark IRQ
+		 * can latch an edge time while a previous multi-pass drain is
+		 * still advancing timestamp_old with fresh ktime values. In
+		 * that case the edge time may predate timestamp_old, which
+		 * would underflow the unsigned subtraction below and produce a
+		 * bogus sample period. Fall back to the current time, which is
+		 * always >= timestamp_old. */
+		if (now <= client_data->timestamp_old)
+			now = ktime_get_boottime_ns();
+
+		tsamp = div_u64(now - client_data->timestamp_old, fifo_length);
 		timestamp_ns = client_data->timestamp_old;
-		client_data->timestamp_old = client_data->timestamp;
+		client_data->timestamp_old = now;
 		fifo_length_bytes = fifo_length * 7;
 
 		//ignore fifo data which contains none data frame
 		//ignore fifo data from next irq
-		if (!repeat &&
-		    (fifo_length_bytes >= p_smi230_dev->accel_cfg.fifo_wm)) {
-			for (i = 0; i < fifo_length; i++) {
-				timestamp_ns += tsamp;
-				ts = ns_to_timespec64(timestamp_ns);
+		//if (fifo_length_bytes >= p_smi230_dev->accel_cfg.fifo_wm) {
+		for (i = 0; i < fifo_length; i++) {
+			timestamp_ns += tsamp;
+			ts = ns_to_timespec64(timestamp_ns);
 
-				input_event(client_data->input, EV_MSC,
-					    MSC_TIMESTAMP, ts.tv_sec);
-				input_event(client_data->input, EV_MSC,
-					    MSC_TIMESTAMP, ts.tv_nsec);
-				input_event(client_data->input, EV_MSC, MSC_RAW,
-					    (int)fifo_accel_data[i].x);
-				input_event(client_data->input, EV_MSC, MSC_RAW,
-					    (int)fifo_accel_data[i].y);
-				input_event(client_data->input, EV_MSC, MSC_RAW,
-					    (int)fifo_accel_data[i].z);
-				input_sync(client_data->input);
-			}
+			input_event(client_data->input, EV_MSC, MSC_TIMESTAMP,
+				    ts.tv_sec);
+			input_event(client_data->input, EV_MSC, MSC_TIMESTAMP,
+				    ts.tv_nsec);
+			input_event(client_data->input, EV_MSC, MSC_RAW,
+				    (int)fifo_accel_data[i].x);
+			input_event(client_data->input, EV_MSC, MSC_RAW,
+				    (int)fifo_accel_data[i].y);
+			input_event(client_data->input, EV_MSC, MSC_RAW,
+				    (int)fifo_accel_data[i].z);
+			input_sync(client_data->input);
 		}
+		//}
 		err = smi230_acc_get_fifo_length(&fifo_length, p_smi230_dev);
 		if (err != SMI230_OK) {
 			PERR("FIFO read fifo_length error!");
 			return;
 		}
-		repeat = true;
+		if (p_smi230_dev->accel_cfg.power == SMI230_ACCEL_PM_SUSPEND)
+			break;
 	}
 }
 
@@ -1996,8 +2098,12 @@ static irqreturn_t smi230_irq_work_func(int irq, void *handle)
 				  p_smi230_dev);
 	if (err) {
 		PERR("read int status error");
-		mutex_unlock(&interrupt_handling_lock);
-		return IRQ_HANDLED;
+		/* Re-arm the interrupt pin before bailing out. In FIFO mode the
+		 * pin was masked at the top of this handler; returning without
+		 * re-enabling it would leave the accel interrupt permanently
+		 * masked after a single transient bus error, halting the event
+		 * stream until the next power cycle. */
+		goto reenable_int;
 	}
 
 	if (IS_ENABLED(CONFIG_SMI230_ACC_FIFO)) {
@@ -2028,6 +2134,7 @@ static irqreturn_t smi230_irq_work_func(int irq, void *handle)
 	if (int_stat[0] & SMI230_ACCEL_LOW_G_INT_ENABLE)
 		smi230_low_g_handle(client_data);
 
+reenable_int:
 	if (IS_ENABLED(CONFIG_SMI230_ACC_FIFO)) {
 		err = smi230_acc_toggle_int_pin(1);
 		if (err != SMI230_OK)

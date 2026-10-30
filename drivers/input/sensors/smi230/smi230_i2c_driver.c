@@ -91,7 +91,8 @@ static int8_t smi230_i2c_read(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data,
 	mutex_lock(&xfer_lock);
 
 	for (retry = 0; retry < SMI230_MAX_RETRY_I2C_XFER; retry++) {
-		if (i2c_transfer(smi230_i2c_adapter, msg, ARRAY_SIZE(msg)) > 0)
+		if (i2c_transfer(smi230_i2c_adapter, msg, ARRAY_SIZE(msg)) ==
+		    ARRAY_SIZE(msg))
 			break;
 		else
 			usleep_range(SMI230_I2C_WRITE_DELAY_TIME * 1000,
@@ -130,7 +131,7 @@ static int8_t smi230_i2c_write(uint8_t dev_addr, uint8_t reg_addr,
 	msg.buf[0] = reg_addr;
 	memcpy(&msg.buf[1], data, len);
 	for (retry = 0; retry < SMI230_MAX_RETRY_I2C_XFER; retry++) {
-		if (i2c_transfer(smi230_i2c_adapter, &msg, 1) > 0)
+		if (i2c_transfer(smi230_i2c_adapter, &msg, 1) == 1)
 			break;
 		else
 			usleep_range(SMI230_I2C_WRITE_DELAY_TIME * 1000,
@@ -401,6 +402,13 @@ static void __exit smi230_module_exit(void)
 #ifdef CONFIG_SMI230_GYRO_DRIVER
 	i2c_del_driver(&smi230_gyro_driver);
 #endif
+	/* Reset the cached adapter so a subsequent module reload starts from a
+	 * clean state. smi230_gyro_i2c_probe() only proceeds when this is NULL
+	 * (and acc requires it to match); leaving a stale pointer here makes
+	 * the gyro probe bail out with -EIO on the next load, so the SMI230GYRO
+	 * device never registers. */
+	smi230_i2c_adapter = NULL;
+
 	PINFO("Bosch Sensor Device %s unregistered", SENSOR_GYRO_NAME);
 }
 

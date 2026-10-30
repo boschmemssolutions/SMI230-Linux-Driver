@@ -1021,22 +1021,64 @@ int8_t smi230_acc_set_power_mode(const struct smi230_dev *dev)
 		}
 
 		if (rslt == SMI230_OK) {
-			/*enable accel sensor*/
-			rslt = set_regs(SMI230_ACCEL_PWR_CONF_REG, &data[0], 1,
-					dev);
+			uint8_t attempt;
+			uint8_t readback;
 
-			if (rslt == SMI230_OK) {
+			/*enable accel sensor - write and verify the power
+			 * configuration register, retrying on mismatch to
+			 * guard against a silently dropped write. */
+			rslt = SMI230_E_COM_FAIL;
+			for (attempt = 0; attempt < SMI230_POWER_MODE_SET_RETRY;
+			     attempt++) {
+				rslt = set_regs(SMI230_ACCEL_PWR_CONF_REG,
+						&data[0], 1, dev);
+				if (rslt != SMI230_OK)
+					continue;
+
 				/*delay between power ctrl and power config*/
 				dev->delay_ms(SMI230_POWER_CONFIG_DELAY);
 
-				/* write to accel power configuration register */
-				rslt = set_regs(SMI230_ACCEL_PWR_CTRL_REG,
-						&data[1], 1, dev);
+				rslt = get_regs(SMI230_ACCEL_PWR_CONF_REG,
+						&readback, 1, dev);
+				if (rslt != SMI230_OK)
+					continue;
 
-				if (rslt == SMI230_OK) {
+				if (readback == data[0]) {
+					rslt = SMI230_OK;
+					break;
+				}
+
+				rslt = SMI230_E_COM_FAIL;
+			}
+
+			if (rslt == SMI230_OK) {
+				/* write and verify accel power control register */
+				rslt = SMI230_E_COM_FAIL;
+				for (attempt = 0;
+				     attempt < SMI230_POWER_MODE_SET_RETRY;
+				     attempt++) {
+					rslt = set_regs(
+						SMI230_ACCEL_PWR_CTRL_REG,
+						&data[1], 1, dev);
+					if (rslt != SMI230_OK)
+						continue;
+
 					/*delay required to switch power modes*/
 					dev->delay_ms(
 						SMI230_POWER_CONFIG_DELAY);
+
+					rslt = get_regs(
+						SMI230_ACCEL_PWR_CTRL_REG,
+						&readback, 1, dev);
+					if (rslt != SMI230_OK)
+						continue;
+
+					if (readback == data[1]) {
+						rslt = SMI230_OK;
+						break;
+					}
+
+					rslt = SMI230_E_COM_FAIL;
 				}
 			}
 		}

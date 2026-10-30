@@ -355,6 +355,16 @@ int8_t smi230_acc_perform_selftest(struct smi230_dev *dev);
 int8_t smi230_gyro_init(struct smi230_dev *dev);
 
 /*!
+ *  @brief This API resets the gyro FIFO.
+ *
+ *  @param[in] dev  : Structure instance of smi230_dev.
+ *
+ *  @return Result of API execution status
+ *  @retval zero -> Success / -ve value -> Error
+ */
+int8_t smi230_gyro_fifo_reset(const struct smi230_dev *dev);
+
+/*!
  *  @brief This API reads the data from the given register address of gyro sensor.
  *
  *  @param[in] reg_addr  : Register address from where the data to be read

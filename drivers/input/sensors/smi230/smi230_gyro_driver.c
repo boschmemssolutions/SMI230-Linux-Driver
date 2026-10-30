@@ -76,6 +76,7 @@ struct smi230_client_data {
 	int IRQ;
 	int gpio_pin;
 	uint64_t timestamp;
+	uint64_t timestamp_pending;
 	uint64_t timestamp_old;
 };
 
@@ -143,8 +144,12 @@ static ssize_t smi230_gyro_store_fifo_wm(struct device *dev,
 	uint8_t fifo_wm;
 
 	err = kstrtou8(buf, 10, &fifo_wm);
-	err |= smi230_gyro_set_fifo_wm(fifo_wm, p_smi230_dev);
+	if (err) {
+		PERR("invalid params");
+		return err;
+	}
 
+	err = smi230_gyro_set_fifo_wm(fifo_wm, p_smi230_dev);
 	if (err != SMI230_OK) {
 		PERR("set fifo wm faild");
 		return err;
@@ -166,7 +171,6 @@ static ssize_t smi230_gyro_store_pwr_cfg(struct device *dev,
 	err = kstrtoul(buf, 10, &pwr_cfg);
 	if (err)
 		return err;
-
 	mutex_lock(&interrupt_handling_lock);
 	if (pwr_cfg == 0) {
 		p_smi230_dev->gyro_cfg.power = SMI230_GYRO_PM_NORMAL;
@@ -189,6 +193,7 @@ static ssize_t smi230_gyro_store_pwr_cfg(struct device *dev,
 		mutex_unlock(&interrupt_handling_lock);
 		return err;
 	}
+
 	mutex_unlock(&interrupt_handling_lock);
 	return count;
 }
@@ -459,13 +464,17 @@ static ssize_t smi230_gyro_show_self_test(struct device *dev,
 {
 	int rslt;
 
+	mutex_lock(&interrupt_handling_lock);
 	smi230_gyro_get_power_mode(p_smi230_dev);
 
-	if (p_smi230_dev->gyro_cfg.power != 0x00)
+	if (p_smi230_dev->gyro_cfg.power != 0x00) {
+		mutex_unlock(&interrupt_handling_lock);
 		return snprintf(buf, PAGE_SIZE,
 				"gyro disabled, enable it firstly\n");
+	}
 
 	rslt = smi230_gyro_perform_selftest(p_smi230_dev);
+	mutex_unlock(&interrupt_handling_lock);
 	if (rslt != SMI230_GYRO_SELF_TEST_OK)
 		return snprintf(buf, PAGE_SIZE, "self test fail\n");
 	else
@@ -512,7 +521,10 @@ static int smi230_input_init(struct smi230_client_data *client_data)
 	if (dev == NULL)
 		return -ENOMEM;
 
-	dev->id.bustype = BUS_I2C;
+	if (IS_ENABLED(CONFIG_SMI230_I2C))
+		dev->id.bustype = BUS_I2C;
+	else
+		dev->id.bustype = BUS_SPI;
 	dev->name = SENSOR_GYRO_NAME;
 	dev_set_name(&dev->dev, SENSOR_GYRO_NAME);
 	input_set_drvdata(dev, client_data);
@@ -565,6 +577,16 @@ static void smi230_gyro_fifo_full_handle(struct smi230_client_data *client_data)
 	err = smi230_gyro_extract_fifo(fifo_gyro_data, &fifo_length, &fifo,
 				       p_smi230_dev);
 
+	/* A FIFO-full interrupt can occasionally yield no extractable frames.
+	 * Dividing the sample period by a zero frame count below would trigger
+	 * a divide-by-zero in the IRQ thread, which oopses and tears down the
+	 * driver so the input device disappears for all subsequent accesses.
+	 * Nothing to emit here, so bail out safely. */
+	if (fifo_length == 0) {
+		PINFO("GYRO FIFO full yielded no frames");
+		return;
+	}
+
 	tsamp = div_u64(client_data->timestamp - client_data->timestamp_old,
 			fifo_length);
 	timestamp_ns = client_data->timestamp_old;
@@ -592,10 +614,12 @@ static void smi230_gyro_fifo_wm_handle(struct smi230_client_data *client_data)
 {
 	struct smi230_fifo_frame fifo;
 	int err = 0, i;
-	bool repeat = false;
 	uint16_t fifo_length;
+	uint16_t frames_to_read;
 	uint32_t tsamp;
 	uint64_t timestamp_ns;
+	uint64_t now;
+	bool first_pass = true;
 	struct timespec64 ts;
 
 	err = smi230_gyro_get_fifo_length(&fifo_length, p_smi230_dev);
@@ -605,9 +629,19 @@ static void smi230_gyro_fifo_wm_handle(struct smi230_client_data *client_data)
 	}
 
 	while (fifo_length * 2 >= p_smi230_dev->gyro_cfg.fifo_wm) {
+		/* Only read the frames that are actually present in the FIFO.
+		 * fifo_length is the sensor's current frame count; clamping to
+		 * it (capped by the watermark) avoids over-reading the FIFO
+		 * data register and parsing stale/empty frames when fewer than
+		 * a full watermark of samples remain. */
+		frames_to_read =
+			min_t(uint16_t, fifo_length,
+			      (uint16_t)p_smi230_dev->gyro_cfg.fifo_wm);
+		if (frames_to_read == 0)
+			break;
+
 		fifo.data = fifo_buf;
-		fifo.length = (uint16_t)(p_smi230_dev->gyro_cfg.fifo_wm) *
-			      SMI230_FIFO_GYRO_FRAME_LENGTH;
+		fifo.length = frames_to_read * SMI230_FIFO_GYRO_FRAME_LENGTH;
 
 		err = smi230_gyro_read_fifo_data(&fifo, p_smi230_dev);
 		if (err != SMI230_OK) {
@@ -622,38 +656,65 @@ static void smi230_gyro_fifo_wm_handle(struct smi230_client_data *client_data)
 		err = smi230_gyro_extract_fifo(fifo_gyro_data, &fifo_length,
 					       &fifo, p_smi230_dev);
 
-		tsamp = div_u64(client_data->timestamp -
-					client_data->timestamp_old,
-				fifo_length);
+		/* No frames extracted: nothing to timestamp and dividing the
+		 * sample period by zero below would be undefined. Bail out of
+		 * the drain loop. */
+		if (fifo_length == 0)
+			break;
+
+		/* First pass uses the timestamp captured in the top-half at
+		 * IRQ time. Subsequent passes drain FIFO data that arrived
+		 * after that instant, so capture a fresh timestamp for each
+		 * of them to keep the per-sample spacing meaningful. */
+		if (first_pass) {
+			now = client_data->timestamp;
+			first_pass = false;
+		} else {
+			now = ktime_get_boottime_ns();
+		}
+
+		/* Guard against a non-monotonic timestamp: a watermark IRQ
+		 * can latch an edge time while a previous multi-pass drain is
+		 * still advancing timestamp_old with fresh ktime values. In
+		 * that case the staged edge time may predate timestamp_old,
+		 * which would underflow the unsigned subtraction below and
+		 * produce a bogus sample period. Fall back to the current
+		 * time, which is always >= timestamp_old. */
+		if (now <= client_data->timestamp_old)
+			now = ktime_get_boottime_ns();
+
+		tsamp = div_u64(now - client_data->timestamp_old, fifo_length);
 		timestamp_ns = client_data->timestamp_old;
-		client_data->timestamp_old = client_data->timestamp;
+		client_data->timestamp_old = now;
 
 		//ignore fifo data from next irq
-		if (!repeat && fifo_length >= p_smi230_dev->gyro_cfg.fifo_wm) {
-			for (i = 0; i < fifo_length; i++) {
-				timestamp_ns += tsamp;
-				ts = ns_to_timespec64(timestamp_ns);
+		//if (fifo_length >= p_smi230_dev->gyro_cfg.fifo_wm) {
+		for (i = 0; i < fifo_length; i++) {
+			timestamp_ns += tsamp;
+			ts = ns_to_timespec64(timestamp_ns);
 
-				input_event(client_data->input, EV_MSC,
-					    MSC_TIMESTAMP, ts.tv_sec);
-				input_event(client_data->input, EV_MSC,
-					    MSC_TIMESTAMP, ts.tv_nsec);
-				input_event(client_data->input, EV_MSC, MSC_RAW,
-					    (int)fifo_gyro_data[i].x);
-				input_event(client_data->input, EV_MSC, MSC_RAW,
-					    (int)fifo_gyro_data[i].y);
-				input_event(client_data->input, EV_MSC, MSC_RAW,
-					    (int)fifo_gyro_data[i].z);
-				input_sync(client_data->input);
-			}
+			input_event(client_data->input, EV_MSC, MSC_TIMESTAMP,
+				    ts.tv_sec);
+			input_event(client_data->input, EV_MSC, MSC_TIMESTAMP,
+				    ts.tv_nsec);
+			input_event(client_data->input, EV_MSC, MSC_RAW,
+				    (int)fifo_gyro_data[i].x);
+			input_event(client_data->input, EV_MSC, MSC_RAW,
+				    (int)fifo_gyro_data[i].y);
+			input_event(client_data->input, EV_MSC, MSC_RAW,
+				    (int)fifo_gyro_data[i].z);
+			input_sync(client_data->input);
 		}
+		//}
 
 		err = smi230_gyro_get_fifo_length(&fifo_length, p_smi230_dev);
 		if (err != SMI230_OK) {
 			PERR("FIFO read fifo_length error!");
 			return;
 		}
-		repeat = true;
+		if (p_smi230_dev->gyro_cfg.power == SMI230_GYRO_PM_SUSPEND ||
+		    p_smi230_dev->gyro_cfg.power == SMI230_GYRO_PM_DEEP_SUSPEND)
+			break;
 	}
 }
 
@@ -693,6 +754,22 @@ static irqreturn_t smi230_irq_work_func(int irq, void *handle)
 		return IRQ_HANDLED;
 	}
 
+	/*
+	 * Some parts occasionally assert the INT pin without any status bit
+	 * being set (int_status == 0x00). Such spurious edges have already
+	 * captured an edge timestamp in the top half; if we let that time
+	 * propagate it corrupts the timestamp used for the next real sample.
+	 * Drop the edge here and leave client_data->timestamp untouched so the
+	 * pending edge time is only committed for a genuine interrupt below.
+	 */
+	if (data == 0) {
+		mutex_unlock(&interrupt_handling_lock);
+		return IRQ_HANDLED;
+	}
+
+	/* Valid interrupt: commit the edge timestamp captured in the top half. */
+	client_data->timestamp = client_data->timestamp_pending;
+
 	if (data & 0x10) {
 		if (IS_ENABLED(CONFIG_SMI230_GYRO_FIFO_WM)) {
 			smi230_gyro_fifo_wm_handle(client_data);
@@ -711,13 +788,21 @@ static irqreturn_t smi230_irq_work_func(int irq, void *handle)
 static irqreturn_t smi230_irq_handle(int irq, void *handle)
 {
 	struct smi230_client_data *client_data = handle;
+	uint64_t ts = ktime_get_boottime_ns();
 
-	client_data->timestamp = ktime_get_boottime_ns();
-
-	if (IS_ENABLED(CONFIG_SMI230_DATA_SYNC))
+	if (IS_ENABLED(CONFIG_SMI230_DATA_SYNC)) {
+		/* Data-sync validates on the accel side; use the edge directly. */
+		client_data->timestamp = ts;
 		return IRQ_HANDLED;
-	else
-		return IRQ_WAKE_THREAD;
+	}
+
+	/*
+	 * Stage the edge timestamp only. The threaded handler commits it to
+	 * client_data->timestamp after confirming the interrupt is genuine
+	 * (int_status != 0), so spurious edges cannot corrupt sample timing.
+	 */
+	client_data->timestamp_pending = ts;
+	return IRQ_WAKE_THREAD;
 }
 
 __maybe_unused static void
@@ -817,6 +902,9 @@ int smi230_gyro_probe(struct device *dev, struct smi230_dev *smi230_dev)
 	p_smi230_dev = smi230_dev;
 
 	p_smi230_dev->gyro_regs_saved = false;
+
+	/* Gyro powers up in NORMAL mode after POR. */
+	p_smi230_dev->gyro_power_applied = SMI230_GYRO_PM_NORMAL;
 
 	p_smi230_dev->gyro_sus_etr = SMI230_GYRO_SUSPEND;
 
@@ -1000,9 +1088,10 @@ exit_directly:
 int smi230_gyro_suspend(struct device *dev)
 {
 	int ret = 0;
-	//backup the power mode before sleeping
-	p_smi230_dev->gyro_cfg.power_bak = p_smi230_dev->gyro_cfg.power;
 	mutex_lock(&interrupt_handling_lock);
+	/* backup the power mode before sleeping; read it under the lock so it
+	 * cannot race with a concurrent power-mode change from the app layer */
+	p_smi230_dev->gyro_cfg.power_bak = p_smi230_dev->gyro_cfg.power;
 	if (p_smi230_dev->gyro_sus_etr == SMI230_GYRO_SUSPEND) {
 		p_smi230_dev->gyro_cfg.power = SMI230_GYRO_PM_SUSPEND;
 	} else if (p_smi230_dev->gyro_sus_etr == SMI230_GYRO_DEEP_SUSPEND) {
@@ -1027,9 +1116,10 @@ int smi230_gyro_resume(struct device *dev)
 int smi230_gyro_freeze(struct device *dev)
 {
 	int ret = 0;
-	//backup the power mode before freezing
-	p_smi230_dev->gyro_cfg.power_bak = p_smi230_dev->gyro_cfg.power;
 	mutex_lock(&interrupt_handling_lock);
+	/* backup the power mode before freezing; read it under the lock so it
+	 * cannot race with a concurrent power-mode change from the app layer */
+	p_smi230_dev->gyro_cfg.power_bak = p_smi230_dev->gyro_cfg.power;
 	if (p_smi230_dev->gyro_frez_etr == SMI230_GYRO_SUSPEND) {
 		p_smi230_dev->gyro_cfg.power = SMI230_GYRO_PM_SUSPEND;
 	} else if (p_smi230_dev->gyro_frez_etr == SMI230_GYRO_DEEP_SUSPEND) {
